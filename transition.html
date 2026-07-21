@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Transform & Transition Lab</title>
+<style>
+  :root{
+    --ink:#eef0ff;
+    --bg:#0d0e1a;
+    --panel:#151831;
+    --grid:#242850;
+    --accent1:#ff6b6b;
+    --accent2:#4ecdc4;
+    --accent3:#ffd93d;
+    --accent4:#a78bfa;
+    --mono: 'Courier New', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: Georgia, 'Times New Roman', serif;
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/40px 40px,
+      var(--bg);
+    color:var(--ink);
+    padding:60px 24px 100px;
+  }
+  h1{
+    font-size:clamp(2rem,5vw,3.4rem);
+    margin:0 0 8px;
+    letter-spacing:-0.02em;
+  }
+  h1 span{
+    display:inline-block;
+    color:var(--accent3);
+    transition: transform .6s cubic-bezier(.34,1.56,.64,1);
+  }
+  h1:hover span{ transform: rotate(-6deg) scale(1.08); }
+  .sub{
+    font-family: var(--mono);
+    color:#9aa0d4;
+    max-width:620px;
+    line-height:1.6;
+    margin-bottom:56px;
+  }
+  .sub code{ color:var(--accent2); }
+
+  section{ margin-bottom:70px; }
+  .section-label{
+    font-family:var(--mono);
+    font-size:0.8rem;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    color:var(--accent2);
+    border-bottom:1px solid var(--grid);
+    padding-bottom:10px;
+    margin-bottom:28px;
+  }
+
+  /* ---- TRANSFORM GALLERY ---- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:22px;
+  }
+  .card{
+    background:var(--panel);
+    border:1px solid var(--grid);
+    border-radius:10px;
+    padding:28px 20px;
+    text-align:center;
+    cursor:default;
+    transition: transform .45s ease, box-shadow .45s ease, border-color .45s ease;
+  }
+  .card .tag{
+    display:block;
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:#7f86c2;
+    margin-bottom:14px;
+  }
+  .card .demo{
+    width:64px;height:64px;
+    margin:0 auto 16px;
+    border-radius:8px;
+    transition: transform .45s cubic-bezier(.2,.8,.3,1.4);
+  }
+  .card p{ margin:0; font-size:0.95rem; color:#c7cbf5; }
+
+  .card.scale .demo{ background:var(--accent1); }
+  .card.scale:hover .demo{ transform:scale(1.5); }
+  .card.scale:hover{ box-shadow:0 12px 30px -10px rgba(255,107,107,.5); border-color:var(--accent1); }
+
+  .card.rotate .demo{ background:var(--accent2); }
+  .card.rotate:hover .demo{ transform:rotate(135deg); }
+  .card.rotate:hover{ box-shadow:0 12px 30px -10px rgba(78,205,196,.5); border-color:var(--accent2); }
+
+  .card.translate .demo{ background:var(--accent3); }
+  .card.translate:hover .demo{ transform:translateY(-18px); }
+  .card.translate:hover{ box-shadow:0 12px 30px -10px rgba(255,217,61,.5); border-color:var(--accent3); }
+
+  .card.skew .demo{ background:var(--accent4); }
+  .card.skew:hover .demo{ transform:skew(-14deg,6deg); }
+  .card.skew:hover{ box-shadow:0 12px 30px -10px rgba(167,139,250,.5); border-color:var(--accent4); }
+
+  .card.combo .demo{ background:linear-gradient(135deg,var(--accent1),var(--accent4)); }
+  .card.combo:hover .demo{ transform: translateY(-10px) rotate(20deg) scale(1.2); }
+  .card.combo:hover{ box-shadow:0 12px 30px -10px rgba(167,139,250,.5); border-color:var(--accent4); }
+
+  .card:hover{ transform: translateY(-6px); }
+
+  /* ---- EASING RACE TRACK ---- */
+  .track-wrap{ display:flex; flex-direction:column; gap:18px; }
+  .lane{
+    position:relative;
+    background:var(--panel);
+    border:1px solid var(--grid);
+    border-radius:999px;
+    height:46px;
+    overflow:hidden;
+  }
+  .lane .label{
+    position:absolute; left:16px; top:50%; transform:translateY(-50%);
+    font-family:var(--mono); font-size:0.72rem; color:#7f86c2; z-index:2;
+  }
+  .lane .puck{
+    position:absolute; top:5px; left:5px;
+    width:36px;height:36px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:0.7rem; font-family:var(--mono); color:#0d0e1a; font-weight:bold;
+    transition-property: left;
+    transition-duration: 1.6s;
+  }
+  #track1 .puck{ background:var(--accent3); transition-timing-function: linear; }
+  #track2 .puck{ background:var(--accent2); transition-timing-function: ease-in; }
+  #track3 .puck{ background:var(--accent1); transition-timing-function: ease-out; }
+  #track4 .puck{ background:var(--accent4); transition-timing-function: cubic-bezier(.68,-0.55,.27,1.55); }
+  .lane.go .puck{ left: calc(100% - 41px); }
+
+  button{
+    font-family:var(--mono);
+    background:var(--accent3);
+    color:#141426;
+    border:none;
+    padding:12px 22px;
+    border-radius:999px;
+    font-size:0.85rem;
+    font-weight:bold;
+    cursor:pointer;
+    letter-spacing:0.04em;
+    transition: transform .25s ease, background .25s ease;
+    margin-top:10px;
+  }
+  button:hover{ transform:scale(1.06); background:var(--accent2); }
+  button:active{ transform:scale(0.94); }
+
+  /* ---- ORIGIN PLAYGROUND ---- */
+  .origin-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:22px;
+  }
+  .origin-box{
+    background:var(--panel); border:1px solid var(--grid); border-radius:10px;
+    padding:26px 16px; text-align:center;
+  }
+  .origin-box .sq{
+    width:56px;height:56px;background:var(--accent1);
+    margin:0 auto 24px; border-radius:6px;
+    transition: transform .5s ease;
+  }
+  .origin-box:nth-child(1) .sq{ transform-origin: top left; }
+  .origin-box:nth-child(2) .sq{ transform-origin: center; }
+  .origin-box:nth-child(3) .sq{ transform-origin: bottom right; }
+  .origin-box:hover .sq{ transform: rotate(45deg); }
+  .origin-box .tag{ font-family:var(--mono); font-size:0.72rem; color:#7f86c2; }
+
+  footer{
+    font-family:var(--mono); font-size:0.75rem; color:#565c96;
+    text-align:center; margin-top:60px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Transform &amp; <span>Transition</span> Lab</h1>
+<p class="sub">
+  A transform changes an element's geometry &mdash; <code>scale</code>, <code>rotate</code>,
+  <code>translate</code>, <code>skew</code>. A transition tells the browser how to animate the
+  change between two states over time. Hover things below to feel the difference.
+</p>
+
+<section>
+  <div class="section-label">01 &middot; The four core transforms</div>
+  <div class="grid">
+    <div class="card scale"><span class="tag">transform: scale(1.5)</span><div class="demo"></div><p>Scale</p></div>
+    <div class="card rotate"><span class="tag">transform: rotate(135deg)</span><div class="demo"></div><p>Rotate</p></div>
+    <div class="card translate"><span class="tag">transform: translateY(-18px)</span><div class="demo"></div><p>Translate</p></div>
+    <div class="card skew"><span class="tag">transform: skew(-14deg, 6deg)</span><div class="demo"></div><p>Skew</p></div>
+    <div class="card combo"><span class="tag">translate + rotate + scale</span><div class="demo"></div><p>Combined</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">02 &middot; Timing functions, raced side by side</div>
+  <p class="sub" style="margin-bottom:20px;">
+    Same duration (1.6s), same distance &mdash; only the easing curve differs. Press start and
+    watch how each one gets there.
+  </p>
+  <div class="track-wrap">
+    <div class="lane" id="track1"><span class="label">linear</span><div class="puck">A</div></div>
+    <div class="lane" id="track2"><span class="label">ease-in</span><div class="puck">B</div></div>
+    <div class="lane" id="track3"><span class="label">ease-out</span><div class="puck">C</div></div>
+    <div class="lane" id="track4"><span class="label">bounce cubic-bezier</span><div class="puck">D</div></div>
+  </div>
+  <button onclick="race()">Start the race</button>
+</section>
+
+<section>
+  <div class="section-label">03 &middot; transform-origin changes everything</div>
+  <div class="origin-grid">
+    <div class="origin-box"><div class="sq"></div><span class="tag">origin: top left</span></div>
+    <div class="origin-box"><div class="sq"></div><span class="tag">origin: center</span></div>
+    <div class="origin-box"><div class="sq"></div><span class="tag">origin: bottom right</span></div>
+  </div>
+</section>
+
+<footer>Hover, click, and resize &mdash; every effect here is pure CSS.</footer>
+
+<script>
+  function race(){
+    document.querySelectorAll('.lane').forEach(l=>l.classList.remove('go'));
+    // force reflow so the animation can restart
+    void document.body.offsetWidth;
+    setTimeout(()=>{
+      document.querySelectorAll('.lane').forEach(l=>l.classList.add('go'));
+    },30);
+  }
+</script>
+</body>
+</html>
