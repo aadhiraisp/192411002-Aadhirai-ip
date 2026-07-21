@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Welcome to My Website</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Cambria', serif;
+    font-size: 14px;
+    background: linear-gradient(135deg, #cfe8fb, #e6f3fd);
+    color: #073763;
+    text-align: center;
+    min-height: 100vh;
+  }
+
+  header {
+    padding: 40px 20px 10px;
+  }
+
+  h1 {
+    font-family: 'Cambria', serif;
+    color: #1565c0;
+    font-size: 32px;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.15);
+  }
+
+  /* Scrolling marquee text banner */
+  .marquee-wrap {
+    width: 100%;
+    overflow: hidden;
+    background-color: #1565c0;
+    padding: 8px 0;
+    margin: 15px 0;
+  }
+
+  .marquee-text {
+    display: inline-block;
+    white-space: nowrap;
+    color: #ffffff;
+    font-size: 14px;
+    font-family: 'Cambria', serif;
+    animation: scrollLeft 14s linear infinite;
+  }
+
+  @keyframes scrollLeft {
+    0%   { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* Scrolling image strip */
+  .image-strip {
+    width: 100%;
+    overflow: hidden;
+    background: #ffffff;
+    padding: 12px 0;
+    margin-bottom: 25px;
+    border-top: 2px solid #90caf9;
+    border-bottom: 2px solid #90caf9;
+  }
+
+  .image-track {
+    display: flex;
+    width: max-content;
+    animation: scrollImages 20s linear infinite;
+  }
+
+  .image-track div {
+    width: 90px;
+    height: 90px;
+    margin: 0 12px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    font-family: 'Cambria', serif;
+    flex-shrink: 0;
+  }
+
+  @keyframes scrollImages {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Grid box layout */
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto 40px;
+    padding: 0 20px;
+  }
+
+  .grid-box {
+    background-color: #ffffff;
+    border: 2px solid #64b5f6;
+    border-radius: 14px;
+    padding: 25px 15px;
+    box-shadow: 0 4px 10px rgba(21, 101, 192, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .grid-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 18px rgba(21, 101, 192, 0.3);
+  }
+
+  .grid-box h3 {
+    color: #0d47a1;
+    margin-top: 0;
+    font-family: 'Cambria', serif;
+  }
+
+  .grid-box p {
+    font-size: 14px;
+    color: #073763;
+  }
+
+  /* Blue button with white text */
+  .btn {
+    display: inline-block;
+    background-color: #1565c0;
+    color: #ffffff;
+    font-family: 'Cambria', serif;
+    font-size: 14px;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(21, 101, 192, 0.4);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-bottom: 50px;
+  }
+
+  .btn:hover {
+    background-color: #0d47a1;
+    transform: scale(1.05);
+  }
+
+  footer {
+    padding: 15px;
+    font-size: 14px;
+    color: #1565c0;
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <h1>Welcome to My Website</h1>
+  </header>
+
+  <div class="marquee-wrap">
+    <span class="marquee-text">✦ Thanks for visiting my page ✦ Explore, learn, and enjoy the experience ✦ Built with HTML &amp; CSS ✦</span>
+  </div>
+
+  <div class="image-strip">
+    <div class="image-track">
+      <div style="background:#1565c0;">🌐</div>
+      <div style="background:#1e88e5;">💡</div>
+      <div style="background:#42a5f5;">🎨</div>
+      <div style="background:#64b5f6;">🚀</div>
+      <div style="background:#90caf9;">⭐</div>
+      <div style="background:#1565c0;">🌐</div>
+      <div style="background:#1e88e5;">💡</div>
+      <div style="background:#42a5f5;">🎨</div>
+      <div style="background:#64b5f6;">🚀</div>
+      <div style="background:#90caf9;">⭐</div>
+    </div>
+  </div>
+
+  <main>
+    <div class="grid-container">
+      <div class="grid-box">
+        <h3>About</h3>
+        <p>A quick look at who I am and what this page is about.</p>
+      </div>
+      <div class="grid-box">
+        <h3>Skills</h3>
+        <p>Highlights of things I've learned and enjoy working on.</p>
+      </div>
+      <div class="grid-box">
+        <h3>Projects</h3>
+        <p>A small showcase of work I'm proud of so far.</p>
+      </div>
+      <div class="grid-box">
+        <h3>Interests</h3>
+        <p>Topics and hobbies that keep me curious and inspired.</p>
+      </div>
+      <div class="grid-box">
+        <h3>Goals</h3>
+        <p>What I'm aiming to build and learn next.</p>
+      </div>
+      <div class="grid-box">
+        <h3>Contact</h3>
+        <p>Feel free to reach out — I'd love to connect.</p>
+      </div>
+    </div>
+
+    <button class="btn">Get In Touch</button>
+  </main>
+
+  <footer>
+    &copy; 2026 My Website. All rights reserved.
+  </footer>
+
+</body>
+</html>
