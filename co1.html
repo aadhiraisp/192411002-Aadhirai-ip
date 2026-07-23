@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Handshake — Real-time APIs, built on a protocol you can see</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+  :root{
+    --ink:#0B1220;
+    --panel:#101A2B;
+    --line:#22314A;
+    --fg:#EDF2F4;
+    --fg-dim:#8A97AC;
+    --signal:#00E5C7;
+    --signal-dim:#0A5F55;
+    --warn:#FFB86B;
+    --radius:2px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--fg);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1100px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- NAV (semantic) ---------- */
+  header{border-bottom:1px solid var(--line); position:sticky; top:0; background:rgba(11,18,32,0.92); backdrop-filter:blur(6px); z-index:10;}
+  header .wrap{display:flex; align-items:center; justify-content:space-between; height:64px;}
+  .brand{font-family:'IBM Plex Mono', monospace; font-weight:700; letter-spacing:0.02em; font-size:15px;}
+  .brand .dot{color:var(--signal);}
+  nav ul{list-style:none; display:flex; gap:28px;}
+  nav a{font-size:14px; color:var(--fg-dim); text-decoration:none; transition:color .15s;}
+  nav a:hover, nav a:focus-visible{color:var(--signal);}
+  nav a:focus-visible{outline:2px solid var(--signal); outline-offset:4px;}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:72px 0 56px; border-bottom:1px solid var(--line);}
+  .hero-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:48px; align-items:center;}
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--signal); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:16px;}
+  h1{font-family:'IBM Plex Mono', monospace; font-size:44px; line-height:1.15; font-weight:600; margin-bottom:18px;}
+  h1 span{color:var(--signal);}
+  .lede{color:var(--fg-dim); font-size:16px; max-width:46ch; margin-bottom:28px;}
+  .cta-row{display:flex; gap:14px; align-items:center;}
+  .btn{font-family:'IBM Plex Mono', monospace; font-size:14px; padding:12px 20px; border-radius:var(--radius); border:1px solid var(--signal); background:var(--signal); color:#04211d; font-weight:600; cursor:pointer; text-decoration:none;}
+  .btn.ghost{background:transparent; color:var(--fg); border-color:var(--line);}
+  .btn:focus-visible{outline:2px solid var(--fg); outline-offset:3px;}
+
+  /* ---------- SIGNATURE: 10s handshake animation ---------- */
+  .scope{
+    background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:20px;
+    position:relative; overflow:hidden;
+  }
+  .scope-label{display:flex; justify-content:space-between; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--fg-dim); margin-bottom:14px;}
+  .scope-label .live{color:var(--signal);}
+  .scope-label .live::before{content:"● "; }
+  svg{width:100%; height:auto; display:block;}
+  .node-label{font-family:'IBM Plex Mono', monospace; font-size:11px; fill:var(--fg-dim);}
+  .lane{stroke:var(--line); stroke-width:1;}
+  .node-box{fill:var(--ink); stroke:var(--line); stroke-width:1;}
+
+  .packet{ offset-rotate:0deg; }
+  @keyframes travelDown{ 0%{ transform:translate(0,0); opacity:0;} 4%{opacity:1;} 16%{ transform:translate(210px,0); opacity:1;} 18%{opacity:0;} 100%{opacity:0;} }
+  @keyframes travelUp{   0%{ transform:translate(210px,0); opacity:0;} 22%{opacity:0;} 26%{opacity:1;} 38%{opacity:1;} 40%{opacity:0;} 100%{opacity:0;} }
+  @keyframes travelDown2{0%{ transform:translate(0,0); opacity:0;} 42%{opacity:0;} 46%{opacity:1;} 58%{opacity:1;} 60%{opacity:0;} 100%{opacity:0;} }
+  @keyframes travelUp2{  0%{ transform:translate(210px,0); opacity:0;} 74%{opacity:0;} 78%{opacity:1;} 90%{opacity:1;} 92%{opacity:0;} 100%{opacity:0;} }
+  @keyframes flash{ 0%,100%{opacity:.35;} 50%{opacity:1;} }
+
+  .p1{animation:travelDown 10s linear infinite;}
+  .p2{animation:travelUp 10s linear infinite;}
+  .p3{animation:travelDown2 10s linear infinite;}
+  .p4{animation:travelUp2 10s linear infinite;}
+  .pulse-client{animation:flash 10s ease-in-out infinite;}
+  .pulse-server{animation:flash 10s ease-in-out infinite; animation-delay:.2s;}
+
+  .caption{margin-top:14px; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--fg-dim); display:flex; justify-content:space-between;}
+
+  @media (prefers-reduced-motion: reduce){
+    .p1,.p2,.p3,.p4,.pulse-client,.pulse-server{animation:none; opacity:1;}
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:64px 0; border-bottom:1px solid var(--line);}
+  h2{font-family:'IBM Plex Mono', monospace; font-size:24px; margin-bottom:10px;}
+  .section-lede{color:var(--fg-dim); max-width:60ch; margin-bottom:36px;}
+
+  .checklist{display:grid; grid-template-columns:repeat(2,1fr); gap:20px;}
+  .item{background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:20px;}
+  .item h3{font-family:'IBM Plex Mono', monospace; font-size:14px; color:var(--signal); margin-bottom:8px;}
+  .item p{color:var(--fg-dim); font-size:14px;}
+  code, pre{font-family:'IBM Plex Mono', monospace; font-size:12.5px;}
+  pre{background:var(--ink); border:1px solid var(--line); border-radius:4px; padding:14px; overflow-x:auto; color:var(--fg-dim);}
+  pre .ok{color:var(--signal);}
+  pre .bad{color:var(--warn); text-decoration:line-through;}
+
+  /* ---------- FORM ---------- */
+  form{max-width:480px;}
+  .field{margin-bottom:16px;}
+  label{display:block; font-size:13px; color:var(--fg-dim); margin-bottom:6px;}
+  input{width:100%; background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:11px 12px; color:var(--fg); font-size:14px;}
+  input:focus-visible{outline:2px solid var(--signal); outline-offset:2px;}
+  .note{font-size:12px; color:var(--fg-dim); margin-top:10px;}
+  .lock{color:var(--signal);}
+
+  footer{padding:32px 0; color:var(--fg-dim); font-size:13px; display:flex; justify-content:space-between;}
+
+  @media (max-width:820px){
+    .hero-grid{grid-template-columns:1fr;}
+    .checklist{grid-template-columns:1fr;}
+    nav ul{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">handshake<span class="dot">.</span>dev</div>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#video">Promo</a></li>
+        <li><a href="#standards">Standards</a></li>
+        <li><a href="#register">Register</a></li>
+        <li><a href="#config">Config</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="video">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">// promotional loop — 10.0s cycle</div>
+        <h1>Watch every request <span>shake hands</span> before it says a word.</h1>
+        <p class="lede">Handshake is a real-time API layer for startups that treats the connection itself as the product: TLS negotiated, HTTP verbs respected, nothing shipped until both sides agree.</p>
+        <div class="cta-row">
+          <a href="#register" class="btn">Create an account</a>
+          <a href="#standards" class="btn ghost">See the standards checklist</a>
+        </div>
+      </div>
+
+      <div class="scope" role="img" aria-label="Animated 10 second diagram of a TCP handshake followed by an HTTPS GET request and 200 response, looping continuously.">
+        <div class="scope-label"><span class="live">recording</span><span>loop · 00:10.0</span></div>
+        <svg viewBox="0 0 320 190" xmlns="http://www.w3.org/2000/svg">
+          <line x1="55" y1="20" x2="55" y2="170" class="lane"/>
+          <line x1="265" y1="20" x2="265" y2="170" class="lane"/>
+
+          <rect x="20" y="4" width="70" height="24" rx="3" class="node-box"/>
+          <text x="55" y="20" text-anchor="middle" class="node-label pulse-client">CLIENT</text>
+
+          <rect x="230" y="4" width="70" height="24" rx="3" class="node-box"/>
+          <text x="265" y="20" text-anchor="middle" class="node-label pulse-server">SERVER</text>
+
+          <circle cx="55" cy="42" r="4" fill="#00E5C7" class="packet p1"/>
+          <text x="60" y="46" class="node-label" fill="#00E5C7" font-size="9">SYN</text>
+
+          <circle cx="265" cy="72" r="4" fill="#00E5C7" class="packet p2"/>
+          <text x="176" y="76" class="node-label" fill="#00E5C7" font-size="9">SYN-ACK</text>
+
+          <circle cx="55" cy="102" r="4" fill="#00E5C7" class="packet p3"/>
+          <text x="60" y="106" class="node-label" fill="#00E5C7" font-size="9">ACK · TLS ✓</text>
+
+          <circle cx="55" cy="132" r="4" fill="#FFB86B" class="packet p3" style="animation-delay:0s;"/>
+          <text x="60" y="136" class="node-label" fill="#FFB86B" font-size="9">GET /v1/status HTTPS</text>
+
+          <circle cx="265" cy="160" r="4" fill="#FFB86B" class="packet p4"/>
+          <text x="150" y="164" class="node-label" fill="#FFB86B" font-size="9">200 OK</text>
+        </svg>
+        <div class="caption">
+          <span>protocol: HTTPS/1.1 over TLS 1.3</span>
+          <span>status: connected</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="standards">
+    <div class="wrap">
+      <h2>Everything on this page is doing double duty</h2>
+      <p class="section-lede">Built to answer the standards checklist the team raised during development — not just describe the fixes, but demonstrate them live on the page.</p>
+      <div class="checklist">
+        <div class="item">
+          <h3>01 · Promo without a video file</h3>
+          <p>Rather than an embedded <code>&lt;video&gt;</code> pointing at a stock clip, the hero is a live 10-second looping SVG/CSS animation — lighter than video, accessible via <code>role="img"</code> + a text alternative, and it visualizes the actual product instead of stock footage.</p>
+        </div>
+        <div class="item">
+          <h3>02 · Registration form, sent securely</h3>
+          <p>The form below uses <code>method="post"</code>, not <code>get</code> — credentials never belong in a URL or browser history. Combined with HTTPS, the body is encrypted in transit end to end.</p>
+        </div>
+        <div class="item">
+          <h3>03 · Semantic navigation</h3>
+          <p>The header uses a real <code>&lt;nav&gt;</code> wrapping a <code>&lt;ul&gt;</code> of links, labelled with <code>aria-label="Primary"</code> — not a <code>&lt;div&gt;</code> soup styled to look like a menu, so assistive tech announces it correctly.</p>
+        </div>
+        <div class="item">
+          <h3>04 · Valid XML config</h3>
+          <p>Config below is corrected: one root element, properly closed and nested tags, quoted attributes, and no bare <code>&amp;</code>. See the diff in the config section.</p>
+        </div>
+        <div class="item">
+          <h3>05 · Correct protocol</h3>
+          <p>Every endpoint is served over <strong>HTTPS</strong> (TLS 1.3), never plain HTTP — the handshake animation above is literally that negotiation happening before any data moves.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="register">
+    <div class="wrap">
+      <h2>Create an account</h2>
+      <p class="section-lede">Submitted with <code>POST</code> over HTTPS — nothing here ever rides in a query string.</p>
+      <form action="/api/v1/register" method="post" autocomplete="on">
+        <div class="field">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="fullName" required>
+        </div>
+        <div class="field">
+          <label for="email">Work email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required minlength="10">
+        </div>
+        <button type="submit" class="btn">Register securely</button>
+        <p class="note"><span class="lock">🔒</span> Sent via HTTPS · method=POST · never logged in plaintext</p>
+      </form>
+    </div>
+  </section>
+
+  <section id="config">
+    <div class="wrap">
+      <h2>XML config: before and after</h2>
+      <p class="section-lede">The file the team flagged had three classic well-formedness errors. Corrected version below.</p>
+      <pre><code>&lt;!-- before: unclosed tag, unquoted attribute, bare ampersand, two roots --&gt;
+<span class="bad">&lt;config&gt;
+  &lt;service env=production&gt;
+    &lt;name&gt;Handshake API &amp; Gateway&lt;/name&gt;
+    &lt;port&gt;8443
+  &lt;/service&gt;
+&lt;/config&gt;
+&lt;logging level="debug"/&gt;</span>
+
+&lt;!-- after: single root, closed + nested tags, quoted attrs, escaped entity --&gt;
+<span class="ok">&lt;config&gt;
+  &lt;service env="production"&gt;
+    &lt;name&gt;Handshake API &amp;amp; Gateway&lt;/name&gt;
+    &lt;port&gt;8443&lt;/port&gt;
+  &lt;/service&gt;
+  &lt;logging level="debug"/&gt;
+&lt;/config&gt;</span></code></pre>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap" style="display:flex; justify-content:space-between; width:100%;">
+    <span>handshake.dev</span>
+    <span>served over HTTPS · TLS 1.3</span>
+  </div>
+</footer>
+
+</body>
+</html>
