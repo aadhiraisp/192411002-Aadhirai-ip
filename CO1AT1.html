@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Standards Implementation — Spec Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0F13;
+    --bg-raised:#11171D;
+    --line:#22303C;
+    --text:#E7EDF2;
+    --muted:#7C8B99;
+    --accent:#2FD1A6;
+    --accent-dim:#1B6E58;
+    --warn:#E8A33D;
+    --err:#E5573F;
+    --mono:'IBM Plex Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+  }
+  a{color:var(--accent);}
+
+  /* ---- top status bar (signature element) ---- */
+  .statusbar{
+    position:sticky; top:0; z-index:50;
+    background:#080B0E;
+    border-bottom:1px solid var(--line);
+    font-family:var(--mono);
+    font-size:0.78rem;
+    overflow-x:auto;
+    white-space:nowrap;
+  }
+  .statusbar-inner{
+    display:flex; gap:0;
+    padding:0 1.25rem;
+  }
+  .statusbar span.check{
+    display:flex; align-items:center; gap:0.5rem;
+    padding:0.65rem 1rem;
+    border-right:1px solid var(--line);
+    color:var(--muted);
+  }
+  .statusbar span.check:last-child{border-right:none;}
+  .statusbar .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 6px var(--accent);
+  }
+
+  header.hero{
+    padding:4.5rem 1.5rem 3rem;
+    max-width:920px;
+    margin:0 auto;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    color:var(--accent);
+    font-size:0.8rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin:0 0 1rem;
+  }
+  h1{
+    font-family:var(--mono);
+    font-size:clamp(1.8rem, 4vw, 2.7rem);
+    font-weight:600;
+    margin:0 0 1rem;
+    line-height:1.25;
+    max-width:16ch;
+  }
+  .hero p{
+    color:var(--muted);
+    max-width:56ch;
+    font-size:1.02rem;
+  }
+
+  nav.sitenav{
+    background:var(--bg-raised);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  nav.sitenav ul{
+    list-style:none;
+    display:flex; flex-wrap:wrap;
+    gap:0;
+    margin:0; padding:0;
+    max-width:920px;
+    margin:0 auto;
+  }
+  nav.sitenav a{
+    display:block;
+    padding:0.9rem 1.25rem;
+    text-decoration:none;
+    color:var(--text);
+    font-family:var(--mono);
+    font-size:0.85rem;
+    border-right:1px solid var(--line);
+  }
+  nav.sitenav a:hover{ color:var(--accent); background:#0E1418; }
+
+  main{max-width:920px; margin:0 auto; padding:0 1.5rem;}
+
+  section.spec{
+    padding:3.5rem 0;
+    border-bottom:1px solid var(--line);
+  }
+  section.spec:last-of-type{border-bottom:none;}
+
+  .spec-num{
+    font-family:var(--mono);
+    color:var(--accent-dim);
+    font-size:0.85rem;
+    margin-bottom:0.6rem;
+  }
+  .spec h2{
+    font-family:var(--mono);
+    font-size:1.35rem;
+    margin:0 0 0.4rem;
+  }
+  .spec .req{
+    color:var(--muted);
+    font-size:0.95rem;
+    margin:0 0 1.5rem;
+    padding-left:0.9rem;
+    border-left:2px solid var(--accent-dim);
+  }
+
+  .card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:1.5rem;
+  }
+
+  pre{
+    background:#080B0E;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:1rem 1.1rem;
+    overflow-x:auto;
+    font-family:var(--mono);
+    font-size:0.82rem;
+    line-height:1.55;
+    margin:0.9rem 0;
+  }
+  code{ font-family:var(--mono); font-size:0.85em; }
+  .tag{color:#7EE0C4;}
+  .attr{color:var(--warn);}
+  .str{color:#9FCBFF;}
+  .cmt{color:var(--muted); font-style:italic;}
+
+  .diff-bad, .diff-good{
+    border-radius:6px;
+    padding:1rem 1.1rem;
+    font-family:var(--mono);
+    font-size:0.82rem;
+    margin:0.9rem 0;
+    border:1px solid var(--line);
+  }
+  .diff-bad{ background:rgba(229,87,63,0.08); border-color:rgba(229,87,63,0.35); }
+  .diff-good{ background:rgba(47,209,166,0.08); border-color:rgba(47,209,166,0.35); }
+  .diff-label{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:0.5rem;
+    display:block;
+  }
+  .diff-bad .diff-label{color:var(--err);}
+  .diff-good .diff-label{color:var(--accent);}
+
+  video{
+    width:100%;
+    border-radius:6px;
+    border:1px solid var(--line);
+    display:block;
+    background:#000;
+  }
+
+  form label{
+    display:block;
+    font-size:0.85rem;
+    color:var(--muted);
+    margin:1rem 0 0.35rem;
+  }
+  form input, form select{
+    width:100%;
+    background:#080B0E;
+    border:1px solid var(--line);
+    color:var(--text);
+    padding:0.65rem 0.8rem;
+    border-radius:4px;
+    font-family:var(--sans);
+    font-size:0.95rem;
+  }
+  form input:focus, form select:focus{
+    outline:2px solid var(--accent);
+    outline-offset:1px;
+  }
+  button.submit{
+    margin-top:1.4rem;
+    background:var(--accent);
+    color:#04231C;
+    border:none;
+    font-family:var(--mono);
+    font-weight:600;
+    padding:0.75rem 1.4rem;
+    border-radius:4px;
+    cursor:pointer;
+    font-size:0.9rem;
+  }
+  button.submit:hover{ background:#48e0b8; }
+  .lock-note{
+    display:flex; align-items:center; gap:0.5rem;
+    font-family:var(--mono);
+    font-size:0.78rem;
+    color:var(--accent);
+    margin-top:1rem;
+  }
+
+  .why{
+    margin-top:1.2rem;
+    font-size:0.9rem;
+    color:var(--muted);
+  }
+  .why strong{ color:var(--text); }
+
+  .snippet-label{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--muted);
+    margin:1.5rem 0 0.6rem;
+  }
+  ul.options{
+    list-style:none;
+    margin:0 0 0.5rem;
+    padding:0;
+    display:grid;
+    gap:0.5rem;
+  }
+  ul.options li{
+    font-family:var(--mono);
+    font-size:0.85rem;
+    padding:0.65rem 0.9rem;
+    border:1px solid var(--line);
+    border-radius:5px;
+    background:#080B0E;
+    color:var(--muted);
+    display:flex;
+    gap:0.6rem;
+    align-items:flex-start;
+  }
+  ul.options li .letter{
+    color:var(--text);
+    font-weight:600;
+    flex-shrink:0;
+  }
+  ul.options li.correct{
+    border-color:var(--accent);
+    background:rgba(47,209,166,0.08);
+    color:var(--text);
+  }
+  ul.options li.correct .letter{ color:var(--accent); }
+  ul.options li.correct::after{
+    content:"✔ correct";
+    margin-left:auto;
+    font-size:0.7rem;
+    color:var(--accent);
+    white-space:nowrap;
+    padding-top:0.1rem;
+  }
+
+  .qa{
+    margin-top:1.75rem;
+    padding-top:1.5rem;
+    border-top:1px dashed var(--line);
+  }
+  .qa .q{
+    font-family:var(--mono);
+    font-size:0.78rem;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--accent);
+    margin:0 0 0.5rem;
+  }
+  .qa .a{
+    font-size:0.95rem;
+    color:var(--text);
+    margin:0;
+  }
+
+  footer{
+    padding:2.5rem 1.5rem 4rem;
+    max-width:920px;
+    margin:0 auto;
+    color:var(--muted);
+    font-family:var(--mono);
+    font-size:0.78rem;
+  }
+
+  @media (max-width: 600px){
+    nav.sitenav a{ padding:0.75rem 0.9rem; font-size:0.78rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="statusbar" role="status" aria-label="Standards check summary">
+  <div class="statusbar-inner">
+    <span class="check"><span class="dot"></span>video: embedded natively</span>
+    <span class="check"><span class="dot"></span>form: POST + TLS</span>
+    <span class="check"><span class="dot"></span>nav: semantic markup</span>
+    <span class="check"><span class="dot"></span>xml: well-formed</span>
+    <span class="check"><span class="dot"></span>protocol: HTTPS enforced</span>
+  </div>
+</div>
+
+<header class="hero">
+  <p class="eyebrow">Internal spec review — Rev. 1</p>
+  <h1>Five standards issues, five fixes</h1>
+  <p>This page is the reference implementation the team asked for: each section below reproduces one issue from the build log, shows the broken or ambiguous version, and lands on the corrected markup actually used on the homepage.</p>
+</header>
+
+<nav class="sitenav" aria-label="Section navigation">
+  <ul>
+    <li><a href="#video">01 · Video</a></li>
+    <li><a href="#form">02 · Form</a></li>
+    <li><a href="#semantic-nav">03 · Navigation</a></li>
+    <li><a href="#xml">04 · XML config</a></li>
+    <li><a href="#protocol">05 · Protocol</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- 01 : VIDEO -->
+  <section class="spec" id="video">
+    <div class="spec-num">Section 01</div>
+    <h2>Embedding the promotional video</h2>
+    <p class="req">Requirement: the homepage needs a promotional video, playable without a third-party plugin.</p>
+
+    <div class="card">
+      <video controls autoplay muted loop playsinline preload="auto">
+        <source src="promo.mp4" type="video/mp4">
+        <p>Your browser doesn't support HTML video. <a href="promo.mp4">Download the video</a> instead.</p>
+      </video>
+      <p class="why" style="margin-top:0.6rem; font-size:0.8rem;">▲ live demo — 10-second promo clip, plays automatically and loops (unmute using the controls)</p>
+
+      <p class="snippet-label">Snippet 1 · Video embedding options</p>
+      <ul class="options">
+        <li><span class="letter">A.</span> <code>&lt;media src="video.mp4"&gt;&lt;/media&gt;</code></li>
+        <li class="correct"><span class="letter">B.</span> <code>&lt;video src="video.mp4" controls&gt;&lt;/video&gt;</code></li>
+        <li><span class="letter">C.</span> <code>&lt;movie src="video.mp4"&gt;&lt;/movie&gt;</code></li>
+        <li><span class="letter">D.</span> <code>&lt;vid src="video.mp4"&gt;&lt;/vid&gt;</code></li>
+      </ul>
+
+      <div class="qa">
+        <p class="q">Q1 · Select the correct HTML tag for video embedding and justify your answer.</p>
+        <p class="a"><strong>Answer: B — <code>&lt;video&gt;</code></strong>. It's the only element in the list that is part of the actual HTML5 specification; browsers ship built-in decoding and playback controls for it, so no plugin or external library is needed. <code>&lt;media&gt;</code>, <code>&lt;movie&gt;</code>, and <code>&lt;vid&gt;</code> (options A, C, D) are not real HTML elements — a browser doesn't recognize them, so it renders them as plain inline text with no player at all.</p>
+      </div>
+
+      <pre><span class="cmt">&lt;!-- native HTML5 video, no plugin dependency --&gt;</span>
+&lt;<span class="tag">video</span> <span class="attr">controls</span> <span class="attr">autoplay</span> <span class="attr">muted</span> <span class="attr">loop</span> <span class="attr">playsinline</span>&gt;
+  &lt;<span class="tag">source</span> <span class="attr">src</span>=<span class="str">"promo.mp4"</span> <span class="attr">type</span>=<span class="str">"video/mp4"</span>&gt;
+  &lt;<span class="tag">p</span>&gt;Your browser doesn't support HTML video.&lt;/<span class="tag">p</span>&gt;
+&lt;/<span class="tag">video</span>&gt;</pre>
+      <p class="why"><strong>Why this shape:</strong> the <code>&lt;video&gt;</code> element ships natively in every modern browser, so no Flash or external embed is needed. Browsers only allow <code>autoplay</code> when the video is also <code>muted</code>, so that attribute pairs with it here; <code>controls</code> still lets a visitor unmute or pause, and <code>loop</code> keeps a short promo clip like this one running continuously.</p>
+    </div>
+  </section>
+
+  <!-- 02 : FORM -->
+  <section class="spec" id="form">
+    <div class="spec-num">Section 02</div>
+    <h2>Sending registration data securely</h2>
+    <p class="req">Requirement: the registration form must send user data to the server without exposing it in the URL or browser history.</p>
+
+    <div class="card">
+      <form action="/api/register" method="post" autocomplete="off">
+        <label for="fullname">Full name</label>
+        <input type="text" id="fullname" name="fullname" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required minlength="8">
+
+        <button type="submit" class="submit">Create account</button>
+        <div class="lock-note">🔒 submitted over HTTPS via POST — never appears in the URL</div>
+      </form>
+
+      <p class="snippet-label">Snippet 2 · Form submission methods</p>
+      <ul class="options">
+        <li><span class="letter">A.</span> GET</li>
+        <li class="correct"><span class="letter">B.</span> POST</li>
+        <li><span class="letter">C.</span> PUT</li>
+        <li><span class="letter">D.</span> DELETE</li>
+      </ul>
+
+      <div class="qa">
+        <p class="q">Q2 · Identify the appropriate HTTP method for form submission and explain why.</p>
+        <p class="a"><strong>Answer: B — POST</strong>. POST sends the form fields in the request body rather than the URL, which keeps sensitive data like passwords out of the address bar, browser history, and server access logs. GET (A) exposes data as a visible query string, which is fine for a search box but wrong for a registration form. PUT (C) and DELETE (D) are REST methods meant for updating or removing an existing resource at a known URL — a new registration is a resource being created, and browser <code>&lt;form&gt;</code> elements don't natively support PUT/DELETE anyway.</p>
+      </div>
+
+      <pre>&lt;<span class="tag">form</span> <span class="attr">action</span>=<span class="str">"/api/register"</span> <span class="attr">method</span>=<span class="str">"post"</span>&gt;
+  &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"email"</span> <span class="attr">name</span>=<span class="str">"email"</span> <span class="attr">required</span>&gt;
+  &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"password"</span> <span class="attr">name</span>=<span class="str">"password"</span> <span class="attr">required</span>&gt;
+  &lt;<span class="tag">button</span> <span class="attr">type</span>=<span class="str">"submit"</span>&gt;Create account&lt;/<span class="tag">button</span>&gt;
+&lt;/<span class="tag">form</span>&gt;</pre>
+
+      <p class="why"><strong>Why POST, not GET:</strong> GET appends form fields to the URL as a query string, so a password would sit in plain text in the browser's address bar, history, and any server access logs. POST sends the data in the request body instead. That alone doesn't encrypt it in transit — the encryption comes from serving the page over HTTPS (see Section 05), which wraps the whole request, body included, in TLS.</p>
+    </div>
+  </section>
+
+  <!-- 03 : SEMANTIC NAV -->
+  <section class="spec" id="semantic-nav">
+    <div class="spec-num">Section 03</div>
+    <h2>A semantic navigation menu</h2>
+    <p class="req">Requirement: the navigation menu must use semantic HTML rather than generic containers, so screen readers and search engines can identify it as navigation.</p>
+
+    <div class="card">
+      <div class="diff-bad">
+        <span class="diff-label">Before — div soup</span>
+&lt;div class="menu"&gt;
+  &lt;div class="menu-item"&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/div&gt;
+  &lt;div class="menu-item"&gt;&lt;a href="/pricing"&gt;Pricing&lt;/a&gt;&lt;/div&gt;
+&lt;/div&gt;
+      </div>
+      <div class="diff-good">
+        <span class="diff-label">After — semantic markup</span>
+&lt;nav aria-label="Primary"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/pricing"&gt;Pricing&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+      </div>
+
+      <p class="snippet-label">Snippet 3 · Navigation elements</p>
+      <ul class="options">
+        <li><span class="letter">A.</span> <code>&lt;div&gt;</code></li>
+        <li class="correct"><span class="letter">B.</span> <code>&lt;nav&gt;</code></li>
+        <li><span class="letter">C.</span> <code>&lt;section&gt;</code></li>
+        <li><span class="letter">D.</span> <code>&lt;header&gt;</code></li>
+      </ul>
+
+      <div class="qa">
+        <p class="q">Q3 · Choose the proper semantic element for navigation and justify its usage.</p>
+        <p class="a"><strong>Answer: B — <code>&lt;nav&gt;</code></strong>. It's the element the HTML spec defines specifically for a block of navigation links, so screen readers expose it as a "navigation" landmark users can jump straight to, and search engines use it to map site structure. <code>&lt;div&gt;</code> (A) is a generic box with no meaning at all. <code>&lt;section&gt;</code> (C) marks a generic thematic grouping of content, not specifically links. <code>&lt;header&gt;</code> (D) marks introductory content for a page or section — a nav menu is often placed inside a header, but the header element itself doesn't say "these are navigation links."</p>
+      </div>
+
+      <p class="why"><strong>Why it matters:</strong> a <code>&lt;div&gt;</code> carries no meaning — assistive technology has no way to know it's navigation. <code>&lt;nav&gt;</code> is announced by screen readers as a navigation landmark, letting users jump straight to it, and search engines use it to understand site structure. The live menu at the top of this page (<a href="#video">01 · Video</a> …) is built exactly this way — inspect it to see the real markup.</p>
+    </div>
+  </section>
+
+  <!-- 04 : XML -->
+  <section class="spec" id="xml">
+    <div class="spec-num">Section 04</div>
+    <h2>Fixing the XML configuration file</h2>
+    <p class="req">Requirement: the app's XML config files must be well-formed — one unclosed or mismatched tag stops the parser cold.</p>
+
+    <div class="card">
+      <div class="diff-bad">
+        <span class="diff-label">Before — three syntax errors</span>
+&lt;?xml version="1.0"?&gt;
+&lt;config&gt;
+  &lt;database&gt;
+    &lt;host&gt;localhost&lt;host&gt;          <span class="cmt">&lt;!-- 1: closing tag should be &lt;/host&gt; --&gt;</span>
+    &lt;port&gt5432&lt;/port&gt;              <span class="cmt">&lt;!-- 2: missing "&gt;" after &lt;port --&gt;</span>
+  &lt;/database&gt;
+  &lt;Timeout&gt;30&lt;/timeout&gt;            <span class="cmt">&lt;!-- 3: tag names are case-sensitive --&gt;</span>
+&lt;config&gt;                          <span class="cmt">&lt;!-- 4: missing "/" — root never closes --&gt;</span>
+      </div>
+      <div class="diff-good">
+        <span class="diff-label">After — well-formed</span>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config&gt;
+  &lt;database&gt;
+    &lt;host&gt;localhost&lt;/host&gt;
+    &lt;port&gt;5432&lt;/port&gt;
+  &lt;/database&gt;
+  &lt;timeout&gt;30&lt;/timeout&gt;
+&lt;/config&gt;
+      </div>
+
+      <p class="snippet-label">Snippet 4 · XML syntax</p>
+      <ul class="options">
+        <li><span class="letter">A.</span> <code>&lt;note&gt;&lt;to&gt;User&lt;/to&gt;&lt;from&gt;Admin&lt;/from&gt;</code></li>
+        <li class="correct"><span class="letter">B.</span> <code>&lt;note&gt;&lt;to&gt;User&lt;/to&gt;&lt;from&gt;Admin&lt;/from&gt;&lt;/note&gt;</code></li>
+        <li><span class="letter">C.</span> <code>&lt;note&gt;&lt;to&gt;User&lt;/from&gt;&lt;/note&gt;</code></li>
+        <li><span class="letter">D.</span> <code>&lt;note to="User"&gt;&lt;/note</code></li>
+      </ul>
+
+      <div class="qa">
+        <p class="q">Q4 · Identify the correct XML syntax and explain the error in other options.</p>
+        <p class="a"><strong>Answer: B</strong>. Every element opened is closed with a matching tag (<code>&lt;to&gt;…&lt;/to&gt;</code>, <code>&lt;from&gt;…&lt;/from&gt;</code>), and all of it nests inside one root element, <code>&lt;note&gt;…&lt;/note&gt;</code>. Option A never closes the root <code>&lt;note&gt;</code> element, so the document has no defined end. Option C opens a <code>&lt;to&gt;</code> tag but closes it with <code>&lt;/from&gt;</code> — a mismatched closing tag, which XML parsers reject outright. Option D is missing the closing
