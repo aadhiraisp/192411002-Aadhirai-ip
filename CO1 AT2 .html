@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inspector Report — Web Fundamentals Debugging</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0D1117;
+    --panel: #161B22;
+    --panel-2: #1C2330;
+    --line: #2A3240;
+    --text: #E6EDF3;
+    --muted: #8B949E;
+    --err: #FF5C5C;
+    --warn: #FFB454;
+    --info: #39D0D8;
+    --ok: #7EE787;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(57,208,216,0.08), transparent 60%),
+      radial-gradient(ellipse 800px 500px at 90% 10%, rgba(255,92,92,0.06), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+  }
+  code, .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* ---------- top chrome ---------- */
+  header.hero{
+    padding:64px 24px 40px;
+    max-width:1000px;
+    margin:0 auto;
+  }
+  .hero-bar{
+    display:flex;align-items:center;gap:8px;margin-bottom:28px;
+  }
+  .dot{width:11px;height:11px;border-radius:50%;}
+  .dot.r{background:#FF5C5C;} .dot.y{background:#FFB454;} .dot.g{background:#7EE787;}
+  .hero-bar .path{
+    margin-left:14px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--muted);
+    border:1px solid var(--line);padding:4px 10px;border-radius:6px;background:rgba(255,255,255,0.02);
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:0.14em;
+    color:var(--info);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"▸";color:var(--err);}
+  h1{
+    font-family:'JetBrains Mono',monospace;font-weight:800;font-size:clamp(30px,5vw,48px);
+    line-height:1.15;margin:0 0 18px;letter-spacing:-0.01em;
+  }
+  h1 .strike{color:var(--err);text-decoration:line-through;text-decoration-thickness:3px;opacity:0.55;}
+  .lede{
+    color:var(--muted);font-size:17px;max-width:640px;margin:0 0 28px;
+  }
+  .summary-row{
+    display:flex;flex-wrap:wrap;gap:10px;
+  }
+  .chip{
+    font-family:'JetBrains Mono',monospace;font-size:12px;padding:7px 12px;border-radius:20px;
+    border:1px solid var(--line);color:var(--muted);background:var(--panel);
+  }
+  .chip b{color:var(--text);}
+  .chip.err{border-color:rgba(255,92,92,0.4);color:var(--err);}
+  .chip.warn{border-color:rgba(255,180,84,0.4);color:var(--warn);}
+  .chip.ok{border-color:rgba(126,231,135,0.4);color:var(--ok);}
+
+  /* ---------- nav ---------- */
+  nav.toc{
+    max-width:1000px;margin:0 auto 10px;padding:0 24px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;
+  }
+  nav.toc a{
+    display:block;text-decoration:none;color:var(--text);background:var(--panel);
+    border:1px solid var(--line);border-radius:10px;padding:14px 16px;transition:all .15s ease;
+  }
+  nav.toc a:hover{border-color:var(--info);transform:translateY(-2px);}
+  nav.toc .tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--info);display:block;margin-bottom:4px;letter-spacing:.06em;}
+  nav.toc .ttl{font-size:13.5px;color:var(--muted);}
+
+  main{max-width:1000px;margin:56px auto 100px;padding:0 24px;}
+
+  /* ---------- panel (issue card) ---------- */
+  section.panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    margin-bottom:44px;
+    overflow:hidden;
+    box-shadow:0 30px 60px -30px rgba(0,0,0,0.6);
+  }
+  .panel-chrome{
+    display:flex;align-items:center;gap:8px;
+    padding:12px 16px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
+  }
+  .panel-chrome .path{
+    margin-left:12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);flex:1;
+  }
+  .status-badge{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    padding:4px 9px;border-radius:5px;letter-spacing:.03em;
+  }
+  .status-badge.err{background:rgba(255,92,92,0.14);color:var(--err);border:1px solid rgba(255,92,92,0.35);}
+  .status-badge.warn{background:rgba(255,180,84,0.14);color:var(--warn);border:1px solid rgba(255,180,84,0.35);}
+
+  .panel-head{padding:26px 26px 6px;}
+  .issue-id{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.08em;}
+  .panel-head h2{font-family:'JetBrains Mono',monospace;font-size:23px;margin:6px 0 0;}
+
+  .panel-body{padding:6px 26px 26px;}
+
+  pre.snippet{
+    font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.65;
+    background:#0A0E14;border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;overflow-x:auto;margin:18px 0;color:#C9D1D9;
+  }
+  pre.snippet .ln{color:#4d5666;margin-right:14px;user-select:none;display:inline-block;width:14px;text-align:right;}
+  pre.snippet mark{background:rgba(255,92,92,0.18);color:var(--err);border-radius:3px;padding:0 3px;font-weight:600;}
+  pre.snippet mark.w{background:rgba(255,180,84,0.18);color:var(--warn);}
+
+  table.data{
+    width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;
+  }
+  table.data th{
+    text-align:left;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;
+    color:var(--muted);text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--line);
+  }
+  table.data td{padding:10px 12px;border-bottom:1px solid var(--line);color:var(--text);}
+  table.data tr:last-child td{border-bottom:none;}
+  table.data td.lo{color:var(--err);font-family:'JetBrains Mono',monospace;font-size:12px;}
+  table.data td.mid{color:var(--warn);font-family:'JetBrains Mono',monospace;font-size:12px;}
+
+  .qa{
+    border-left:2px solid var(--line);padding-left:18px;margin:22px 0;
+  }
+  .qa .q{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--info);
+    display:flex;align-items:center;gap:8px;margin-bottom:8px;letter-spacing:.03em;
+  }
+  .qa .q::before{content:"//";color:var(--muted);}
+  .qa p{margin:0 0 10px;color:var(--text);font-size:15px;}
+  .qa p:last-child{margin-bottom:0;}
+  .qa ul{margin:8px 0;padding-left:20px;}
+  .qa li{margin-bottom:6px;font-size:15px;}
+  .qa strong{color:var(--ok);}
+
+  .fix-box{
+    margin-top:10px;border:1px solid rgba(126,231,135,0.3);background:rgba(126,231,135,0.05);
+    border-radius:10px;padding:14px 18px;
+  }
+  .fix-box .flabel{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ok);letter-spacing:.08em;margin-bottom:8px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .fix-box .flabel::before{content:"✓";}
+
+  .diff-add{color:var(--ok);}
+  .diff-del{color:var(--err);text-decoration:line-through;opacity:.7;}
+
+  footer{
+    max-width:1000px;margin:0 auto 60px;padding:24px;text-align:center;
+    color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;
+  }
+
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  a:focus-visible, .panel:focus-visible{outline:2px solid var(--info);outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-bar">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="path">web-fundamentals / inspection-report.log</span>
+  </div>
+  <div class="eyebrow">5 open tickets · severity mixed</div>
+  <h1>Something's broken<br>in every one of these<span class="strike">.</span></h1>
+  <p class="lede">Five inspection tickets covering HTTP headers, DOM structure, HTML markup, request methods, and the browser-server request lifecycle. Each one gets opened, diagnosed, and patched.</p>
+  <div class="summary-row">
+    <span class="chip err">2 <b>errors</b></span>
+    <span class="chip warn">2 <b>warnings</b></span>
+    <span class="chip ok">1 <b>conceptual</b></span>
+    <span class="chip">5 tickets · 20 sub-questions</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#t1"><span class="tag">TICKET-01</span><span class="ttl">HTTP Response Header</span></a>
+  <a href="#t2"><span class="tag">TICKET-02</span><span class="ttl">DOM Structure</span></a>
+  <a href="#t3"><span class="tag">TICKET-03</span><span class="ttl">GET vs POST Login</span></a>
+  <a href="#t4"><span class="tag">TICKET-04</span><span class="ttl">HTML Markup Inspection</span></a>
+  <a href="#t5"><span class="tag">TICKET-05</span><span class="ttl">Request Lifecycle</span></a>
+</nav>
+
+<main>
+
+<!-- TICKET 1 -->
+<section class="panel" id="t1">
+  <div class="panel-chrome">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="path">Network → Headers</span>
+    <span class="status-badge err">MALFORMED</span>
+  </div>
+  <div class="panel-head">
+    <div class="issue-id">TICKET-01 · HTTP</div>
+    <h2>HTTP Response Header Analysis</h2>
+  </div>
+  <div class="panel-body">
+    <pre class="snippet"><span class="ln">1</span>HTTP/1.1 200 OK
+<span class="ln">2</span>Date: Mon, 01 Apr 2026 10:00:00 GMT
+<span class="ln">3</span>Content-Type: text/html
+<span class="ln">4</span>Content-Length: <mark>-150</mark>
+<span class="ln">5</span>Connection: keep-alive</pre>
+
+    <div class="qa">
+      <div class="q">1 · invalid fields</div>
+      <p>Line 4 is the fault: <code>Content-Length: -150</code>. Per RFC 9110, Content-Length must be a non‑negative decimal integer representing the exact byte size of the message body — a negative value is not a legal representation at all, so a strict parser should treat it as a protocol error rather than a byte count. Everything else in the header block is syntactically valid: the status line, Date, Content-Type, and Connection are all well-formed.</p>
+    </div>
+
+    <div class="qa">
+      <div class="q">2 · impact of the negative length</div>
+      <p>Content-Length tells the client exactly how many bytes to read before considering the body complete. A negative number breaks that contract in a few concrete ways:</p>
+      <ul>
+        <li><strong>Parsing failure</strong> — most HTTP clients and proxies will reject the response outright or fall back to reading until the connection closes.</li>
+        <li><strong>Connection reuse breaks</strong> — with <code>keep-alive</code> active, the client relies on Content-Length to know where this response ends and the next one begins. An invalid value makes the boundary undecidable, risking a "request smuggling"-style desync on the same TCP connection.</li>
+        <li><strong>Security surface</strong> — malformed length fields are a known vector for HTTP request/response smuggling when front-end and back-end servers disagree on how to interpret the value.</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <div class="q">3 · does the status code match?</div>
+      <p><code>200 OK</code> asserts the request succeeded and a valid body is attached — but a response can't simultaneously claim success and carry a header that makes the body unreadable. The status code itself is a legitimate code, it just doesn't match a response whose framing is broken; a well-behaved server would never emit this combination.</p>
+    </div>
+
+    <div class="fix-box">
+      <div class="flabel">corrected header</div>
+      <pre class="snippet" style="margin:0;"><span class="ln">1</span>HTTP/1.1 200 OK
+<span class="ln">2</span>Date: Mon, 01 Apr 2026 10:00:00 GMT
+<span class="ln">3</span>Content-Type: text/html
+<span class="ln">4</span><span class="diff-add">Content-Length: 150</span>
+<span class="ln">5</span>Connection: keep-alive</pre>
+      <p style="margin-top:10px;font-size:14px;color:var(--muted);">Set Content-Length to the actual byte count of the body (e.g. via <code>strlen()</code> / buffer size on the server), and if that value is ever unreliable, switch to <code>Transfer-Encoding: chunked</code> instead of guessing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TICKET 2 -->
+<section class="panel" id="t2">
+  <div class="panel-chrome">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="path">Elements → DOM Tree</span>
+    <span class="status-badge warn">AUTO-CORRECTED BY PARSER</span>
+  </div>
+  <div class="panel-head">
+    <div class="issue-id">TICKET-02 · DOM</div>
+    <h2>DOM Structure Analysis</h2>
+  </div>
+  <div class="panel-body">
+    <pre class="snippet"><span class="ln">1</span>&lt;html&gt;
+<span class="ln">2</span>  &lt;head&gt;
+<span class="ln">3</span>    &lt;title&gt;Test Page&lt;/title&gt;
+<span class="ln">4</span>  &lt;/head&gt;
+<span class="ln">5</span>  &lt;body&gt;
+<span class="ln">6</span>    &lt;div&gt;
+<span class="ln">7</span>      <mark class="w">&lt;p&gt;Hello World</mark>
+<span class="ln">8</span>    &lt;/div&gt;
+<span class="ln">9</span>  &lt;/body&gt;
+<span class="ln">10</span>&lt;/html&gt;</pre>
+
+    <div class="qa">
+      <div class="q">1 · missing / improperly closed elements</div>
+      <p>The <code>&lt;p&gt;</code> opened on line 7 is never explicitly closed with <code>&lt;/p&gt;</code> before the <code>&lt;/div&gt;</code> on line 8. That's the only structural defect here — the <code>&lt;div&gt;</code>, <code>&lt;body&gt;</code>, <code>&lt;html&gt;</code>, and <code>&lt;head&gt;</code> all close correctly.</p>
+    </div>
+
+    <div class="qa">
+      <div class="q">2 · how the browser interprets it</div>
+      <p>This is where HTML's error-recovery rules matter: <code>&lt;p&gt;</code> is on the HTML5 list of tags that auto-close when certain other tags are encountered. When the parser hits the closing <code>&lt;/div&gt;</code> tag, it treats that as an implicit signal to close the still-open <code>&lt;p&gt;</code> first. So the browser silently rewrites the tree to:</p>
+      <pre class="snippet" style="margin:8px 0 0;">&lt;div&gt;
+  &lt;p&gt;Hello World&lt;/p&gt;
+&lt;/div&gt;</pre>
+      <p style="margin-top:8px;">No parse error is thrown, and the page renders visually the same as if the tag had been closed correctly.</p>
+    </div>
+
+    <div class="qa">
+      <div class="q">3 · impact on rendering and layout</div>
+      <p>In this exact case, impact is minimal — the DOM self-corrects and layout looks right. But the pattern is risky in general:</p>
+      <ul>
+        <li>If a <em>different</em> element (like another <code>&lt;p&gt;</code> or a <code>&lt;span&gt;</code>) came between the open <code>&lt;p&gt;</code> and the <code>&lt;/div&gt;</code>, the auto-close rule can produce a nesting the author never intended.</li>
+        <li>CSS selectors and JS DOM traversal (<code>querySelector</code>, <code>childNodes</code>) operate on the corrected tree, not the source markup, so debugging becomes confusing if you're reading raw HTML instead of the inspected DOM.</li>
+        <li>Relying on auto-closing is non-portable: XML-based tooling (XHTML, some templating engines, RSS/Atom generators) has no such recovery and will hard-fail on the same markup.</li>
+      </ul>
+    </div>
+
+    <div class="fix-box">
+      <div class="flabel">corrected markup</div>
+      <pre class="snippet" style="margin:0;">&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Test Page&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;p&gt;Hello World<span class="diff-add">&lt;/p&gt;</span>
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+    </div>
+  </div>
+</section>
+
+<!-- TICKET 3 -->
+<section class="panel" id="t3">
+  <div class="panel-chrome">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="path">Security → Auth Flow</span>
+    <span class="status-badge err">CREDENTIALS EXPOSED</span>
+  </div>
+  <div class="panel-head">
+    <div class="issue-id">TICKET-03 · Security</div>
+    <h2>GET vs POST in a Login System</h2>
+  </div>
+  <div class="panel-body">
+    <table class="data">
+      <tr><th>Method</th><th>URL example</th><th>Data location</th><th>Risk</th></tr>
+      <tr><td>GET</td><td class="mono" style="font-family:'JetBrains Mono',monospace;">/login?user=admin&amp;pass=1234</td><td>Query string (URL)</td><td class="lo">High</td></tr>
+      <tr><td>POST</td><td class="mono" style="font-family:'JetBrains Mono',monospace;">/login</td><td>Request body</td><td class="mid">Lower, not zero</td></tr>
+    </table>
+
+    <div class="qa">
+      <div class="q">1 · how data transmission differs</div>
+      <p>GET appends form data as a query string directly on the URL, which means it travels wherever the URL travels. POST places the same data inside the request body, separate from the URL, and typically pairs it with <code>Content-Type: application/x-www-form-urlencoded</code> or <code>multipart/form-data</code>.</p>
+    </div>
+
+    <div class="qa">
+      <div class="q">2 · which method suits login</div>
+      <p><strong>POST</strong> is the correct choice. Beyond keeping credentials out of the URL, GET requests are semantically defined as idempotent and "safe" — meant for retrieving data, not causing state changes like authenticating a session. Browsers, proxies, and CDNs are also allowed to cache GET requests, which is exactly the wrong behavior for a password submission.</p>
+    </div>
+
+    <div class="qa">
+      <div class="q">3 · security risks of GET for auth</div>
+      <ul>
+        <li><strong>Browser history</strong> — the full URL, password included, is saved locally and persists after logout.</li>
+        <li><strong>Server & proxy logs</strong> — most web servers log the request line by default, so credentials land in plaintext log files.</li>
+        <li><strong>Referer header leakage</strong> — if the login page links out afterward, the URL (with credentials) can be sent to a third-party site via the <code>Referer</code> header.</li>
+        <li><strong>Shoulder-surfing / screen-sharing</strong> — visible in the address bar during demos, screenshots, or screen shares.</li>
+        <li><strong>Caching</strong> — intermediate caches may store the response keyed to a URL that contains the password.</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <div class="q">4 · best practices for secure login</div>
+      <ul>
+        <li>Always submit credentials via POST, over <strong>HTTPS/TLS</strong> — POST alone doesn't encrypt anything; without TLS the body is just as visible on the wire.</li>
+        <li>Never place tokens or passwords in the URL, including in redirects.</li>
+        <li>Hash and salt passwords server-side (e.g. bcrypt/argon2); never store or log plaintext.</li>
+        <li>Set <code>Cache-Control: no-store</code> on auth responses so intermediaries don't cache them.</li>
+        <li>Use secure, <code>HttpOnly</code>, <code>SameSite</code> cookies for session tokens after login.</li>
+        <li>Rate-limit and add CSRF protection to the login endpoint.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- TICKET 4 -->
+<section class="panel" id="t4">
+  <div class="panel-chrome">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="path">Elements → Source</span>
+    <span class="status-badge warn">3 UNCLOSED TAGS</span>
+  </div>
+  <div class="panel-head">
+    <div class="issue-id">TICKET-04 · HTML</div>
+    <h2>HTML Code Inspection</h2>
+  </div>
+  <div class="panel-body">
+    <pre class="snippet"><span class="ln">1</span>&lt;!DOCTYPE html&gt;
+<span class="ln">2</span>&lt;html&gt;
+<span class="ln">3</span>&lt;head&gt;
+<span class="ln">4</span>&lt;title&gt;Sample&lt;/title&gt;
+<span class="ln">5</span>&lt;/head&gt;
+<span class="ln">6</span>&lt;body&gt;
+<span class="ln">7</span><mark class="w">&lt;h1&gt;Welcome</mark>
+<span class="ln">8</span><mark class="w">&lt;p&gt;This is a paragraph</mark>
+<span class="ln">9</span><mark>&lt;img src="image.jpg"&gt;</mark>
+<span class="ln">10</span>&lt;/body&gt;
+<span class="ln">11</span>&lt;/html&gt;</pre>
+
+    <div class="qa">
+      <div class="q">1 · missing closing tags</div>
+      <p
