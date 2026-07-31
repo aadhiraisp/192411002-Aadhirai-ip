@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SkyFly Airlines Reservation System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+
+background:#f5f7ff;
+overflow-x:hidden;
+
+}
+
+section{
+
+min-height:100vh;
+padding:90px 8%;
+
+}
+
+nav{
+
+position:fixed;
+top:0;
+left:0;
+width:100%;
+padding:18px 8%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:rgba(10,20,40,.92);
+backdrop-filter:blur(10px);
+z-index:999;
+
+}
+
+.logo{
+
+font-size:30px;
+font-weight:bold;
+color:#00e5ff;
+
+}
+
+nav ul{
+
+display:flex;
+list-style:none;
+
+}
+
+nav ul li{
+
+margin-left:20px;
+
+}
+
+nav ul li a{
+
+text-decoration:none;
+color:white;
+font-weight:500;
+transition:.3s;
+
+}
+
+nav ul li a:hover{
+
+color:#00e5ff;
+
+}
+
+.home{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:linear-gradient(135deg,#141E30,#243B55);
+color:white;
+
+}
+
+.left{
+
+width:50%;
+
+}
+
+.left h1{
+
+font-size:60px;
+margin-bottom:20px;
+
+}
+
+.left p{
+
+font-size:18px;
+line-height:32px;
+margin-bottom:30px;
+
+}
+
+.btn{
+
+display:inline-block;
+padding:15px 35px;
+background:#00e5ff;
+color:black;
+font-weight:bold;
+text-decoration:none;
+border-radius:30px;
+transition:.4s;
+
+}
+
+.btn:hover{
+
+background:white;
+transform:translateY(-5px);
+
+}
+
+.right{
+
+width:45%;
+text-align:center;
+
+}
+
+.right img{
+
+width:100%;
+animation:fly 5s infinite ease-in-out;
+
+}
+
+@keyframes fly{
+
+0%{transform:translateY(0px);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(0px);}
+
+}
+
+.features{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+margin-top:70px;
+
+}
+
+.card{
+
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,.15);
+transition:.4s;
+text-align:center;
+
+}
+
+.card:hover{
+
+transform:translateY(-10px);
+
+}
+
+.card h2{
+
+margin:20px 0;
+color:#1976D2;
+
+}
+
+.card p{
+
+line-height:28px;
+
+}
+
+.form-box{
+
+width:100%;
+background:white;
+padding:35px;
+border-radius:20px;
+box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+}
+
+.form-box h2{
+
+text-align:center;
+margin-bottom:25px;
+color:#003366;
+
+}
+
+.input-group{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+
+}
+
+input,
+select,
+textarea{
+
+padding:15px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:15px;
+outline:none;
+
+}
+
+button{
+
+padding:15px;
+border:none;
+background:#00BCD4;
+color:white;
+font-size:17px;
+font-weight:bold;
+border-radius:10px;
+cursor:pointer;
+transition:.3s;
+
+}
+
+button:hover{
+
+background:#0288D1;
+
+}
+
+.hidden{
+
+display:none;
+
+}
+
+.table{
+
+margin-top:40px;
+overflow:auto;
+
+}
+
+table{
+
+width:100%;
+border-collapse:collapse;
+
+}
+
+th{
+
+background:#0288D1;
+color:white;
+padding:15px;
+
+}
+
+td{
+
+padding:15px;
+text-align:center;
+border-bottom:1px solid #ddd;
+
+}
+
+.book{
+
+padding:8px 18px;
+background:#4CAF50;
+color:white;
+border-radius:8px;
+text-decoration:none;
+
+}
+
+.book:hover{
+
+background:#2E7D32;
+
+}
+
+.ticket{
+
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 15px 30px rgba(0,0,0,.15);
+
+}
+
+.ticket-grid{
+
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:20px;
+
+}
+
+.box{
+
+background:#eef5ff;
+padding:15px;
+border-radius:12px;
+
+}
+
+.dashboard{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+
+}
+
+.dashboard .item{
+
+padding:30px;
+border-radius:15px;
+color:white;
+font-size:25px;
+font-weight:bold;
+
+}
+
+.blue{
+
+background:#03A9F4;
+
+}
+
+.green{
+
+background:#4CAF50;
+
+}
+
+.orange{
+
+background:#FF9800;
+
+}
+
+.purple{
+
+background:#9C27B0;
+
+}
+
+footer{
+
+padding:30px;
+background:#001529;
+text-align:center;
+color:white;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<nav>
+
+<div class="logo">
+
+✈ SkyFly
+
+</div>
+
+<ul>
+
+<li><a href="#home">Home</a></li>
+
+<li><a href="#login">Login</a></li>
+
+<li><a href="#register">Register</a></li>
+
+<li><a href="#search">Flights</a></li>
+
+<li><a href="#booking">Booking</a></li>
+
+<li><a href="#payment">Payment</a></li>
+
+<li><a href="#status">Status</a></li>
+
+<li><a href="#feedback">Feedback</a></li>
+
+<li><a href="#admin">Admin</a></li>
+
+</ul>
+
+</nav>
+
+<section class="home" id="home">
+
+<div class="left">
+
+<h1>
+
+Fly Beyond Your Dreams
+
+</h1>
+
+<p>
+
+Book domestic and international flights in seconds.
+Experience premium travel with affordable prices,
+secure online payments, instant booking confirmation,
+and world-class customer support.
+
+</p>
+
+<a href="#search" class="btn">
+
+Book Now
+
+</a>
+
+</div>
+
+<div class="right">
+
+<img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900" alt="Flight">
+
+</div>
+
+</section>
+
+<section>
+
+<h1 style="text-align:center;font-size:45px;color:#003366;">
+
+Why Choose SkyFly?
+
+</h1>
+
+<div class="features">
+
+<div class="card">
+
+<h2>
+
+✈ Fast Booking
+
+</h2>
+
+<p>
+
+Search thousands of flights and reserve your seat instantly with live availability.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>
+
+💳 Secure Payment
+
+</h2>
+
+<p>
+
+Safe and encrypted payment gateway supporting cards, UPI and net banking.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>
+
+📱 Mobile Friendly
+
+</h2>
+
+<p>
+
+Responsive website that works beautifully on desktop, tablet and mobile.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>
+
+🎫 Instant Ticket
+
+</h2>
+
+<p>
+
+Receive your e-ticket immediately after successful payment.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>
+
+⭐ Customer Support
+
+</h2>
+
+<p>
+
+24×7 airline support for booking, cancellation and travel assistance.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>
+
+🌎 Worldwide Flights
+
+</h2>
+
+<p>
+
+Book flights across hundreds of destinations with the best fares.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="login">
+
+<div class="form-box">
+
+<h2>
+
+User / Administrator Login
+
+</h2>
+
+<form>
+
+<div class="input-group">
+
+<select>
+
+<option>User Login</option>
+
+<option>Administrator Login</option>
+
+</select>
+
+<input type="text" placeholder="Username">
+
+<input type="password" placeholder="Password">
+
+</div>
+
+<br>
+
+<button type="button" onclick="showSection('search')">
+
+Login
+
+</button>
+
+<br><br>
+
+<center>
+
+<a href="#forgot">
+
+Forgot Password?
+
+</a>
+
+</center>
+
+</form>
+
+</div>
+
+</section>
+
+<section id="forgot">
+
+<div class="form-box">
+
+<h2>
+
+Forgot Password
+
+</h2>
+
+<form>
+
+<div class="input-group">
+
+<input type="email" placeholder="Registered Email">
+
+</div>
+
+<br>
+
+<button>
+
+Send Reset Link
+
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+<section id="register">
+
+<div class="form-box">
+
+<h2>
+
+Create New Account
+
+</h2>
+
+<form>
+
+<div class="input-group">
+
+<input type="text" placeholder="First Name">
+
+<input type="text" placeholder="Last Name">
+
+<input type="email" placeholder="Email">
+
+<input type="tel" placeholder="Mobile Number">
+
+<input type="date">
+
+<select>
+
+<option>Gender</option>
+
+<option>Male</option>
+
+<option>Female</option>
+
+<option>Other</option>
+
+</select>
+
+<input type="text" placeholder="City">
+
+<input type="text" placeholder="State">
+
+<input type="password" placeholder="Password">
+
+<input type="password" placeholder="Confirm Password">
+
+</div>
+
+<br>
+
+<button type="button" onclick="showSection('login')">
+
+Register
+
+</button>
+
+</form>
+
+</div>
+
+</section>
+<section id="search">
+
+<div class="form-box">
+
+<h2>
+
+Search Flights
+
+</h2>
+
+<form>
+
+<div class="input-group">
+
+<input type="text" placeholder="From">
+
+<input type="text" placeholder="To">
+
+<input type="date">
+
+<input type="date">
+
+<select>
+
+<option>Economy</option>
+
+<option>Business</option>
+
+<option>First Class</option>
+
+</select>
+
+<select>
+
+<option>1 Passenger</option>
+
+<option>2 Passengers</option>
+
+<option>3 Passengers</option>
+
+<option>4 Passengers</option>
+
+</select>
+
+</div>
+
+<br>
+
+<button type="button" onclick="document.getElementById('flightTable').style.display='block'">
+
+Search Flight
+
+</button>
+
+</form>
+
+<div class="table" id="flightTable" style="display:none;">
+
+<table>
+
+<tr>
+
+<th>Flight</th>
+
+<th>Airline</th>
+
+<th>From</th>
+
+<th>To</th>
+
+<th>Departure</th>
+
+<th>Arrival</th>
+
+<th>Fare</th>
+
+<th>Seats</th>
+
+<th>Action</th>
+
+</tr>
+
+<tr>
+
+<td>SF101</td>
+
+<td>SkyFly</td>
+
+<td>Chennai</td>
+
+<td>Delhi</td>
+
+<td>08:30 AM</td>
+
+<td>10:45 AM</td>
+
+<td>₹4,500</td>
+
+<td>25</td>
+
+<td>
+
+<a href="#booking" class="book">
+
+Book
+
+</a>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>SF205</td>
+
+<td>SkyFly</td>
+
+<td>Bangalore</td>
+
+<td>Mumbai</td>
+
+<td>12:15 PM</td>
+
+<td>02:20 PM</td>
+
+<td>₹5,800</td>
+
+<td>18</td>
+
+<td>
+
+<a href="#booking" class="book">
+
+Book
+
+</a>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>SF330</td>
+
+<td>SkyFly</td>
+
+<td>Hyderabad</td>
+
+<td>Kolkata</td>
+
+<td>05:15 PM</td>
+
+<td>07:30 PM</td>
+
+<td>₹6,300</td>
+
+<td>11</td>
+
+<td>
+
+<a href="#booking" class="book">
+
+Book
+
+</a>
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="booking">
+
+<div class="form-box">
+
+<h2>
+
+Book Flight Ticket
+
+</h2>
+
+<form>
+
+<div class="input-group">
+
+<input type="text" placeholder="Passenger Name">
+
+<input type="number" placeholder="Age">
+
+<select>
+
+<option>Male</option>
+
+<option>Female</option>
+
+<option>Other</option>
+
+</select>
+
+<input type="text" placeholder="Passport / Aadhaar">
+
+<input type="email" placeholder="Email">
+
+<input type="tel" placeholder="Mobile Number">
+
+<select>
+
+<option>Select Seat</option>
+
+<option>A1</option>
+
+<option>A2</option>
+
+<option>A3</option>
+
+<option>B1</option>
+
+<option>B2</option>
+
+<option>B3</option>
+
+<option>C1</option>
+
+<option>C2</option>
+
+<option>C3</option>
+
+</select>
+
+<select>
+
+<option>Meal Preference</option>
+
+<option>Vegetarian</option>
+
+<option>Non Vegetarian</option>
+
+<option>Vegan</option>
+
+</select>
+
+</div>
+
+<br>
+
+<button type="button" onclick="location.href='#payment'">
+
+Proceed To Payment
+
+</button>
+
+</form>
+
+</div>
+
+</section>
+<section id="payment">
+
+<div class="form-box">
+
+<h2>
+
+Ticket Payment
+
+</h2>
+
+<form>
+
+<div class="input-group">
+
+<input type="text" placeholder="Card Holder Name">
+
+<input type="text" placeholder="Card Number">
+
+<input type="month">
+
+<input type="password" placeholder="CVV">
+
+<select>
+
+<option>Credit Card</option>
+
+<option>Debit Card</option>
+
+<option>UPI</option>
+
+<option>Net Banking</option>
+
+</select>
+
+<input type="text" placeholder="UPI ID (Optional)">
+
+</div>
+
+<br>
+
+<h3 style="color:#1976D2;">Payment Summary</h3>
+
+<br>
+
+<table>
+
+<tr>
+
+<th>Description</th>
+
+<th>Amount</th>
+
+</tr>
+
+<tr>
+
+<td>Flight Fare</td>
+
+<td>₹4,500</td>
+
+</tr>
+
+<tr>
+
+<td>Service Charge</td>
+
+<td>₹150</td>
+
+</tr>
+
+<tr>
+
+<td>GST</td>
+
+<td>₹350</td>
+
+</tr>
+
+<tr>
+
+<th>Total</th>
+
+<th>₹5,000</th>
+
+</tr>
+
+</table>
+
+<br>
+
+<button type="button" onclick="alert('Payment Successful!');location.href='#ticket';">
+
+Pay Now
+
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+<section id="status">
+
+<div class="form-box">
+
+<h2>
+
+View Booking Status
+
+</h2>
+
+<form>
+
+<div class="input-group">
+
+<input type="text" placeholder="Enter Booking ID">
+
+<button type="button" onclick="document.getElementById('statusTable').style.display='table';">
+
+Search
+
+</button>
+
+</div>
+
+</form>
+
+<div class="table">
+
+<table id="statusTable" style="display:none;">
+
+<tr>
+
+<th>Booking ID</th>
+
+<th>Passenger</th>
+
+<th>Flight</th>
+
+<th>Status</th>
+
+<th>Seat</th>
+
+<th>Payment</th>
+
+</tr>
+
+<tr>
+
+<td>BK00125</td>
+
+<td>Rahul Kumar</td>
+
+<td>SF101</td>
+
+<td style="color:green;">Confirmed</td>
+
+<td>A2</td>
+
+<td>Paid</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="cancel">
+
+<div class="form-box">
+
+<h2>
+
+Cancel Ticket
+
+</h2>
+
+<form>
+
+<div class="input-group">
+
+<input type="text" placeholder="Booking ID">
+
+<input type="text" placeholder="Passenger Name">
+
+<select>
+
+<option>Select Reason</option>
+
+<option>Personal Reason</option>
+
+<option>Medical Emergency</option>
+
+<option>Travel Plan Changed</option>
+
+<option>Other</option>
+
+</select>
+
+</div>
+
+<br>
+
+<button type="button"
+onclick="alert('Ticket Cancelled Successfully.\nRefund will be processed within 5-7 working days.')">
+
+Cancel Ticket
+
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+<section id="ticket">
+
+<div class="ticket">
+
+<h1 style="text-align:center;color:#1976D2;">
+
+✈ SkyFly Airlines E-Ticket
+
+</h1>
+
+<br>
+
+<div class="ticket-grid">
+
+<div class="box">
+
+<b>Passenger</b><br><br>
+
+Rahul Kumar
+
+</div>
+
+<div class="box">
+
+<b>Booking ID</b><br><br>
+
+BK00125
+
+</div>
+
+<div class="box">
+
+<b>Flight</b><br><br>
+
+SF101
+
+</div>
+
+<div class="box">
+
+<b>Seat</b><br><br>
+
+A2
+
+</div>
+
+<div class="box">
+
+<b>From</b><br><br>
+
+Chennai
+
+</div>
+
+<div class="box">
+
+<b>To</b><br><br>
+
+Delhi
+
+</div>
+
+<div class="box">
+
+<b>Departure</b><br><br>
+
+08:30 AM
+
+</div>
+
+<div class="box">
+
+<b>Arrival</b><br><br>
+
+10:45 AM
+
+</div>
+
+</div>
+
+<br>
+
+<center>
+
+<button onclick="window.print()">
+
+Print Ticket
+
+</button>
+
+</center>
+
+</div>
+
+</section>
+<section id="feedback">
+
+<div class="form-box">
+
+<h2>
+
+Customer Feedback
+
+</h2>
+
+<form>
+
+<div class="input-group">
+
+<input type="text" placeholder="Your Name">
+
+<input type="email" placeholder="Email Address">
+
+<select>
+
+<option>⭐⭐⭐⭐⭐ Excellent</option>
+
+<option>⭐⭐⭐⭐ Very Good</option>
+
+<option>⭐⭐⭐ Good</option>
+
+<option>⭐⭐ Average</option>
+
+<option>⭐ Poor</option>
+
+</select>
+
+<textarea placeholder="Write your valuable feedback here..." rows="6"></textarea>
+
+</div>
+
+<br>
+
+<button type="button"
+onclick="alert('Thank you for your valuable feedback!')">
+
+Submit Feedback
+
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+<section id="admin">
+
+<h1 style="text-align:center;font-size:45px;color:#003366;">
+
+Administrator Dashboard
+
+</h1>
+
+<br>
+
+<div class="dashboard">
+
+<div class="item blue">
+
+✈ Flights
+
+<br><br>
+
+125
+
+</div>
+
+<div class="item green">
+
+🎫 Bookings
+
+<br><br>
+
+892
+
+</div>
+
+<div class="item orange">
+
+👤 Users
+
+<br><br>
+
+540
+
+</div>
+
+<div class="item purple">
+
+💰 Revenue
+
+<br><br>
+
+₹39 Lakhs
+
+</div>
+
+</div>
+
+<br><br>
+
+<div class="form-box">
+
+<h2>
+
+Manage Flights
+
+</h2>
+
+<table>
+
+<tr>
+
+<th>Flight No</th>
+
+<th>Route</th>
+
+<th>Departure</th>
+
+<th>Arrival</th>
+
+<th>Fare</th>
+
+<th>Action</th>
+
+</tr>
+
+<tr>
+
+<td>SF101</td>
+
+<td>Chennai → Delhi</td>
+
+<td>08:30 AM</td>
+
+<td>10:45 AM</td>
+
+<td>₹4,500</td>
+
+<td>
+
+<button>Edit</button>
+
+<button style="background:red;">Delete</button>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>SF205</td>
+
+<td>Bangalore → Mumbai</td>
+
+<td>12:15 PM</td>
+
+<td>02:20 PM</td>
+
+<td>₹5,800</td>
+
+<td>
+
+<button>Edit</button>
+
+<button style="background:red;">Delete</button>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>SF330</td>
+
+<td>Hyderabad → Kolkata</td>
+
+<td>05:15 PM</td>
+
+<td>07:30 PM</td>
+
+<td>₹6,300</td>
+
+<td>
+
+<button>Edit</button>
+
+<button style="background:red;">Delete</button>
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</section>
+
+<section id="report">
+
+<h1 style="text-align:center;color:#003366;font-size:42px;">
+
+📊 Airline Report
+
+</h1>
+
+<br>
+
+<div class="dashboard">
+
+<div class="item blue">
+
+Today's Bookings
+
+<br><br>
+
+185
+
+</div>
+
+<div class="item green">
+
+Cancelled
+
+<br><br>
+
+9
+
+</div>
+
+<div class="item orange">
+
+Flights Today
+
+<br><br>
+
+62
+
+</div>
+
+<div class="item purple">
+
+Occupancy
+
+<br><br>
+
+91%
+
+</div>
+
+</div>
+
+<br><br>
+
+<div class="form-box">
+
+<h2>
+
+Weekly Revenue
+
+</h2>
+
+<table>
+
+<tr>
+
+<th>Day</th>
+
+<th>Revenue</th>
+
+</tr>
+
+<tr>
+
+<td>Monday</td>
+
+<td>₹5,20,000</td>
+
+</tr>
+
+<tr>
+
+<td>Tuesday</td>
+
+<td>₹5,80,000</td>
+
+</tr>
+
+<tr>
+
+<td>Wednesday</td>
+
+<td>₹6,30,000</td>
+
+</tr>
+
+<tr>
+
+<td>Thursday</td>
+
+<td>₹6,90,000</td>
+
+</tr>
+
+<tr>
+
+<td>Friday</td>
+
+<td>₹7,50,000</td>
+
+</tr>
+
+</table>
+
+<br>
+
+<center>
+
+<button onclick="window.print()">
+
+Print Report
+
+</button>
+
+</center>
+
+</div>
+
+</section>
+
+<footer>
+
+<h2>
+
+✈ SkyFly Airlines Reservation System
+
+</h2>
+
+<br>
+
+<p>
+
+© 2026 SkyFly Airlines. All Rights Reserved.
+
+</p>
+
+</footer>
+
+<script>
+
+function showSection(id){
+
+location.href="#"+id;
+
+}
+
+</script>
+
+</body>
+
+</html>
