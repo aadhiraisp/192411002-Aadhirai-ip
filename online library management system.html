@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Library Management System</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+background:#eef2f7;
+}
+
+header{
+background:#003366;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+nav{
+background:#00509e;
+padding:10px;
+display:flex;
+justify-content:center;
+gap:20px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
+
+.container{
+width:90%;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+margin-top:20px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin:10px 0;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+padding:10px 20px;
+background:#007bff;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#0056b3;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+table,th,td{
+border:1px solid #ddd;
+}
+
+th{
+background:#003366;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+text-align:center;
+}
+
+footer{
+background:#003366;
+color:white;
+text-align:center;
+padding:15px;
+margin-top:30px;
+}
+
+.hidden{
+display:none;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>ONLINE LIBRARY MANAGEMENT SYSTEM</h1>
+
+<p>Manage Books | Borrow | Return | Study Materials</p>
+
+</header>
+
+<nav>
+
+<a href="#" onclick="showSection('home')">Home</a>
+
+<a href="#" onclick="showSection('books')">Books</a>
+
+<a href="#" onclick="showSection('borrow')">Borrow</a>
+
+<a href="#" onclick="showSection('return')">Return</a>
+
+<a href="#" onclick="showSection('study')">Study Materials</a>
+
+</nav>
+
+<div class="container">
+
+<div id="home" class="card">
+
+<h2>Welcome</h2>
+
+<br>
+
+<p>
+
+This Online Library Management System allows students to
+
+search books,
+
+borrow books,
+
+return books,
+
+and access study materials.
+
+</p>
+
+</div>
+
+<div id="books" class="card hidden">
+
+<h2>Add Book</h2>
+
+<input type="text" id="title" placeholder="Book Title">
+
+<input type="text" id="author" placeholder="Author">
+
+<input type="text" id="category" placeholder="Category">
+
+<button onclick="addBook()">Add Book</button>
+
+<br><br>
+
+<input type="text" id="search" placeholder="Search Book" onkeyup="searchBook()">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Title</th>
+
+<th>Author</th>
+
+<th>Category</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="bookTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<div id="borrow" class="card hidden">
+
+<h2>Borrow Book</h2>
+
+<p>Select a book from the Books page and click Borrow.</p>
+
+<h3 id="borrowBookName">No Book Selected</h3>
+
+<br>
+
+<input type="text" id="student" placeholder="Student Name">
+
+<button onclick="borrowBook()">Borrow</button>
+
+</div>
+
+<div id="return" class="card hidden">
+
+<h2>Return Book</h2>
+
+<input type="text" id="returnBook" placeholder="Book Title">
+
+<button onclick="returnBook()">Return</button>
+
+<br><br>
+
+<h3 id="fine"></h3>
+
+</div>
+
+<div id="study" class="card hidden">
+
+<h2>Study Materials</h2>
+
+<ul>
+
+<li>📘 Data Structures Notes.pdf</li>
+
+<li>📗 Operating Systems.pdf</li>
+
+<li>📕 Computer Networks.pdf</li>
+
+<li>📙 DBMS Notes.pdf</li>
+
+<li>📒 Software Engineering.pdf</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<footer>
+
+Developed Using HTML • CSS • JavaScript
+
+</footer>
+
+<script>
+
+let books=[
+{
+title:"Java Programming",
+author:"James Gosling",
+category:"Programming"
+},
+
+{
+title:"Database Systems",
+author:"Elmasri",
+category:"DBMS"
+},
+
+{
+title:"Computer Networks",
+author:"Andrew Tanenbaum",
+category:"Networking"
+}
+];
+
+let selectedBook="";
+
+function showSection(id){
+
+document.querySelectorAll(".card").forEach(function(card){
+
+card.classList.add("hidden");
+
+});
+
+document.getElementById(id).classList.remove("hidden");
+
+}
+
+function displayBooks(){
+
+let table=document.getElementById("bookTable");
+
+table.innerHTML="";
+
+books.forEach(function(book,index){
+
+table.innerHTML+=`
+
+<tr>
+
+<td>${book.title}</td>
+
+<td>${book.author}</td>
+
+<td>${book.category}</td>
+
+<td>
+
+<button onclick="selectBook(${index})">
+
+Borrow
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+displayBooks();
+
+function addBook(){
+
+let title=document.getElementById("title").value;
+
+let author=document.getElementById("author").value;
+
+let category=document.getElementById("category").value;
+
+if(title==""||author==""||category==""){
+
+alert("Fill all fields");
+
+return;
+
+}
+
+books.push({
+
+title:title,
+
+author:author,
+
+category:category
+
+});
+
+displayBooks();
+
+document.getElementById("title").value="";
+
+document.getElementById("author").value="";
+
+document.getElementById("category").value="";
+
+alert("Book Added Successfully");
+
+}
+
+function searchBook(){
+
+let search=document.getElementById("search").value.toLowerCase();
+
+let rows=document.querySelectorAll("#bookTable tr");
+
+rows.forEach(function(row){
+
+let title=row.cells[0].innerText.toLowerCase();
+
+row.style.display=title.includes(search)?"":"none";
+
+});
+
+}
+
+function selectBook(index){
+
+selectedBook=books[index].title;
+
+showSection("borrow");
+
+document.getElementById("borrowBookName").innerHTML=
+
+"Selected Book : <b>"+selectedBook+"</b>";
+
+}
+
+function borrowBook(){
+
+let student=document.getElementById("student").value;
+
+if(student==""||selectedBook==""){
+
+alert("Select Book and Enter Student Name");
+
+return;
+
+}
+
+alert(student+" borrowed "+selectedBook);
+
+document.getElementById("student").value="";
+
+}
+
+function returnBook(){
+
+let book=document.getElementById("returnBook").value;
+
+if(book==""){
+
+alert("Enter Book Name");
+
+return;
+
+}
+
+let fine=Math.floor(Math.random()*100);
+
+document.getElementById("fine").innerHTML=
+
+"Book Returned Successfully<br>Fine : ₹"+fine;
+
+document.getElementById("returnBook").value="";
+
+}
+
+</script>
+
+</body>
+</html>
