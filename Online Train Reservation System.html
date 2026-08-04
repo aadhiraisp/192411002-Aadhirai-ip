@@ -1,0 +1,38 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vibrant Train Reservation</title>
+<style>
+*{box-sizing:border-box;font-family:Segoe UI;margin:0}
+body{background:linear-gradient(135deg,#6a11cb,#2575fc);min-height:100vh}
+header{background:linear-gradient(90deg,#ff512f,#dd2476);padding:25px;color:#fff;text-align:center;box-shadow:0 4px 15px #0005}
+.wrap{max-width:1100px;margin:25px auto;padding:20px}
+.card{background:#fff;border-radius:18px;padding:20px;margin:18px 0;box-shadow:0 10px 25px rgba(0,0,0,.2)}
+h2{color:#6a11cb;margin-bottom:10px}
+input,select,button{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:2px solid #ddd}
+button{background:linear-gradient(90deg,#00c6ff,#0072ff);color:#fff;border:none;font-weight:bold;cursor:pointer}
+button:hover{transform:scale(1.03)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.train{background:linear-gradient(135deg,#43cea2,#185a9d);color:#fff;padding:15px;border-radius:15px;text-align:center}
+table{width:100%;border-collapse:collapse}
+th{background:#ff512f;color:#fff}th,td{padding:10px;border:1px solid #ddd}
+footer{text-align:center;color:#fff;padding:20px}
+</style></head><body>
+<header><h1>🚄 Online Train Reservation System</h1><p>Search • Book • PNR • Cancel • Refund</p></header>
+<div class="wrap">
+<div class="card"><h2>Search Trains</h2><button onclick="show()">Show Available Trains</button><div class="grid" id="g"></div></div>
+<div class="card"><h2>Book Ticket</h2>
+<input id="n" placeholder="Passenger Name">
+<select id="c"><option>Sleeper</option><option>3A</option><option>2A</option><option>1A</option></select>
+<button onclick="book()">Book Now</button><p id="m"></p></div>
+<div class="card"><h2>PNR Status</h2><input id="pnr"><button onclick="status()">Check</button><p id="o"></p></div>
+<div class="card"><h2>Reservations</h2><table><tr><th>PNR</th><th>Name</th><th>Train</th><th>Action</th></tr><tbody id="t"></tbody></table></div>
+</div><footer>🌈 Designed with Vibrant Colors</footer>
+<script>
+const trains=["Chennai Express","Vande Bharat","Rajdhani","Shatabdi"];let sel="";
+let b=JSON.parse(localStorage.vtrain||"[]");
+function show(){g.innerHTML=trains.map(x=>`<div class='train'><h3>${x}</h3><button onclick="sel='${x}'">Select</button></div>`).join("")}
+function draw(){t.innerHTML=b.map((x,i)=>`<tr><td>${x.p}</td><td>${x.n}</td><td>${x.t}</td><td><button onclick="del(${i})">Cancel</button></td></tr>`).join("");localStorage.vtrain=JSON.stringify(b)}
+function book(){if(!sel||!n.value)return alert("Select a train and enter name");let p="PNR"+Math.floor(Math.random()*900000);b.push({p:p,n:n.value,t:sel});m.innerHTML="✅ Booking Confirmed! "+p;draw()}
+function status(){let x=b.find(v=>v.p==pnr.value);o.innerHTML=x?"🎉 Confirmed for "+x.t:"❌ PNR Not Found"}
+function del(i){alert("₹250 Refund Processed");b.splice(i,1);draw()}
+draw();
+</script></body></html>
