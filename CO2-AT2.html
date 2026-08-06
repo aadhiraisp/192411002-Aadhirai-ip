@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ShopEase</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+background:linear-gradient(135deg,#00C9FF,#92FE9D);
+}
+
+/* Navigation */
+
+header{
+background:#6a11cb;
+padding:15px 40px;
+position:sticky;
+top:0;
+z-index:1000;
+box-shadow:0 5px 10px rgba(0,0,0,.3);
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-size:30px;
+color:white;
+font-weight:bold;
+}
+
+.menu{
+display:flex;
+gap:20px;
+}
+
+.menu a{
+color:white;
+text-decoration:none;
+padding:10px 18px;
+border-radius:30px;
+transition:.4s;
+font-weight:bold;
+}
+
+.menu a:hover{
+background:#00e676;
+color:black;
+}
+
+.icon{
+display:none;
+font-size:35px;
+color:white;
+cursor:pointer;
+}
+
+/* Hero */
+
+.hero{
+text-align:center;
+padding:80px 20px;
+color:white;
+}
+
+.hero h1{
+font-size:55px;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:22px;
+}
+
+/* Products */
+
+.products{
+padding:40px;
+}
+
+.title{
+text-align:center;
+font-size:35px;
+margin-bottom:30px;
+color:#4a148c;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+.card{
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 10px 20px rgba(0,0,0,.2);
+transition:.4s;
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:cover;
+transition:.4s;
+}
+
+.card:hover{
+transform:translateY(-12px);
+box-shadow:0 20px 35px rgba(0,0,0,.4);
+}
+
+.card:hover img{
+transform:scale(1.08);
+}
+
+.card h3{
+padding:15px;
+color:#6a11cb;
+}
+
+.card p{
+padding:0 15px 15px;
+}
+
+.buy{
+margin:15px;
+padding:10px;
+width:90%;
+border:none;
+background:#6a11cb;
+color:white;
+font-size:17px;
+border-radius:10px;
+cursor:pointer;
+transition:.4s;
+}
+
+.buy:hover{
+background:#00c853;
+}
+
+/* Dashboard */
+
+.dashboard{
+padding:40px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+}
+
+.box{
+background:white;
+padding:40px;
+border-radius:15px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+box-shadow:0 10px 20px rgba(0,0,0,.2);
+}
+
+.box:nth-child(1){background:#ff8a80;}
+.box:nth-child(2){background:#ffd180;}
+.box:nth-child(3){background:#ffff8d;}
+.box:nth-child(4){background:#b9f6ca;}
+.box:nth-child(5){background:#80d8ff;}
+.box:nth-child(6){background:#ea80fc;}
+
+/* Blog */
+
+.blog{
+padding:40px;
+}
+
+.blog-container{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.article{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 8px 15px rgba(0,0,0,.2);
+}
+
+.article h2{
+color:#6a11cb;
+margin-bottom:10px;
+}
+
+.article p{
+line-height:1.7;
+}
+
+/* Footer */
+
+footer{
+background:#111;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:40px;
+}
+
+/* Tablet */
+
+@media(max-width:900px){
+
+.grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.menu{
+display:none;
+flex-direction:column;
+background:#6a11cb;
+position:absolute;
+top:70px;
+right:0;
+width:220px;
+padding:20px;
+}
+
+.menu.show{
+display:flex;
+}
+
+.icon{
+display:block;
+}
+
+.hero h1{
+font-size:38px;
+}
+
+.grid{
+grid-template-columns:1fr;
+}
+
+}
+
+/* Large Screen */
+
+@media(min-width:1000px){
+
+.blog-container{
+display:grid;
+grid-template-columns:2fr 1fr;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<nav>
+
+<div class="logo">🛍 ShopEase</div>
+
+<div class="menu" id="menu">
+
+<a href="#">Home</a>
+
+<a href="#">Products</a>
+
+<a href="#">Offers</a>
+
+<a href="#">Categories</a>
+
+<a href="#">Contact</a>
+
+</div>
+
+<div class="icon" onclick="toggleMenu()">
+
+☰
+
+</div>
+
+</nav>
+
+</header>
+
+<section class="hero">
+
+<h1>Discover Amazing Deals</h1>
+
+<p>Modern Responsive Shopping Experience</p>
+
+</section>
+
+<section class="products">
+
+<h2 class="title">Featured Products</h2>
+
+<div class="cards">
+
+<div class="card">
+
+<img src="https://picsum.photos/400/300?1">
+
+<h3>Wireless Headphones</h3>
+
+<p>Crystal clear sound with premium quality.</p>
+
+<button class="buy">Buy Now</button>
+
+</div>
+
+<div class="card">
+
+<img src="https://picsum.photos/400/300?2">
+
+<h3>Smart Watch</h3>
+
+<p>Track fitness and notifications instantly.</p>
+
+<button class="buy">Buy Now</button>
+
+</div>
+
+<div class="card">
+
+<img src="https://picsum.photos/400/300?3">
+
+<h3>Gaming Laptop</h3>
+
+<p>High performance for work and gaming.</p>
+
+<button class="buy">Buy Now</button>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="dashboard">
+
+<h2 class="title">Analytics Dashboard</h2>
+
+<div class="grid">
+
+<div class="box">Sales</div>
+
+<div class="box">Orders</div>
+
+<div class="box">Customers</div>
+
+<div class="box">Revenue</div>
+
+<div class="box">Reviews</div>
+
+<div class="box">Traffic</div>
+
+</div>
+
+</section>
+
+<section class="blog">
+
+<h2 class="title">Latest Articles</h2>
+
+<div class="blog-container">
+
+<div class="article">
+
+<h2>Shopping Trends</h2>
+
+<p>
+Explore the latest trends in online shopping with responsive layouts,
+interactive product cards, and optimized user experiences across all devices.
+</p>
+
+</div>
+
+<div class="article">
+
+<h2>Quick Tips</h2>
+
+<p>
+
+✔ Mobile Friendly Design<br><br>
+
+✔ Fast Loading Pages<br><br>
+
+✔ Accessible Navigation<br><br>
+
+✔ Smooth Animations
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+<h3>Made with HTML • CSS • JavaScript</h3>
+
+</footer>
+
+<script>
+
+function toggleMenu(){
+
+document.getElementById("menu").classList.toggle("show");
+
+}
+
+const products=document.querySelectorAll(".card");
+
+products.forEach(card=>{
+
+card.addEventListener("mouseenter",()=>{
+
+card.style.background="#f3e5f5";
+
+});
+
+card.addEventListener("mouseleave",()=>{
+
+card.style.background="white";
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
