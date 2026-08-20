@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Web Technology Comparative Analysis</title>
+
+<style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #f1f5f9;
+    color: #1e293b;
+    line-height: 1.7;
+}
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 15px 6%;
+
+    background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(15px);
+
+    color: white;
+
+    box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    gap: 18px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero {
+    min-height: 430px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #7c3aed,
+            #0891b2,
+            #2563eb
+        );
+
+    background-size: 400% 400%;
+
+    animation: gradientAnimation 12s ease infinite;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    z-index: 2;
+    animation: heroAnimation 1.2s ease;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+.hero-btn {
+    display: inline-block;
+
+    margin-top: 25px;
+
+    padding: 13px 30px;
+
+    background: white;
+
+    color: #4338ca;
+
+    text-decoration: none;
+
+    border-radius: 30px;
+
+    font-weight: bold;
+
+    transition: 0.4s;
+}
+
+.hero-btn:hover {
+    transform: scale(1.08);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* Floating Shapes */
+
+.shape {
+    position: absolute;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.12);
+
+    animation: floating 7s ease-in-out infinite;
+}
+
+.shape1 {
+    width: 190px;
+    height: 190px;
+
+    top: 5%;
+    left: 5%;
+}
+
+.shape2 {
+    width: 120px;
+    height: 120px;
+
+    bottom: 10%;
+    right: 8%;
+
+    animation-delay: 2s;
+}
+
+.shape3 {
+    width: 80px;
+    height: 80px;
+
+    top: 20%;
+    right: 25%;
+
+    animation-delay: 4s;
+}
+
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
+
+.container {
+    width: 90%;
+    max-width: 1150px;
+
+    margin: auto;
+}
+
+/* =====================================================
+   QUESTION CARDS
+===================================================== */
+
+.question {
+    margin: 60px 0;
+
+    background: white;
+
+    padding: 38px;
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 12px 40px rgba(15,23,42,0.1);
+
+    transition: 0.5s;
+
+    opacity: 0;
+
+    transform: translateY(40px);
+}
+
+.question.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.question:hover {
+    transform: translateY(-7px);
+
+    box-shadow:
+        0 25px 60px rgba(15,23,42,0.15);
+}
+
+/* Question Heading */
+
+.question-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+
+    color: #1e3a8a;
+}
+
+.number {
+    min-width: 50px;
+    height: 50px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #7c3aed
+        );
+
+    color: white;
+
+    font-size: 20px;
+
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 28px;
+}
+
+h3 {
+    margin-top: 28px;
+
+    margin-bottom: 12px;
+
+    color: #334155;
+}
+
+h4 {
+    color: #1d4ed8;
+}
+
+p {
+    margin-bottom: 12px;
+}
+
+/* =====================================================
+   DIAGRAM
+===================================================== */
+
+.diagram {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin: 30px 0;
+}
+
+.diagram-box {
+    min-width: 160px;
+
+    padding: 20px;
+
+    text-align: center;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eff6ff,
+            #e0e7ff
+        );
+
+    border: 2px solid #93c5fd;
+
+    color: #1e3a8a;
+
+    font-weight: bold;
+
+    transition: 0.4s;
+}
+
+.diagram-box:hover {
+    transform:
+        translateY(-8px)
+        scale(1.05);
+
+    box-shadow:
+        0 15px 30px rgba(37,99,235,0.2);
+}
+
+.arrow {
+    font-size: 30px;
+
+    color: #2563eb;
+
+    font-weight: bold;
+}
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table-container {
+    overflow-x: auto;
+
+    margin: 25px 0;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 750px;
+}
+
+th {
+    background:
+        linear-gradient(
+            135deg,
+            #1e3a8a,
+            #4338ca
+        );
+
+    color: white;
+
+    padding: 15px;
+
+    text-align: left;
+}
+
+td {
+    padding: 14px;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+tr {
+    transition: 0.3s;
+}
+
+tr:hover {
+    background: #eff6ff;
+    transform: scale(1.005);
+}
+
+/* =====================================================
+   CODE / FLOW
+===================================================== */
+
+.code-box {
+    background: #0f172a;
+
+    color: #d1fae5;
+
+    padding: 22px;
+
+    border-radius: 15px;
+
+    margin: 20px 0;
+
+    overflow-x: auto;
+
+    font-family: Consolas, monospace;
+
+    box-shadow:
+        inset 0 0 25px rgba(0,0,0,0.4);
+}
+
+.flow {
+    white-space: pre;
+
+    background: #111827;
+
+    color: #e2e8f0;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    overflow-x: auto;
+
+    font-family: monospace;
+
+    margin: 25px 0;
+}
+
+/* =====================================================
+   INFO CARDS
+===================================================== */
+
+.card-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+    gap: 20px;
+
+    margin: 25px 0;
+}
+
+.info-card {
+    padding: 23px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8fafc,
+            #eff6ff
+        );
+
+    border-left: 5px solid #2563eb;
+
+    transition: 0.4s;
+}
+
+.info-card:hover {
+    transform: translateY(-7px);
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.1);
+}
+
+/* =====================================================
+   HIGHLIGHT
+===================================================== */
+
+.highlight {
+    padding: 20px;
+
+    margin: 22px 0;
+
+    border-radius: 13px;
+
+    background: #eff6ff;
+
+    border-left: 5px solid #2563eb;
+}
+
+.warning {
+    padding: 20px;
+
+    margin: 22px 0;
+
+    border-radius: 13px;
+
+    background: #fff7ed;
+
+    border-left: 5px solid #f97316;
+}
+
+.success {
+    padding: 20px;
+
+    margin: 22px 0;
+
+    border-radius: 13px;
+
+    background: #ecfdf5;
+
+    border-left: 5px solid #10b981;
+}
+
+/* =====================================================
+   LIST
+===================================================== */
+
+ul {
+    margin-left: 25px;
+}
+
+li {
+    margin: 8px 0;
+}
+
+/* =====================================================
+   COLLAPSIBLE
+===================================================== */
+
+details {
+    margin: 18px 0;
+
+    border: 1px solid #dbeafe;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+summary {
+    cursor: pointer;
+
+    padding: 15px 20px;
+
+    background: #eff6ff;
+
+    color: #1e40af;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+summary:hover {
+    background: #dbeafe;
+}
+
+.details-content {
+    padding: 20px;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+    text-align: center;
+
+    padding: 45px;
+
+    background: #0f172a;
+
+    color: white;
+
+    margin-top: 70px;
+}
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes gradientAnimation {
+
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes floating {
+
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-40px);
+    }
+}
+
+@keyframes heroAnimation {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width: 700px) {
+
+    .navbar {
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        gap: 7px;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .question {
+        padding: 22px;
+    }
+
+    .question-heading h2 {
+        font-size: 21px;
+    }
+
+    .diagram {
+        flex-direction: column;
+    }
+
+    .arrow {
+        transform: rotate(90deg);
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🌐 Web Technology Analysis
+    </div>
+
+    <div class="nav-links">
+
+        <a href="#q1">Q1</a>
+
+        <a href="#q2">Q2</a>
+
+        <a href="#q3">Q3</a>
+
+        <a href="#q4">Q4</a>
+
+        <a href="#q5">Q5</a>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<header class="hero">
+
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+
+    <div class="hero-content">
+
+        <h1>
+            Web Technology Comparative Analysis
+        </h1>
+
+        <p>
+            XML • XSLT • JSP • Servlets • PHP • Laravel • Symfony • JDBC
+        </p>
+
+        <a href="#q1" class="hero-btn">
+            Start Reading ↓
+        </a>
+
+    </div>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     QUESTION 1
+===================================================== -->
+
+<section class="question" id="q1">
+
+    <div class="question-heading">
+
+        <div class="number">1</div>
+
+        <h2>
+            XSLT vs JSP-Based Dynamic Rendering
+        </h2>
+
+    </div>
+
+
+    <p>
+        XSLT and JSP are two different approaches for presenting
+        structured data as web content. XSLT is primarily a
+        transformation technology that converts XML into another
+        format, usually HTML, while JSP is a server-side rendering
+        technology that dynamically generates HTML using Java-based
+        web components.
+    </p>
+
+
+    <h3>Processing Models</h3>
+
+
+    <div class="diagram">
+
+        <div class="diagram-box">
+            📄 XML<br>
+            Source Data
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            ⚙️ XSLT<br>
+            Processor
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🌐 HTML<br>
+            Report
+        </div>
+
+    </div>
+
+
+    <div class="diagram">
+
+        <div class="diagram-box">
+            👤 Client
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🖥️ Web Server
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            ☕ JSP
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🌐 HTML
+        </div>
+
+    </div>
+
+
+    <h3>Comparison</h3>
+
+
+    <div class="table-container">
+
+    <table>
+
+        <tr>
+
+            <th>Feature</th>
+
+            <th>XSLT</th>
+
+            <th>JSP</th>
+
+        </tr>
+
+        <tr>
+
+            <td>Primary Purpose</td>
+
+            <td>
+                XML transformation
+            </td>
+
+            <td>
+                Dynamic server-side rendering
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Input</td>
+
+            <td>
+                XML + XSLT stylesheet
+            </td>
+
+            <td>
+                Request + application data
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Processing</td>
+
+            <td>
+                Template/rule-based transformation
+            </td>
+
+            <td>
+                JSP compiled into a servlet
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Data Transformation</td>
+
+            <td>
+                Excellent for XML transformations
+            </td>
+
+            <td>
+                Requires Java/business logic
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Resource Usage</td>
+
+            <td>
+                XML parsing and transformation consume memory/CPU
+            </td>
+
+            <td>
+                Server resources and JSP/servlet processing
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Complex Transformations</td>
+
+            <td>
+                Strong for hierarchical XML
+            </td>
+
+            <td>
+                More flexible for application logic
+            </td>
+
+        </tr>
+
+    </table>
+
+    </div>
+
+
+    <h3>XSLT – Advantages</h3>
+
+    <ul>
+
+        <li>Excellent for XML-to-HTML transformations.</li>
+
+        <li>Separates presentation rules from XML data.</li>
+
+        <li>Supports templates, sorting, filtering and conditional processing.</li>
+
+        <li>Useful when the same XML data must be presented in multiple formats.</li>
+
+    </ul>
+
+
+    <h3>JSP – Advantages</h3>
+
+    <ul>
+
+        <li>Integrates naturally with Java applications.</li>
+
+        <li>Can access databases and business services.</li>
+
+        <li>Suitable for dynamic and personalized content.</li>
+
+        <li>Works effectively with Servlets and Java frameworks.</li>
+
+    </ul>
+
+
+    <div class="success">
+
+        <b>Best Use:</b>
+
+        XSLT is highly suitable for XML-centric reporting systems,
+        document conversion and structured reports. JSP is more
+        appropriate when the application requires database access,
+        authentication, business logic and personalized dynamic pages.
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     QUESTION 2
+===================================================== -->
+
+<section class="question" id="q2">
+
+    <div class="question-heading">
+
+        <div class="number">2</div>
+
+        <h2>
+            MVC: JSP/Servlets vs Laravel/Symfony
+        </h2>
+
+    </div>
+
+
+    <p>
+        MVC separates an application into Model, View and Controller.
+        This separation improves maintainability, testing and scalability.
+    </p>
+
+
+    <h3>JSP/Servlet MVC</h3>
+
+
+    <div class="diagram">
+
+        <div class="diagram-box">
+            👤 User
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            ☕ Servlet<br>
+            Controller
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            📊 Model<br>
+            JDBC
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🖥️ JSP<br>
+            View
+        </div>
+
+    </div>
+
+
+    <h3>Modern PHP Framework MVC</h3>
+
+
+    <div class="diagram">
+
+        <div class="diagram-box">
+            👤 User
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🛣️ Route<br>
+            Controller
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            📊 Model<br>
+            ORM
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🎨 View
+        </div>
+
+    </div>
+
+
+    <h3>Detailed Comparison</h3>
+
+
+    <div class="table-container">
+
+    <table>
+
+        <tr>
+
+            <th>Aspect</th>
+
+            <th>JSP / Servlets</th>
+
+            <th>Laravel / Symfony</th>
+
+        </tr>
+
+        <tr>
+
+            <td>Language</td>
+
+            <td>Java</td>
+
+            <td>PHP</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Architecture</td>
+
+            <td>
+                MVC using Servlets, JSP and Java classes
+            </td>
+
+            <td>
+                Built-in MVC-oriented framework architecture
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Routing</td>
+
+            <td>
+                Servlet mappings
+            </td>
+
+            <td>
+                Framework routing system
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Database</td>
+
+            <td>
+                JDBC / ORM frameworks
+            </td>
+
+            <td>
+                ORM such as Eloquent or Doctrine
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Scalability</td>
+
+            <td>
+                Strong with suitable Java infrastructure
+            </td>
+
+            <td>
+                Strong with caching, queues and horizontal scaling
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Development Speed</td>
+
+            <td>
+                More configuration and boilerplate
+            </td>
+
+            <td>
+                Framework features accelerate development
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Maintainability</td>
+
+            <td>
+                Strong with disciplined architecture
+            </td>
+
+            <td>
+                Strong due to conventions and framework structure
+            </td>
+
+        </tr>
+
+    </table>
+
+    </div>
+
+
+    <h3>Scalability</h3>
+
+    <p>
+        Both architectures can scale. Java applications can use
+        mature application servers, connection pooling, caching,
+        load balancing and distributed systems. Laravel and Symfony
+        applications can similarly use caching, queues, optimized
+        database access, reverse proxies and horizontal scaling.
+    </p>
+
+
+    <h3>Data Handling</h3>
+
+    <div class="card-grid">
+
+        <div class="info-card">
+
+            <h4>JSP / Servlets</h4>
+
+            <p>
+                JDBC provides direct database connectivity while
+                ORM frameworks can simplify database operations.
+            </p>
+
+        </div>
+
+        <div class="info-card">
+
+            <h4>Laravel</h4>
+
+            <p>
+                Eloquent ORM, queues, caching and framework services
+                simplify application development.
+            </p>
+
+        </div>
+
+        <div class="info-card">
+
+            <h4>Symfony</h4>
+
+            <p>
+                Provides reusable components, dependency injection,
+                routing and Doctrine integration.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <b>Conclusion:</b>
+
+        JSP/Servlets remain strong for enterprise Java systems,
+        while Laravel and Symfony can provide faster development
+        and structured architecture for modern PHP applications.
+        The best choice depends on the organization's ecosystem,
+        team expertise and deployment requirements.
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     QUESTION 3
+===================================================== -->
+
+<section class="question" id="q3">
+
+    <div class="question-heading">
+
+        <div class="number">3</div>
+
+        <h2>
+            XML Schema Validation vs Database Validation
+        </h2>
+
+    </div>
+
+
+    <p>
+        Data validation can occur before data reaches the database
+        or directly at the database layer. XML Schema validation
+        validates XML structure and data types, while database-level
+        constraints protect the stored data.
+    </p>
+
+
+    <h3>XML Schema Validation</h3>
+
+
+    <div class="diagram">
+
+        <div class="diagram-box">
+            📄 XML
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            📋 XML Schema
+            <br>
+            XSD
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            ✅ Valid
+            <br>
+            XML
+        </div>
+
+    </div>
+
+
+    <h3>Database-Level Validation</h3>
+
+
+    <div class="diagram">
+
+        <div class="diagram-box">
+            🌐 JSP / PHP
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🔌 JDBC / DB API
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🗄️ Database
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🔐 Constraints
+        </div>
+
+    </div>
+
+
+    <h3>Comparison</h3>
+
+
+    <div class="table-container">
+
+    <table>
+
+        <tr>
+
+            <th>Aspect</th>
+
+            <th>XML Schema</th>
+
+            <th>Database Validation</th>
+
+        </tr>
+
+        <tr>
+
+            <td>Validation Target</td>
+
+            <td>XML structure and content</td>
+
+            <td>Stored relational data</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Data Types</td>
+
+            <td>Supports defined XML data types</td>
+
+            <td>Database column data types</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Constraints</td>
+
+            <td>Elements, attributes, patterns, ranges</td>
+
+            <td>PRIMARY KEY, FOREIGN KEY, UNIQUE, CHECK, NOT NULL</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Location</td>
+
+            <td>Application/data processing layer</td>
+
+            <td>Database layer</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Performance</td>
+
+            <td>
+                Requires XML parsing and schema validation
+            </td>
+
+            <td>
+                Constraints are enforced by database engine
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Integrity Protection</td>
+
+            <td>
+                Protects incoming XML structure
+            </td>
+
+            <td>
+                Protects stored database state
+            </td>
+
+        </tr>
+
+    </table>
+
+    </div>
+
+
+    <h3>Why Both Can Be Used</h3>
+
+    <p>
+        XML Schema validation is useful when data arrives as XML
+        from external systems. Database constraints are essential
+        because they protect the database regardless of which
+        application attempts to insert or update data.
+    </p>
+
+
+    <div class="warning">
+
+        <b>Important:</b>
+
+        Application-level validation alone should not be treated
+        as the only protection for database integrity. Database
+        constraints provide a final enforcement layer.
+
+    </div>
+
+
+    <h3>Real-Time Validation</h3>
+
+    <ul>
+
+        <li>
+            XML Schema can reject invalid XML before expensive
+            downstream processing.
+        </li>
+
+        <li>
+            Database constraints immediately reject invalid
+            inserts or updates.
+        </li>
+
+        <li>
+            Application-side validation can provide fast,
+            user-friendly error messages.
+        </li>
+
+        <li>
+            Combining application validation with database
+            constraints provides stronger overall integrity.
+        </li>
+
+    </ul>
+
+</section>
+
+
+<!-- =====================================================
+     QUESTION 4
+===================================================== -->
+
+<section class="question" id="q4">
+
+    <div class="question-heading">
+
+        <div class="number">4</div>
+
+        <h2>
+            DOM vs SAX vs XSLT
+        </h2>
+
+    </div>
+
+
+    <p>
+        XML documents can be processed using DOM, SAX or XSLT.
+        Each technique has different memory requirements,
+        processing characteristics and implementation complexity.
+    </p>
+
+
+    <h3>DOM Parsing</h3>
+
+
+    <div class="diagram">
+
+        <div class="diagram-box">
+            📄 XML
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🌳 DOM Tree
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            💻 Application
+        </div>
+
+    </div>
+
+
+    <p>
+        DOM reads the XML document and builds an in-memory tree
+        representing the complete document.
+    </p>
+
+
+    <h3>SAX Parsing</h3>
+
+
+    <div class="diagram">
+
+        <div class="diagram-box">
+            📄 XML
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            ⚡ SAX Parser
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🔔 Events
+        </div>
+
+    </div>
+
+
+    <p>
+        SAX is event-driven. It reads the XML sequentially and
+        generates events such as start-element, end-element and
+        character data.
+    </p>
+
+
+    <h3>XSLT Transformation</h3>
+
+
+    <div class="diagram">
+
+        <div class="diagram-box">
+            📄 XML
+        </div>
+
+        <div class="arrow">+</div>
+
+        <div class="diagram-box">
+            📋 XSLT
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            ⚙️ Processor
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🌐 HTML
+        </div>
+
+    </div>
+
+
+    <h3>Detailed Comparison</h3>
+
+
+    <div class="table-container">
+
+    <table>
+
+        <tr>
+
+            <th>Feature</th>
+
+            <th>DOM</th>
+
+            <th>SAX</th>
+
+            <th>XSLT</th>
+
+        </tr>
+
+        <tr>
+
+            <td>Processing Model</td>
+
+            <td>Tree-based</td>
+
+            <td>Event-based</td>
+
+            <td>Rule/template-based transformation</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Memory Consumption</td>
+
+            <td>High</td>
+
+            <td>Very low</td>
+
+            <td>Depends on processor and transformation</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Processing Speed</td>
+
+            <td>Good for moderate documents</td>
+
+            <td>Fast for sequential processing</td>
+
+            <td>Efficient for structured transformations</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Large XML</td>
+
+            <td>Less suitable</td>
+
+            <td>Highly suitable</td>
+
+            <td>Suitable depending on transformation and processor</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Random Access</td>
+
+            <td>Excellent</td>
+
+            <td>Not naturally supported</td>
+
+            <td>Depends on transformation requirements</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Implementation</td>
+
+            <td>Easy to understand</td>
+
+            <td>More event-driven</td>
+
+            <td>Requires XSLT knowledge</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Best Use</td>
+
+            <td>Complex document manipulation</td>
+
+            <td>Large sequential XML</td>
+
+            <td>XML-to-HTML/report transformation</td>
+
+        </tr>
+
+    </table>
+
+    </div>
+
+
+    <div class="card-grid">
+
+        <div class="info-card">
+
+            <h4>🌳 DOM</h4>
+
+            <p>
+                Best when the complete XML tree needs to be
+                navigated or modified.
+            </p>
+
+        </div>
+
+        <div class="info-card">
+
+            <h4>⚡ SAX</h4>
+
+            <p>
+                Best for very large XML documents where memory
+                consumption must be minimized.
+            </p>
+
+        </div>
+
+        <div class="info-card">
+
+            <h4>🔄 XSLT</h4>
+
+            <p>
+                Best when XML must be transformed into HTML,
+                text or another structured output.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <b>Trade-off:</b>
+
+        DOM provides convenient random access at the cost of memory.
+        SAX provides excellent memory efficiency but requires
+        event-driven programming. XSLT provides powerful
+        declarative transformations but is primarily a
+        transformation technology rather than a general-purpose
+        parser.
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     QUESTION 5
+===================================================== -->
+
+<section class="question" id="q5">
+
+    <div class="question-heading">
+
+        <div class="number">5</div>
+
+        <h2>
+            JSP/PHP vs XSLT for Dynamic Content
+        </h2>
+
+    </div>
+
+
+    <p>
+        Traditional server-side rendering with JSP or PHP generates
+        dynamic HTML on the server. XSLT transforms structured XML
+        data into another representation such as HTML.
+    </p>
+
+
+    <h3>Server-Side Rendering</h3>
+
+
+    <div class="diagram">
+
+        <div class="diagram-box">
+            👤 User
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🖥️ Server
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            ☕ JSP / PHP
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🌐 HTML
+        </div>
+
+    </div>
+
+
+    <h3>XML + XSLT</h3>
+
+
+    <div class="diagram">
+
+        <div class="diagram-box">
+            📄 XML
+        </div>
+
+        <div class="arrow">+</div>
+
+        <div class="diagram-box">
+            📋 XSLT
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            ⚙️ Processor
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="diagram-box">
+            🌐 HTML
+        </div>
+
+    </div>
+
+
+    <h3>Critical Comparison</h3>
+
+
+    <div class="table-container">
+
+    <table>
+
+        <tr>
+
+            <th>Factor</th>
+
+            <th>JSP / PHP</th>
+
+            <th>XSLT</th>
+
+        </tr>
+
+        <tr>
+
+            <td>Primary Role</td>
+
+            <td>
+                Dynamic server-side application rendering
+            </td>
+
+            <td>
+                XML transformation
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Dynamic Data</td>
+
+            <td>
+                Excellent
+            </td>
+
+            <td>
+                Strong when data is XML
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Database Integration</td>
+
+            <td>
+                Directly supported through application frameworks/APIs
+            </td>
+
+            <td>
+                Usually requires an external data-generation layer
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Scalability</td>
+
+            <td>
+                Strong with caching, load balancing and optimized architecture
+            </td>
+
+            <td>
+                Depends heavily on XML size and transformation workload
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Memory</td>
+
+            <td>
+                Server resources used for request processing
+            </td>
+
+            <td>
+                XML parsing and transformation can consume significant resources
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Development</td>
+
+            <td>
+                Suitable for complete web applications
+            </td>
+
+            <td>
+                Specialized transformation language
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>User Experience</td>
+
+            <td>
+                Can support highly dynamic and personalized pages
+            </td>
+
+            <td>
+                Good for structured document/report generation
+            </td>
+
+        </tr>
+
+    </table>
+
+    </div>
+
+
+    <h3>Performance Under Concurrent Load</h3>
+
+    <p>
+        Server-side rendering technologies such as JSP and PHP
+        frameworks can scale effectively when combined with
+        caching, connection pooling, load balancing, efficient
+        database queries and horizontal scaling.
+    </p>
+
+    <p>
+        XSLT transformation can become expensive when large XML
+        documents are repeatedly parsed and transformed for many
+        concurrent users. Caching XML data, compiled stylesheets
+        and generated output can reduce the processing overhead.
+    </p>
+
+
+    <h3>Development Complexity</h3>
+
+
+    <div class="card-grid">
+
+        <div class="info-card">
+
+            <h4>☕ JSP</h4>
+
+            <p>
+                Strong integration with Java enterprise systems,
+                Servlets and backend services.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h4>🐘 PHP</h4>
+
+            <p>
+                Modern PHP frameworks provide routing, ORM,
+                authentication and other development features.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h4>🔄 XSLT</h4>
+
+            <p>
+                Excellent for XML transformation but less suitable
+                as the main technology for complete dynamic
+                web applications.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <details>
+
+        <summary>
+            📌 Recommendation for Modern Applications
+        </summary>
+
+        <div class="details-content">
+
+            <p>
+                For modern web applications that require
+                authentication, databases, APIs, personalization
+                and high concurrent traffic, a modern server-side
+                framework or application architecture is generally
+                more appropriate than using XSLT as the primary
+                rendering technology.
+            </p>
+
+            <p>
+                XSLT remains valuable when XML is the central data
+                format, particularly for document conversion,
+                structured reports and legacy enterprise systems.
+            </p>
+
+        </div>
+
+    </details>
+
+
+    <div class="success">
+
+        <b>Final Recommendation:</b>
+
+        For general modern web application development,
+        server-side frameworks such as modern Java or PHP
+        frameworks are usually preferable because they provide
+        better integration with databases, authentication,
+        APIs, caching and scalable application architectures.
+        XSLT should be selected when XML transformation itself
+        is the main requirement.
+
+    </div>
+
+</section>
+
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <h2>
+        🌐 Web Technology Comparative Analysis
+    </h2>
+
+    <p>
+        XSLT • JSP • Servlets • PHP • Laravel • Symfony • JDBC • XML
+    </p>
+
+    <br>
+
+    <p>
+        © 2026 Academic Web Technology Portal
+    </p>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+/* =====================================================
+   SCROLL REVEAL ANIMATION
+===================================================== */
+
+const questions =
+    document.querySelectorAll(".question");
+
+
+const observer =
+    new IntersectionObserver(
+
+        function(entries) {
+
+            entries.forEach(
+                function(entry) {
+
+                    if(entry.isIntersecting) {
+
+                        entry.target
+                            .classList
+                            .add("visible");
+
+                    }
+
+                }
+            );
+
+        },
+
+        {
+            threshold: 0.12
+        }
+
+    );
+
+
+questions.forEach(
+    function(question) {
+
+        observer.observe(question);
+
+    }
+);
+
+
+/* =====================================================
+   ACTIVE NAVIGATION
+===================================================== */
+
+const navLinks =
+    document.querySelectorAll(".nav-links a");
+
+
+window.addEventListener(
+    "scroll",
+
+    function() {
+
+        let current = "";
+
+        questions.forEach(
+            function(section) {
+
+                const sectionTop =
+                    section.offsetTop - 150;
+
+                if(
+                    window.scrollY >=
+                    sectionTop
+                ) {
+
+                    current =
+                        section.getAttribute("id");
+
+                }
+
+            }
+        );
+
+
+        navLinks.forEach(
+            function(link) {
+
+                link.style.background =
+                    "transparent";
+
+                if(
+                    link.getAttribute("href")
+                    === "#" + current
+                ) {
+
+                    link.style.background =
+                        "#2563eb";
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
+   DIAGRAM BOX ANIMATION
+===================================================== */
+
+const boxes =
+    document.querySelectorAll(".diagram-box");
+
+
+boxes.forEach(
+    function(box, index) {
+
+        box.style.animationDelay =
+            (index * 0.1) + "s";
+
+    }
+);
+
+</script>
+
+</body>
+</html>
