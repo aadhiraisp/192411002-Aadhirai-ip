@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Java Servlet - Complete Guide</title>
+
+<style>
+
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    color: #222;
+    background: #f4f7fb;
+    line-height: 1.7;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 15px 6%;
+
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(15px);
+
+    color: white;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #60a5fa;
+    transform: translateY(-2px);
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 420px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #7c3aed,
+            #06b6d4
+        );
+
+    background-size: 300% 300%;
+
+    animation: gradientMove 10s ease infinite;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    z-index: 2;
+
+    animation: heroAppear 1.2s ease;
+}
+
+.hero h1 {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 19px;
+    opacity: 0.9;
+}
+
+.hero-btn {
+    display: inline-block;
+
+    margin-top: 25px;
+    padding: 13px 28px;
+
+    border-radius: 30px;
+
+    background: white;
+    color: #4f46e5;
+
+    text-decoration: none;
+    font-weight: bold;
+
+    transition: 0.4s;
+}
+
+.hero-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* Floating circles */
+
+.circle {
+    position: absolute;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.12);
+
+    animation: float 7s ease-in-out infinite;
+}
+
+.c1 {
+    width: 180px;
+    height: 180px;
+    top: 10%;
+    left: 5%;
+}
+
+.c2 {
+    width: 100px;
+    height: 100px;
+    bottom: 10%;
+    right: 10%;
+    animation-delay: 2s;
+}
+
+.c3 {
+    width: 70px;
+    height: 70px;
+    top: 20%;
+    right: 25%;
+    animation-delay: 4s;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.question {
+    margin: 60px 0;
+
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 35px;
+
+    box-shadow:
+        0 10px 40px rgba(15,23,42,0.1);
+
+    transition: 0.4s;
+
+    animation: cardAppear 0.8s ease;
+}
+
+.question:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 20px 50px rgba(15,23,42,0.15);
+}
+
+.question-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    margin-bottom: 15px;
+
+    color: #1e3a8a;
+}
+
+.number {
+    display: flex;
+
+    width: 48px;
+    height: 48px;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    color: white;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    flex-shrink: 0;
+}
+
+h2 {
+    font-size: 27px;
+}
+
+h3 {
+    margin-top: 25px;
+    margin-bottom: 12px;
+    color: #334155;
+}
+
+p {
+    margin-bottom: 12px;
+}
+
+/* =========================
+   DIAGRAM
+========================= */
+
+.diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin: 30px 0;
+}
+
+.box {
+    padding: 18px 22px;
+
+    min-width: 145px;
+
+    text-align: center;
+
+    border-radius: 15px;
+
+    background: linear-gradient(
+        135deg,
+        #eff6ff,
+        #e0e7ff
+    );
+
+    border: 2px solid #93c5fd;
+
+    color: #1e3a8a;
+
+    font-weight: bold;
+
+    transition: 0.4s;
+
+    animation: boxPop 0.8s ease;
+}
+
+.box:hover {
+    transform: scale(1.08) translateY(-5px);
+
+    box-shadow:
+        0 10px 25px rgba(37,99,235,0.2);
+}
+
+.arrow {
+    font-size: 28px;
+    color: #2563eb;
+    font-weight: bold;
+}
+
+/* =========================
+   SEQUENCE DIAGRAM
+========================= */
+
+.sequence {
+    overflow-x: auto;
+
+    background: #0f172a;
+
+    color: #e2e8f0;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    margin: 25px 0;
+
+    font-family: monospace;
+
+    white-space: pre;
+}
+
+/* =========================
+   CODE
+========================= */
+
+pre {
+    background: #111827;
+
+    color: #d1fae5;
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    overflow-x: auto;
+
+    margin: 20px 0;
+
+    box-shadow:
+        inset 0 0 20px rgba(0,0,0,0.3);
+}
+
+code {
+    font-family: Consolas, monospace;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrapper {
+    overflow-x: auto;
+
+    margin: 25px 0;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 650px;
+}
+
+th,
+td {
+    padding: 14px;
+
+    border-bottom: 1px solid #e2e8f0;
+
+    text-align: left;
+}
+
+th {
+    background: #1e3a8a;
+
+    color: white;
+}
+
+tr {
+    transition: 0.3s;
+}
+
+tr:hover {
+    background: #eff6ff;
+
+    transform: scale(1.01);
+}
+
+/* =========================
+   INFO CARDS
+========================= */
+
+.cards {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+    gap: 20px;
+
+    margin: 25px 0;
+}
+
+.info-card {
+    padding: 22px;
+
+    border-radius: 17px;
+
+    background: linear-gradient(
+        135deg,
+        #f8fafc,
+        #eff6ff
+    );
+
+    border-left: 5px solid #2563eb;
+
+    transition: 0.4s;
+}
+
+.info-card:hover {
+    transform: translateY(-7px);
+
+    box-shadow:
+        0 12px 25px rgba(0,0,0,0.1);
+}
+
+.info-card h4 {
+    color: #1d4ed8;
+
+    margin-bottom: 8px;
+}
+
+/* =========================
+   LIST
+========================= */
+
+ul {
+    margin-left: 25px;
+}
+
+li {
+    margin: 8px 0;
+}
+
+/* =========================
+   HIGHLIGHT
+========================= */
+
+.highlight {
+    padding: 18px;
+
+    margin: 20px 0;
+
+    border-radius: 12px;
+
+    background: #eff6ff;
+
+    border-left: 5px solid #2563eb;
+}
+
+.warning {
+    padding: 18px;
+
+    margin: 20px 0;
+
+    border-radius: 12px;
+
+    background: #fff7ed;
+
+    border-left: 5px solid #f97316;
+}
+
+/* =========================
+   COLLAPSIBLE
+========================= */
+
+details {
+    margin: 15px 0;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    border: 1px solid #e2e8f0;
+}
+
+summary {
+    cursor: pointer;
+
+    padding: 15px 20px;
+
+    background: #f8fafc;
+
+    color: #1e40af;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+summary:hover {
+    background: #eff6ff;
+}
+
+.details-content {
+    padding: 20px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    text-align: center;
+
+    padding: 40px;
+
+    margin-top: 60px;
+
+    background: #0f172a;
+
+    color: white;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes gradientMove {
+
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes float {
+
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-35px);
+    }
+}
+
+@keyframes heroAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes cardAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes boxPop {
+
+    from {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width: 700px) {
+
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav-links {
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .question {
+        padding: 22px;
+    }
+
+    .question-title {
+        align-items: flex-start;
+    }
+
+    .question-title h2 {
+        font-size: 21px;
+    }
+
+    .diagram {
+        flex-direction: column;
+    }
+
+    .arrow {
+        transform: rotate(90deg);
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        ☕ Java Servlet Guide
+    </div>
+
+    <div class="nav-links">
+
+        <a href="#q1">Q1</a>
+        <a href="#q2">Q2</a>
+        <a href="#q3">Q3</a>
+        <a href="#q4">Q4</a>
+        <a href="#q5">Q5</a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<header class="hero">
+
+    <div class="circle c1"></div>
+    <div class="circle c2"></div>
+    <div class="circle c3"></div>
+
+    <div class="hero-content">
+
+        <h1>Java Servlet Technology</h1>
+
+        <p>
+            Architecture • Life Cycle • GET/POST • Sessions • Cookies
+        </p>
+
+        <a href="#q1" class="hero-btn">
+            Explore Questions ↓
+        </a>
+
+    </div>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     QUESTION 1
+===================================================== -->
+
+<section class="question" id="q1">
+
+    <div class="question-title">
+
+        <div class="number">1</div>
+
+        <h2>
+            Servlet Architecture & Workflow
+        </h2>
+
+    </div>
+
+
+    <p>
+        Java Servlet architecture follows a client-server model.
+        A client such as a web browser sends an HTTP request to
+        the web server. The web container receives the request,
+        identifies the appropriate servlet and manages its execution.
+    </p>
+
+
+    <h3>Servlet Architecture</h3>
+
+
+    <div class="diagram">
+
+        <div class="box">
+            🌐<br>
+            Client<br>
+            Browser
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            🖥️<br>
+            Web Server
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            ⚙️<br>
+            Web Container<br>
+            Tomcat
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            ☕<br>
+            Servlet
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            🗄️<br>
+            Database
+        </div>
+
+    </div>
+
+
+    <h3>Complete Request–Response Cycle</h3>
+
+
+    <div class="sequence">
+
+Client Browser
+      |
+      | 1. HTTP Request
+      ↓
+Web Server
+      |
+      | 2. Forward Request
+      ↓
+Web Container
+      |
+      | 3. Locate Servlet
+      ↓
+Servlet
+      |
+      | 4. Process Request
+      |
+      | 5. Business Logic / Database
+      |
+      | 6. Generate Response
+      ↓
+Web Container
+      |
+      | 7. HTTP Response
+      ↓
+Client Browser
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="info-card">
+
+            <h4>🌐 Client</h4>
+
+            <p>
+                Sends HTTP requests through a browser
+                and displays the response.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h4>⚙️ Web Container</h4>
+
+            <p>
+                Manages servlet creation, execution,
+                threads, requests and responses.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h4>📥 Request Object</h4>
+
+            <p>
+                Contains form data, parameters,
+                headers and request information.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h4>📤 Response Object</h4>
+
+            <p>
+                Used by the servlet to send HTML,
+                JSON or other responses to the client.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <h3>Request and Response Example</h3>
+
+<pre><code>protected void doGet(HttpServletRequest request,
+                      HttpServletResponse response)
+                      throws IOException {
+
+    String name = request.getParameter("name");
+
+    response.setContentType("text/html");
+
+    PrintWriter out = response.getWriter();
+
+    out.println("&lt;h1&gt;Welcome " + name + "&lt;/h1&gt;");
+}</code></pre>
+
+</section>
+
+
+<!-- =====================================================
+     QUESTION 2
+===================================================== -->
+
+<section class="question" id="q2">
+
+    <div class="question-title">
+
+        <div class="number">2</div>
+
+        <h2>
+            Servlet Life Cycle Analysis
+        </h2>
+
+    </div>
+
+
+    <p>
+        The Servlet Life Cycle is controlled by the web container.
+        It consists mainly of initialization, request processing
+        and destruction.
+    </p>
+
+
+    <h3>Life Cycle Sequence</h3>
+
+
+    <div class="sequence">
+
+        Web Container
+             |
+             ↓
+     Create Servlet Object
+             |
+             ↓
+          init()
+             |
+             ↓
+        service()
+             |
+       ┌─────┴─────┐
+       ↓           ↓
+    doGet()      doPost()
+       │           │
+       └─────┬─────┘
+             ↓
+       Process Requests
+             |
+             ↓
+         destroy()
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="info-card">
+
+            <h4>1️⃣ init()</h4>
+
+            <p>
+                Called only once when the servlet is initialized.
+                It is used for initialization tasks.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h4>2️⃣ service()</h4>
+
+            <p>
+                Called for every client request and dispatches
+                the request to doGet(), doPost(), etc.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h4>3️⃣ destroy()</h4>
+
+            <p>
+                Called once before the servlet is removed.
+                Used to release resources.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <h3>Life Cycle Methods</h3>
+
+
+<pre><code>public void init() throws ServletException {
+
+    // Initialization
+    System.out.println("Servlet Started");
+}
+
+
+protected void service(HttpServletRequest request,
+                       HttpServletResponse response)
+                       throws ServletException, IOException {
+
+    // Request processing
+}
+
+
+public void destroy() {
+
+    // Release resources
+    System.out.println("Servlet Destroyed");
+}</code></pre>
+
+
+    <details>
+
+        <summary>⚡ Performance Implications</summary>
+
+        <div class="details-content">
+
+            <ul>
+
+                <li>
+                    <b>init()</b> executes once, so expensive
+                    initialization can be performed here.
+                </li>
+
+                <li>
+                    <b>service()</b> executes repeatedly, so
+                    request processing should be efficient.
+                </li>
+
+                <li>
+                    Database connections and other resources
+                    should be managed carefully.
+                </li>
+
+                <li>
+                    The container uses threads to process
+                    multiple requests efficiently.
+                </li>
+
+                <li>
+                    <b>destroy()</b> should release resources
+                    to prevent resource leaks.
+                </li>
+
+            </ul>
+
+        </div>
+
+    </details>
+
+
+    <div class="highlight">
+
+        <b>Life Cycle:</b>
+
+        Loading →
+        Instantiation →
+        init() →
+        service() →
+        destroy()
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     QUESTION 3
+===================================================== -->
+
+<section class="question" id="q3">
+
+    <div class="question-title">
+
+        <div class="number">3</div>
+
+        <h2>
+            GET vs POST Method Evaluation
+        </h2>
+
+    </div>
+
+
+    <p>
+        GET and POST are HTTP methods used to communicate
+        between the client and server and to submit form data.
+    </p>
+
+
+    <div class="table-wrapper">
+
+    <table>
+
+        <tr>
+
+            <th>Feature</th>
+            <th>GET</th>
+            <th>POST</th>
+
+        </tr>
+
+        <tr>
+
+            <td>Data Transmission</td>
+
+            <td>URL / Query String</td>
+
+            <td>HTTP Request Body</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Visibility</td>
+
+            <td>Visible in URL</td>
+
+            <td>Not normally visible in URL</td>
+
+        </tr>
+
+        <tr>
+
+            <td>URL Limitation</td>
+
+            <td>Limited by URL length</td>
+
+            <td>Suitable for larger data</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Bookmarking</td>
+
+            <td>Can be bookmarked</td>
+
+            <td>Normally not bookmarked as submitted data</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Typical Purpose</td>
+
+            <td>Retrieve data</td>
+
+            <td>Submit/change data</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Sensitive Data</td>
+
+            <td>Not recommended</td>
+
+            <td>More appropriate with HTTPS</td>
+
+        </tr>
+
+    </table>
+
+    </div>
+
+
+    <h3>GET Example</h3>
+
+<pre><code>&lt;form action="StudentServlet" method="get"&gt;
+
+    &lt;input type="text" name="name"&gt;
+
+    &lt;input type="submit" value="Search"&gt;
+
+&lt;/form&gt;</code></pre>
+
+
+    <div class="highlight">
+
+        Example URL:
+
+        <br><br>
+
+        <b>
+        StudentServlet?name=Student
+        </b>
+
+    </div>
+
+
+    <h3>POST Example</h3>
+
+<pre><code>&lt;form action="StudentServlet" method="post"&gt;
+
+    &lt;input type="text" name="name"&gt;
+
+    &lt;input type="email" name="email"&gt;
+
+    &lt;input type="submit" value="Register"&gt;
+
+&lt;/form&gt;</code></pre>
+
+
+    <div class="cards">
+
+        <div class="info-card">
+
+            <h4>🔎 GET</h4>
+
+            <p>
+                Best for search, filtering and retrieving
+                information.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h4>📤 POST</h4>
+
+            <p>
+                Best for registration, login, uploading
+                and creating records.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="warning">
+
+        <b>Security:</b>
+
+        POST does not encrypt information by itself.
+        Sensitive information should always be transmitted
+        using HTTPS.
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     QUESTION 4
+===================================================== -->
+
+<section class="question" id="q4">
+
+    <div class="question-title">
+
+        <div class="number">4</div>
+
+        <h2>
+            Session Tracking Techniques
+        </h2>
+
+    </div>
+
+
+    <p>
+        HTTP is stateless. Session tracking mechanisms allow
+        web applications to identify the same user across
+        multiple requests.
+    </p>
+
+
+    <h3>Three Main Techniques</h3>
+
+
+    <div class="diagram">
+
+        <div class="box">
+            🔐<br>
+            HttpSession
+        </div>
+
+        <div class="box">
+            🍪<br>
+            Cookies
+        </div>
+
+        <div class="box">
+            🔗<br>
+            URL Rewriting
+        </div>
+
+    </div>
+
+
+    <h3>1. HttpSession</h3>
+
+<pre><code>HttpSession session =
+    request.getSession();
+
+session.setAttribute(
+    "username",
+    "Student"
+);</code></pre>
+
+
+    <div class="info-card">
+
+        <h4>Advantages</h4>
+
+        <ul>
+
+            <li>Data is maintained on the server.</li>
+
+            <li>Suitable for authentication.</li>
+
+            <li>Can store multiple attributes.</li>
+
+            <li>Useful for shopping carts.</li>
+
+        </ul>
+
+    </div>
+
+
+    <h3>2. Cookies</h3>
+
+<pre><code>Cookie cookie =
+    new Cookie("username", "Student");
+
+response.addCookie(cookie);</code></pre>
+
+
+    <div class="info-card">
+
+        <h4>Advantages and Limitations</h4>
+
+        <ul>
+
+            <li>Stored in the browser.</li>
+
+            <li>Easy to implement.</li>
+
+            <li>Useful for preferences.</li>
+
+            <li>Limited storage size.</li>
+
+            <li>Users can delete or disable cookies.</li>
+
+        </ul>
+
+    </div>
+
+
+    <h3>3. URL Rewriting</h3>
+
+<pre><code>String url =
+    response.encodeURL("home.jsp");</code></pre>
+
+
+    <div class="highlight">
+
+        Example:
+
+        <br><br>
+
+        <b>
+        home.jsp;jsessionid=ABC123
+        </b>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+    <table>
+
+        <tr>
+
+            <th>Technique</th>
+            <th>Storage</th>
+            <th>Advantages</th>
+            <th>Limitations</th>
+            <th>Use Case</th>
+
+        </tr>
+
+        <tr>
+
+            <td>HttpSession</td>
+
+            <td>Server</td>
+
+            <td>Good for authentication</td>
+
+            <td>Uses server resources</td>
+
+            <td>Login / Cart</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Cookies</td>
+
+            <td>Client</td>
+
+            <td>Simple and persistent</td>
+
+            <td>Limited and client-controlled</td>
+
+            <td>Preferences</td>
+
+        </tr>
+
+        <tr>
+
+            <td>URL Rewriting</td>
+
+            <td>URL</td>
+
+            <td>Works without cookies</td>
+
+            <td>Session ID visible in URL</td>
+
+            <td>Cookie-disabled clients</td>
+
+        </tr>
+
+    </table>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     QUESTION 5
+===================================================== -->
+
+<section class="question" id="q5">
+
+    <div class="question-title">
+
+        <div class="number">5</div>
+
+        <h2>
+            Cookies vs Sessions – Critical Analysis
+        </h2>
+
+    </div>
+
+
+    <p>
+        Cookies and sessions are both used for maintaining
+        state in web applications, but they differ in where
+        information is stored and how it is managed.
+    </p>
+
+
+    <h3>Cookie and Session Relationship</h3>
+
+
+    <div class="sequence">
+
+        ┌───────────────────────┐
+        │       Browser         │
+        │                       │
+        │       Cookie          │
+        │    JSESSIONID=XYZ     │
+        └───────────┬───────────┘
+                    │
+                    │ Session ID
+                    ↓
+        ┌───────────────────────┐
+        │        Server         │
+        │                       │
+        │      HttpSession      │
+        │                       │
+        │  Username             │
+        │  Shopping Cart        │
+        │  Login State          │
+        └───────────────────────┘
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+    <table>
+
+        <tr>
+
+            <th>Feature</th>
+            <th>Cookies</th>
+            <th>Sessions</th>
+
+        </tr>
+
+        <tr>
+
+            <td>Storage Location</td>
+
+            <td>Client / Browser</td>
+
+            <td>Server</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Data Size</td>
+
+            <td>Small</td>
+
+            <td>Generally larger</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Security</td>
+
+            <td>More exposed to client-side risks</td>
+
+            <td>Application data remains server-side</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Lifetime</td>
+
+            <td>Can be persistent</td>
+
+            <td>Usually timeout-based</td>
+
+        </tr>
+
+        <tr>
+
+            <td>User Control</td>
+
+            <td>User can modify/delete</td>
+
+            <td>Server manages session data</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Performance</td>
+
+            <td>Adds data to requests</td>
+
+            <td>Uses server-side resources</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Common Use</td>
+
+            <td>Preferences</td>
+
+            <td>Authentication / Cart</td>
+
+        </tr>
+
+    </table>
+
+    </div>
+
+
+    <h3>Real-Time Use Cases</h3>
+
+
+    <div class="cards">
+
+        <div class="info-card">
+
+            <h4>🛒 E-Commerce</h4>
+
+            <p>
+                Sessions can maintain a user's shopping cart
+                while cookies can remember preferences.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h4>🏦 Online Banking</h4>
+
+            <p>
+                A server-side session can maintain the
+                authenticated user's login state.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h4>🎬 Streaming</h4>
+
+            <p>
+                Cookies can remember preferences while
+                sessions maintain authenticated access.
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h4>🌐 Websites</h4>
+
+            <p>
+                Cookies can store language, theme and
+                other non-sensitive preferences.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <h3>Security Best Practices</h3>
+
+    <ul>
+
+        <li>
+            Always use <b>HTTPS</b> for sensitive communication.
+        </li>
+
+        <li>
+            Use <b>HttpOnly</b> cookies when appropriate to
+            reduce JavaScript access to session cookies.
+        </li>
+
+        <li>
+            Use the <b>Secure</b> cookie attribute so cookies
+            are sent only over HTTPS.
+        </li>
+
+        <li>
+            Use an appropriate <b>SameSite</b> setting.
+        </li>
+
+        <li>
+            Expire sessions after an appropriate period.
+        </li>
+
+        <li>
+            Invalidate sessions during logout.
+        </li>
+
+        <li>
+            Regenerate session identifiers after authentication
+            where appropriate.
+        </li>
+
+    </ul>
+
+
+    <div class="highlight">
+
+        <b>Final Analysis:</b>
+
+        Sessions are generally more suitable for sensitive
+        server-managed application state such as login
+        information and shopping carts. Cookies are more
+        suitable for small, non-sensitive client-side
+        information such as preferences.
+
+    </div>
+
+</section>
+
+
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <h2>☕ Java Servlet Technology</h2>
+
+    <p>
+        Servlet Architecture • Life Cycle • GET/POST •
+        Session Tracking • Cookies vs Sessions
+    </p>
+
+    <br>
+
+    <p>
+        © 2026 Java Web Application Study Portal
+    </p>
+
+</footer>
+
+
+<script>
+
+/* =========================
+   ACTIVE NAVIGATION
+========================= */
+
+const sections =
+    document.querySelectorAll(".question");
+
+const links =
+    document.querySelectorAll(".nav-links a");
+
+
+window.addEventListener("scroll", function() {
+
+    let current = "";
+
+    sections.forEach(section => {
+
+        const sectionTop =
+            section.offsetTop - 150;
+
+        if(pageYOffset >= sectionTop) {
+            current = section.getAttribute("id");
+        }
+
+    });
+
+
+    links.forEach(link => {
+
+        link.style.color = "white";
+
+        if(link.getAttribute("href") === "#" + current) {
+
+            link.style.color = "#60a5fa";
+
+        }
+
+    });
+
+});
+
+
+/* =========================
+   SCROLL REVEAL
+========================= */
+
+const cards =
+    document.querySelectorAll(
+        ".question, .info-card, .box"
+    );
+
+
+const observer =
+    new IntersectionObserver(
+        entries => {
+
+            entries.forEach(entry => {
+
+                if(entry.isIntersecting) {
+
+                    entry.target.style.opacity = "1";
+
+                    entry.target.style.transform =
+                        "translateY(0)";
+
+                }
+
+            });
+
+        },
+        {
+            threshold: 0.15
+        }
+    );
+
+
+cards.forEach(card => {
+
+    observer.observe(card);
+
+});
+
+
+</script>
+
+</body>
+</html>
