@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Web Service Design - Pink Theme</title>
+
+    <style>
+
+        /* =========================
+           GENERAL
+        ========================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Times New Roman", serif;
+            line-height: 1.7;
+            color: #4a2633;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff0f6,
+                    #fce7f3,
+                    #ffe4ec,
+                    #fdf2f8
+                );
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            min-height: 300px;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+
+            color: white;
+
+            padding: 60px 20px;
+
+            position: relative;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #831843,
+                    #be185d,
+                    #db2777,
+                    #ec4899
+                );
+
+            animation: headerDown 1.5s ease;
+        }
+
+        header h1 {
+            font-size: 44px;
+
+            letter-spacing: 2px;
+
+            position: relative;
+            z-index: 2;
+
+            animation:
+                titleZoom 1.5s ease;
+        }
+
+        header p {
+            font-size: 21px;
+
+            margin-top: 12px;
+
+            position: relative;
+            z-index: 2;
+
+            animation:
+                fadeIn 2.5s ease;
+        }
+
+
+        /* Decorative circles */
+
+        header::before,
+        header::after {
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+            height: 220px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,0.12);
+
+            animation:
+                floating 5s infinite ease-in-out;
+        }
+
+        header::before {
+            left: -60px;
+            top: -80px;
+        }
+
+        header::after {
+            right: -60px;
+            bottom: -100px;
+
+            animation-delay: 1.5s;
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        nav {
+            background: #500724;
+
+            padding: 15px;
+
+            text-align: center;
+
+            position: sticky;
+            top: 0;
+
+            z-index: 1000;
+
+            box-shadow:
+                0 5px 18px
+                rgba(131,24,67,0.35);
+        }
+
+        nav a {
+            display: inline-block;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 16px;
+
+            padding: 8px 16px;
+
+            margin: 4px;
+
+            border-radius: 25px;
+
+            transition:
+                all 0.4s ease;
+        }
+
+        nav a:hover {
+            background: #f9a8d4;
+
+            color: #500724;
+
+            transform:
+                translateY(-4px)
+                scale(1.08);
+
+            box-shadow:
+                0 7px 20px
+                rgba(244,114,182,0.5);
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+            width: 92%;
+
+            max-width: 1200px;
+
+            margin: 45px auto;
+        }
+
+
+        /* =========================
+           QUESTION SECTIONS
+        ========================= */
+
+        .question {
+            background:
+                rgba(255,255,255,0.96);
+
+            margin-bottom: 50px;
+
+            padding: 35px;
+
+            border-radius: 22px;
+
+            border-left:
+                7px solid #db2777;
+
+            box-shadow:
+                0 10px 30px
+                rgba(190,24,93,0.15);
+
+            animation:
+                cardAppear 1s ease;
+
+            transition:
+                transform 0.5s ease,
+                box-shadow 0.5s ease,
+                border-color 0.5s ease;
+        }
+
+        .question:hover {
+            transform:
+                translateY(-8px);
+
+            border-left-color:
+                #9d174d;
+
+            box-shadow:
+                0 20px 45px
+                rgba(190,24,93,0.25);
+        }
+
+
+        /* =========================
+           HEADINGS
+        ========================= */
+
+        .question h2 {
+            color: #be185d;
+
+            font-size: 30px;
+
+            margin-bottom: 20px;
+
+            transition:
+                all 0.4s ease;
+        }
+
+        .question:hover h2 {
+            color: #9d174d;
+
+            transform:
+                translateX(8px);
+        }
+
+        h3 {
+            color: #db2777;
+
+            font-size: 23px;
+
+            margin-top: 28px;
+
+            margin-bottom: 12px;
+        }
+
+
+        /* =========================
+           TABLES
+        ========================= */
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin: 20px 0;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 15px
+                rgba(190,24,93,0.08);
+        }
+
+        th {
+            background:
+                linear-gradient(
+                    135deg,
+                    #be185d,
+                    #db2777
+                );
+
+            color: white;
+
+            padding: 15px;
+
+            font-size: 17px;
+        }
+
+        td {
+            padding: 13px;
+
+            border:
+                1px solid #fbcfe8;
+
+            text-align: center;
+
+            background: #fffafd;
+
+            transition:
+                all 0.35s ease;
+        }
+
+        tr:hover td {
+            background: #fce7f3;
+
+            transform:
+                scale(1.01);
+        }
+
+
+        /* =========================
+           FLOW DIAGRAM
+        ========================= */
+
+        .flow {
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin: 28px 0;
+        }
+
+        .box {
+            min-width: 130px;
+
+            padding: 15px 20px;
+
+            text-align: center;
+
+            color: white;
+
+            font-weight: bold;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #db2777,
+                    #ec4899,
+                    #f472b6
+                );
+
+            box-shadow:
+                0 7px 18px
+                rgba(219,39,119,0.3);
+
+            animation:
+                boxFloat 3s infinite ease-in-out;
+
+            transition:
+                all 0.5s ease;
+        }
+
+        .box:hover {
+            transform:
+                scale(1.12)
+                rotate(-3deg);
+
+            box-shadow:
+                0 15px 30px
+                rgba(219,39,119,0.5);
+        }
+
+        .arrow {
+            font-size: 30px;
+
+            color: #db2777;
+
+            font-weight: bold;
+
+            animation:
+                arrowMove 1.5s infinite ease-in-out;
+        }
+
+
+        /* =========================
+           HIGHLIGHT BOX
+        ========================= */
+
+        .highlight {
+            padding: 20px;
+
+            margin: 22px 0;
+
+            border-radius: 12px;
+
+            border-left:
+                6px solid #db2777;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #fce7f3,
+                    #fff1f2
+                );
+
+            box-shadow:
+                0 5px 18px
+                rgba(190,24,93,0.08);
+
+            transition:
+                all 0.4s ease;
+        }
+
+        .highlight:hover {
+            transform:
+                translateX(10px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(190,24,93,0.15);
+        }
+
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .cards {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 20px;
+
+            margin: 20px 0;
+        }
+
+        .mini-card {
+            flex: 1;
+
+            min-width: 230px;
+
+            padding: 23px;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff1f2,
+                    #fce7f3
+                );
+
+            border:
+                2px solid #f9a8d4;
+
+            transition:
+                all 0.5s ease;
+        }
+
+        .mini-card:hover {
+            transform:
+                translateY(-10px)
+                rotate(1deg)
+                scale(1.02);
+
+            border-color:
+                #db2777;
+
+            box-shadow:
+                0 15px 30px
+                rgba(190,24,93,0.2);
+        }
+
+        .mini-card h4 {
+            color: #be185d;
+
+            font-size: 21px;
+
+            margin-bottom: 10px;
+        }
+
+
+        /* =========================
+           CODE BOX
+        ========================= */
+
+        pre {
+            background:
+                linear-gradient(
+                    135deg,
+                    #500724,
+                    #831843
+                );
+
+            color: #ffe4ec;
+
+            padding: 23px;
+
+            border-radius: 14px;
+
+            overflow-x: auto;
+
+            margin: 20px 0;
+
+            font-family:
+                "Courier New", monospace;
+
+            font-size: 14px;
+
+            border:
+                2px solid #f9a8d4;
+
+            box-shadow:
+                0 7px 20px
+                rgba(80,7,36,0.2);
+
+            transition:
+                all 0.4s ease;
+        }
+
+        pre:hover {
+            transform:
+                scale(1.015);
+
+            box-shadow:
+                0 12px 30px
+                rgba(131,24,67,0.35);
+        }
+
+
+        /* =========================
+           LIST
+        ========================= */
+
+        ul {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin-bottom: 8px;
+
+            transition:
+                transform 0.3s ease;
+        }
+
+        li:hover {
+            transform:
+                translateX(7px);
+
+            color: #be185d;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background:
+                linear-gradient(
+                    135deg,
+                    #500724,
+                    #831843
+                );
+
+            color: white;
+
+            text-align: center;
+
+            padding: 35px;
+
+            margin-top: 50px;
+        }
+
+        footer h2 {
+            margin-bottom: 8px;
+        }
+
+        footer p {
+            animation:
+                pulse 2s infinite;
+        }
+
+
+        /* =========================
+           ANIMATIONS
+        ========================= */
+
+        @keyframes headerDown {
+
+            from {
+                transform:
+                    translateY(-100%);
+            }
+
+            to {
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        @keyframes titleZoom {
+
+            from {
+                transform:
+                    scale(0.4);
+
+                opacity: 0;
+            }
+
+            to {
+                transform:
+                    scale(1);
+
+                opacity: 1;
+            }
+        }
+
+
+        @keyframes fadeIn {
+
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+
+        @keyframes floating {
+
+            0%, 100% {
+                transform:
+                    translateY(0)
+                    rotate(0deg);
+            }
+
+            50% {
+                transform:
+                    translateY(35px)
+                    rotate(20deg);
+            }
+        }
+
+
+        @keyframes cardAppear {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        @keyframes boxFloat {
+
+            0%, 100% {
+                transform:
+                    translateY(0);
+            }
+
+            50% {
+                transform:
+                    translateY(-8px);
+            }
+        }
+
+
+        @keyframes arrowMove {
+
+            0%, 100% {
+                transform:
+                    translateX(0);
+            }
+
+            50% {
+                transform:
+                    translateX(8px);
+            }
+        }
+
+
+        @keyframes pulse {
+
+            0%, 100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+
+        /* =========================
+           RESPONSIVE DESIGN
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            header {
+                min-height: 250px;
+            }
+
+            header h1 {
+                font-size: 29px;
+            }
+
+            header p {
+                font-size: 16px;
+            }
+
+            .question {
+                padding: 22px;
+            }
+
+            .question h2 {
+                font-size: 24px;
+            }
+
+            .flow {
+                flex-direction: column;
+            }
+
+            .arrow {
+                transform:
+                    rotate(90deg);
+            }
+
+            nav a {
+                font-size: 13px;
+
+                padding:
+                    7px 10px;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th,
+            td {
+                padding: 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <h1>
+        WEB SERVICE DESIGN & ARCHITECTURE
+    </h1>
+
+    <p>
+        REST • SOAP • API • Security • Scalability • Fault Tolerance
+    </p>
+
+</header>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav>
+
+    <a href="#q1">Question 1</a>
+
+    <a href="#q2">Question 2</a>
+
+    <a href="#q3">Question 3</a>
+
+    <a href="#q4">Question 4</a>
+
+    <a href="#q5">Question 5</a>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- =====================================================
+     QUESTION 1
+===================================================== -->
+
+<section class="question" id="q1">
+
+    <h2>
+        1. REST vs SOAP Web Service Design
+    </h2>
+
+    <p>
+        A company needs to develop a web service for both
+        mobile and web applications. REST and SOAP are two
+        common approaches for implementing web services.
+    </p>
+
+
+    <h3>REST and SOAP Comparison</h3>
+
+    <table>
+
+        <tr>
+            <th>Feature</th>
+            <th>REST</th>
+            <th>SOAP</th>
+        </tr>
+
+        <tr>
+            <td>Data Format</td>
+            <td>Usually JSON</td>
+            <td>XML</td>
+        </tr>
+
+        <tr>
+            <td>Performance</td>
+            <td>Fast and lightweight</td>
+            <td>More processing overhead</td>
+        </tr>
+
+        <tr>
+            <td>Scalability</td>
+            <td>Highly scalable</td>
+            <td>Suitable for enterprise applications</td>
+        </tr>
+
+        <tr>
+            <td>Security</td>
+            <td>HTTPS, OAuth, JWT</td>
+            <td>HTTPS, WS-Security</td>
+        </tr>
+
+        <tr>
+            <td>Mobile Support</td>
+            <td>Excellent</td>
+            <td>More complex</td>
+        </tr>
+
+        <tr>
+            <td>Communication</td>
+            <td>HTTP methods</td>
+            <td>SOAP messages</td>
+        </tr>
+
+    </table>
+
+
+    <h3>Selected Approach: REST</h3>
+
+    <div class="highlight">
+
+        <strong>REST is selected</strong> because the application
+        must support mobile and web clients. REST APIs are lightweight,
+        easy to implement, use JSON efficiently, provide good
+        performance, and can scale horizontally.
+
+    </div>
+
+
+    <h3>REST Architecture</h3>
+
+    <div class="flow">
+
+        <div class="box">
+            Mobile App
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            REST API
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Application Server
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Database
+        </div>
+
+    </div>
+
+
+    <h3>Example Request</h3>
+
+<pre>
+GET /api/products/101
+
+Authorization: Bearer JWT_TOKEN
+Accept: application/json
+</pre>
+
+
+    <h3>Example Response</h3>
+
+<pre>
+{
+    "id": 101,
+    "name": "Laptop",
+    "price": 55000,
+    "available": true
+}
+</pre>
+
+
+    <h3>Justification</h3>
+
+    <div class="cards">
+
+        <div class="mini-card">
+
+            <h4>Performance</h4>
+
+            <p>
+                REST usually uses lightweight JSON data,
+                reducing communication overhead.
+            </p>
+
+        </div>
+
+        <div class="mini-card">
+
+            <h4>Scalability</h4>
+
+            <p>
+                REST services are stateless, making it easier
+                to distribute requests across multiple servers.
+            </p>
+
+        </div>
+
+        <div class="mini-card">
+
+            <h4>Security</h4>
+
+            <p>
+                HTTPS, authentication tokens, OAuth and
+                authorization mechanisms can secure REST APIs.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUESTION 2
+===================================================== -->
+
+<section class="question" id="q2">
+
+    <h2>
+        2. Scalable Service Architecture
+    </h2>
+
+    <p>
+        An online platform expects a large number of users
+        accessing its services simultaneously. Therefore,
+        the system should distribute requests and support
+        horizontal scaling.
+    </p>
+
+
+    <h3>Basic Architecture</h3>
+
+    <div class="flow">
+
+        <div class="box">
+            Client
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            API
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Server
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Database
+        </div>
+
+    </div>
+
+
+    <h3>Problem</h3>
+
+    <p>
+        If a single server receives all requests, it may become
+        overloaded. A failure of that server can also make the
+        entire application unavailable.
+    </p>
+
+
+    <h3>Alternative Scalable Design</h3>
+
+    <div class="flow">
+
+        <div class="box">
+            Users
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Load Balancer
+        </div>
+
+    </div>
+
+
+    <div class="flow">
+
+        <div class="box">
+            API Server 1
+        </div>
+
+        <div class="box">
+            API Server 2
+        </div>
+
+        <div class="box">
+            API Server 3
+        </div>
+
+    </div>
+
+
+    <div class="flow">
+
+        <div class="box">
+            Cache
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Database Cluster
+        </div>
+
+    </div>
+
+
+    <h3>Architecture Diagram</h3>
+
+<pre>
+                    +----------------+
+                    |     USERS      |
+                    +----------------+
+                            |
+                            v
+                    +----------------+
+                    |     CLIENT     |
+                    +----------------+
+                            |
+                            v
+                    +----------------+
+                    | LOAD BALANCER  |
+                    +----------------+
+                       /     |      \
+                      /      |       \
+                     v       v        v
+                 +------+ +------+ +------+
+                 | API1 | | API2 | | API3 |
+                 +------+ +------+ +------+
+                     \       |       /
+                      \      |      /
+                       v     v     v
+                    +-------------+
+                    |    CACHE    |
+                    +-------------+
+                           |
+                           v
+                    +-------------+
+                    | DB REPLICAS |
+                    +-------------+
+</pre>
+
+
+    <h3>Scalability Techniques</h3>
+
+    <table>
+
+        <tr>
+            <th>Technique</th>
+            <th>Purpose</th>
+        </tr>
+
+        <tr>
+            <td>Load Balancer</td>
+            <td>Distributes traffic among servers</td>
+        </tr>
+
+        <tr>
+            <td>Multiple Servers</td>
+            <td>Provides horizontal scaling</td>
+        </tr>
+
+        <tr>
+            <td>Caching</td>
+            <td>Reduces repeated database requests</td>
+        </tr>
+
+        <tr>
+            <td>Database Replication</td>
+            <td>Improves availability and read performance</td>
+        </tr>
+
+        <tr>
+            <td>Stateless Services</td>
+            <td>Makes server scaling easier</td>
+        </tr>
+
+    </table>
+
+
+    <div class="highlight">
+
+        This architecture is more scalable because additional
+        application servers can be added when traffic increases.
+        The load balancer distributes requests while caching
+        reduces unnecessary database operations.
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUESTION 3
+===================================================== -->
+
+<section class="question" id="q3">
+
+    <h2>
+        3. Secure Communication for Banking Application
+    </h2>
+
+    <p>
+        A banking application handles sensitive information such
+        as account numbers, passwords and transaction details.
+        Therefore, communication between client and server must
+        be strongly protected.
+    </p>
+
+
+    <h3>Protocol Analysis</h3>
+
+    <table>
+
+        <tr>
+            <th>Protocol</th>
+            <th>Security</th>
+            <th>Reliability</th>
+            <th>Suitable For Banking?</th>
+        </tr>
+
+        <tr>
+            <td>HTTP</td>
+            <td>Low</td>
+            <td>Good</td>
+            <td>No</td>
+        </tr>
+
+        <tr>
+            <td>HTTPS</td>
+            <td>High</td>
+            <td>High</td>
+            <td>Yes</td>
+        </tr>
+
+        <tr>
+            <td>FTP</td>
+            <td>Low</td>
+            <td>Good</td>
+            <td>No</td>
+        </tr>
+
+        <tr>
+            <td>SSH</td>
+            <td>Very High</td>
+            <td>High</td>
+            <td>Not normally for user web traffic</td>
+        </tr>
+
+    </table>
+
+
+    <h3>Selected Protocol: HTTPS</h3>
+
+    <div class="highlight">
+
+        <strong>HTTPS</strong> is selected because it uses TLS to
+        encrypt communication between the client and server.
+        It provides confidentiality, integrity protection and
+        server authentication through certificates.
+    </div>
+
+
+    <h3>Banking Communication Flow</h3>
+
+    <div class="flow">
+
+        <div class="box">
+            Banking App
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            HTTPS / TLS
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Bank Server
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Secure DB
+        </div>
+
+    </div>
+
+
+    <h3>Security Mechanisms</h3>
+
+    <div class="cards">
+
+        <div class="mini-card">
+
+            <h4>Encryption</h4>
+
+            <p>
+                TLS encrypts sensitive information during
+                transmission.
+            </p>
+
+        </div>
+
+        <div class="mini-card">
+
+            <h4>Authentication</h4>
+
+            <p>
+                User authentication and multi-factor authentication
+                can prevent unauthorized access.
+            </p>
+
+        </div>
+
+        <div class="mini-card">
+
+            <h4>Integrity</h4>
+
+            <p>
+                TLS provides protection against unauthorized
+                modification of transmitted information.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <h3>Communication Process</h3>
+
+<pre>
+1. Client opens an HTTPS connection.
+
+2. TLS handshake is performed.
+
+3. Server certificate is verified.
+
+4. Secure session keys are established.
+
+5. Client sends encrypted request.
+
+6. Server processes the request.
+
+7. Server sends encrypted response.
+
+8. Client displays the result.
+</pre>
+
+
+    <div class="highlight">
+
+        HTTPS provides an appropriate balance of security,
+        reliability and performance for banking applications.
+        Additional controls such as MFA, authorization,
+        secure session management and transaction monitoring
+        should also be implemented.
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUESTION 4
+===================================================== -->
+
+<section class="question" id="q4">
+
+    <h2>
+        4. Third-Party API Integration Strategy
+    </h2>
+
+    <p>
+        Applications often integrate external services such as
+        payment gateways, map services, SMS services and
+        authentication providers.
+    </p>
+
+
+    <h3>API Integration Flow</h3>
+
+    <div class="flow">
+
+        <div class="box">
+            Application
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            API Gateway
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Authentication
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Third-Party API
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Response
+        </div>
+
+    </div>
+
+
+    <h3>Step 1: Create Request</h3>
+
+<pre>
+POST /payment
+
+Content-Type: application/json
+
+{
+    "amount": 5000,
+    "currency": "INR",
+    "orderId": "ORD101"
+}
+</pre>
+
+
+    <h3>Step 2: Authentication</h3>
+
+    <p>
+        The application authenticates with the third-party
+        service using a secure mechanism such as an API key,
+        OAuth token or signed request.
+    </p>
+
+<pre>
+Authorization: Bearer ACCESS_TOKEN
+</pre>
+
+
+    <h3>Step 3: Send Request</h3>
+
+    <p>
+        The request is transmitted using HTTPS. The API gateway
+        can validate authentication, rate limits and request
+        format before forwarding the request.
+    </p>
+
+
+    <h3>Step 4: Receive Response</h3>
+
+<pre>
+{
+    "status": "success",
+    "transactionId": "TXN4567",
+    "amount": 5000
+}
+</pre>
+
+
+    <h3>Step 5: Process Response</h3>
+
+    <ul>
+
+        <li>
+            Check HTTP status code.
+        </li>
+
+        <li>
+            Validate response format.
+        </li>
+
+        <li>
+            Verify transaction information.
+        </li>
+
+        <li>
+            Update the application's database.
+        </li>
+
+        <li>
+            Display the result to the user.
+        </li>
+
+    </ul>
+
+
+    <h3>Error Handling</h3>
+
+<pre>
+IF status = 200
+    Process successful response
+
+ELSE IF status = 401
+    Re-authenticate or refresh token
+
+ELSE IF status = 429
+    Wait and retry
+
+ELSE IF status >= 500
+    Retry using backoff
+
+ELSE
+    Display appropriate error
+END IF
+</pre>
+
+
+    <h3>Alternative Approach: API Gateway</h3>
+
+    <div class="highlight">
+
+        An API Gateway provides a centralized layer between the
+        application and external services. It can provide
+        authentication, rate limiting, caching, routing,
+        monitoring and centralized error handling.
+
+    </div>
+
+
+    <div class="flow">
+
+        <div class="box">
+            Application
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            API Gateway
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Payment API
+        </div>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="mini-card">
+
+            <h4>Security</h4>
+
+            <p>
+                Authentication and authorization can be managed
+                centrally.
+            </p>
+
+        </div>
+
+        <div class="mini-card">
+
+            <h4>Efficiency</h4>
+
+            <p>
+                Caching and connection management can reduce
+                unnecessary requests.
+            </p>
+
+        </div>
+
+        <div class="mini-card">
+
+            <h4>Reliability</h4>
+
+            <p>
+                Retry, timeout and fallback mechanisms can handle
+                temporary failures.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUESTION 5
+===================================================== -->
+
+<section class="question" id="q5">
+
+    <h2>
+        5. Error Handling and Fault Tolerance
+    </h2>
+
+    <p>
+        A web service may encounter invalid requests, authentication
+        failures, network problems, server errors or excessive
+        traffic. A fault-tolerant design ensures that these errors
+        do not bring down the entire system.
+    </p>
+
+
+    <h3>Common Web Service Errors</h3>
+
+    <table>
+
+        <tr>
+            <th>Error</th>
+            <th>Meaning</th>
+            <th>Action</th>
+        </tr>
+
+        <tr>
+            <td>400</td>
+            <td>Bad Request</td>
+            <td>Validate user input</td>
+        </tr>
+
+        <tr>
+            <td>401</td>
+            <td>Unauthorized</td>
+            <td>Authenticate user</td>
+        </tr>
+
+        <tr>
+            <td>403</td>
+            <td>Forbidden</td>
+            <td>Check permissions</td>
+        </tr>
+
+        <tr>
+            <td>404</td>
+            <td>Not Found</td>
+            <td>Check requested resource</td>
+        </tr>
+
+        <tr>
+            <td>429</td>
+            <td>Too Many Requests</td>
+            <td>Use rate limiting and retry</td>
+        </tr>
+
+        <tr>
+            <td>500</td>
+            <td>Internal Server Error</td>
+            <td>Log and recover</td>
+        </tr>
+
+    </table>
+
+
+    <h3>Error Handling Flow</h3>
+
+    <div class="flow">
+
+        <div class="box">
+            Client Request
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Validate
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Authenticate
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Process
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">
+            Response
+        </div>
+
+    </div>
+
+
+    <h3>Fault-Tolerance Mechanisms</h3>
+
+    <div class="cards">
+
+        <div class="mini-card">
+
+            <h4>Retry</h4>
+
+            <p>
+                Temporarily failed requests can be retried after
+                a controlled delay.
+            </p>
+
+        </div>
+
+        <div class="mini-card">
+
+            <h4>Timeout</h4>
+
+            <p>
+                Prevents a client from waiting indefinitely for
+                an unavailable service.
+            </p>
+
+        </div>
+
+        <div class="mini-card">
+
+            <h4>Circuit Breaker</h4>
+
+            <p>
+                Stops repeated requests to an unhealthy service
+                and allows the system to recover.
+            </p>
+
+        </div>
+
+        <div class="mini-card">
+
+            <h4>Fallback</h4>
+
+            <p>
+                Provides an alternative response or service
+                when the primary service fails.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <h3>Error Handling Algorithm</h3>
+
+<pre>
+START
+
+1. Receive client request.
+
+2. Validate request.
+
+3. IF request is invalid THEN
+       Return HTTP 400.
+       Display appropriate error.
+       STOP.
+   END IF
+
+4. Authenticate the client.
+
+5. IF authentication fails THEN
+       Return HTTP 401.
+       STOP.
+   END IF
+
+6. Process the request.
+
+7. IF temporary network/server error occurs THEN
+       Retry with exponential backoff.
+   END IF
+
+8. IF service continues to fail THEN
+       Activate circuit breaker.
+   END IF
+
+9. Use fallback service if available.
+
+10. Log the error.
+
+11. Monitor system health.
+
+12. Return appropriate response.
+
+END
+</pre>
+
+
+    <h3>Fault-Tolerant Architecture</h3>
+
+<pre>
+                    +-------------+
+                    |    CLIENT   |
+                    +-------------+
+                           |
+                           v
+                    +-------------+
+                    | API GATEWAY |
+                    +-------------+
+                           |
+                           v
+                    +-------------+
+                    |LOAD BALANCER|
+                    +-------------+
+                       /       \
+                      /         \
+                     v           v
+                +---------+ +---------+
+                |SERVER 1 | |SERVER 2 |
+                +---------+ +---------+
+                     \         /
+                      \       /
+                       v     v
+                    +-------------+
+                    | DB REPLICAS |
+                    +-------------+
+
+          Retry + Timeout + Circuit Breaker
+                     |
+                     v
+                  Fallback
+                     |
+                     v
+                 Monitoring
+</pre>
+
+
+    <h3>Alternative Reliability Strategies</h3>
+
+    <table>
+
+        <tr>
+            <th>Strategy</th>
+            <th>Benefit</th>
+        </tr>
+
+        <tr>
+            <td>Load Balancing</td>
+            <td>Distributes traffic between servers</td>
+        </tr>
+
+        <tr>
+            <td>Caching</td>
+            <td>Reduces repeated requests</td>
+        </tr>
+
+        <tr>
+            <td>Message Queue</td>
+            <td>Supports asynchronous processing</td>
+        </tr>
+
+        <tr>
+            <td>Database Replication</td>
+            <td>Improves availability</td>
+        </tr>
+
+        <tr>
+            <td>Health Monitoring</td>
+            <td>Detects failures quickly</td>
+        </tr>
+
+        <tr>
+            <td>Graceful Degradation</td>
+            <td>Keeps essential functions available</td>
+        </tr>
+
+    </table>
+
+
+    <div class="highlight">
+
+        <strong>Conclusion:</strong>
+        A combination of validation, meaningful error responses,
+        retry mechanisms, timeouts, circuit breakers, fallback
+        services, monitoring, load balancing and database
+        redundancy can significantly improve web-service
+        reliability and provide a smooth user experience.
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <h2>
+        Web Service Design & Architecture
+    </h2>
+
+    <p>
+        REST • SOAP • API Integration • Security • Scalability • Fault Tolerance
+    </p>
+
+    <p>
+        Designed with HTML & CSS 💗
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>
