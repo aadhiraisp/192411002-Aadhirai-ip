@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Web Technology Algorithms</title>
+
+    <style>
+
+        /* ---------- GENERAL PAGE ---------- */
+
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Times New Roman", serif;
+            background: linear-gradient(135deg, #dbeafe, #f5f3ff, #e0f2fe);
+            color: #222;
+        }
+
+        /* ---------- HEADER ---------- */
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a, #4f46e5);
+            color: white;
+            text-align: center;
+            padding: 45px 20px;
+            animation: headerAnimation 1.2s ease;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 40px;
+            letter-spacing: 2px;
+            animation: titleAnimation 1.5s ease;
+        }
+
+        header p {
+            font-size: 19px;
+            margin-top: 10px;
+            opacity: 0.9;
+            animation: fadeIn 2s ease;
+        }
+
+        /* ---------- NAVIGATION ---------- */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+        }
+
+        nav a {
+            display: inline-block;
+            text-decoration: none;
+            color: #1e3a8a;
+            font-weight: bold;
+            margin: 5px 10px;
+            padding: 9px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background: #4f46e5;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(79,70,229,0.4);
+        }
+
+        /* ---------- MAIN CONTAINER ---------- */
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        /* ---------- ALGORITHM CARDS ---------- */
+
+        .algorithm-card {
+            background: rgba(255,255,255,0.95);
+            margin-bottom: 35px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+
+            opacity: 0;
+            transform: translateY(50px);
+
+            animation: cardAppear 0.9s ease forwards;
+            transition: transform 0.4s ease,
+                        box-shadow 0.4s ease;
+        }
+
+        .algorithm-card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .algorithm-card:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .algorithm-card:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .algorithm-card:nth-child(4) {
+            animation-delay: 0.8s;
+        }
+
+        .algorithm-card:nth-child(5) {
+            animation-delay: 1s;
+        }
+
+        .algorithm-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.2);
+        }
+
+        /* ---------- HEADINGS ---------- */
+
+        h2 {
+            color: #1e3a8a;
+            font-size: 28px;
+            border-left: 6px solid #4f46e5;
+            padding-left: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .algorithm-card:hover h2 {
+            color: #7c3aed;
+            padding-left: 25px;
+        }
+
+        /* ---------- CODE AREA ---------- */
+
+        pre {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 25px;
+            border-radius: 12px;
+            overflow-x: auto;
+
+            font-family: "Courier New", monospace;
+            font-size: 15px;
+            line-height: 1.6;
+
+            border: 2px solid transparent;
+
+            transition: all 0.4s ease;
+        }
+
+        pre:hover {
+            border-color: #6366f1;
+            box-shadow: 0 0 20px rgba(99,102,241,0.3);
+            transform: scale(1.01);
+        }
+
+        /* ---------- FLOW BOX ---------- */
+
+        .flow {
+            margin-top: 20px;
+            padding: 18px;
+            border-radius: 12px;
+
+            background: linear-gradient(
+                90deg,
+                #eef2ff,
+                #e0e7ff,
+                #f5f3ff
+            );
+
+            color: #312e81;
+            font-weight: bold;
+            text-align: center;
+
+            transition: all 0.4s ease;
+        }
+
+        .flow:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(79,70,229,0.2);
+        }
+
+        /* ---------- FLOW ARROW ANIMATION ---------- */
+
+        .arrow {
+            display: inline-block;
+            margin: 0 8px;
+            color: #4f46e5;
+            animation: arrowMove 1.2s infinite alternate;
+        }
+
+        /* ---------- FOOTER ---------- */
+
+        footer {
+            margin-top: 50px;
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        footer p {
+            margin: 0;
+            animation: fadeIn 2s ease;
+        }
+
+        /* ---------- ANIMATIONS ---------- */
+
+        @keyframes headerAnimation {
+
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes titleAnimation {
+
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            70% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes cardAppear {
+
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes arrowMove {
+
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(8px);
+            }
+        }
+
+        /* ---------- RESPONSIVE DESIGN ---------- */
+
+        @media (max-width: 700px) {
+
+            header h1 {
+                font-size: 28px;
+            }
+
+            nav a {
+                display: block;
+                margin: 5px;
+            }
+
+            .container {
+                width: 95%;
+            }
+
+            .algorithm-card {
+                padding: 20px;
+            }
+
+            pre {
+                font-size: 13px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <h1>WEB TECHNOLOGY ALGORITHMS</h1>
+
+    <p>
+        XML Parsing • MVC • JSP • Database • PHP Validation
+    </p>
+
+</header>
+
+
+<!-- ================= NAVIGATION ================= -->
+
+<nav>
+
+    <a href="#xml">XML Parsing</a>
+
+    <a href="#mvc">MVC Workflow</a>
+
+    <a href="#jsp">JSP Request</a>
+
+    <a href="#database">Database</a>
+
+    <a href="#php">PHP Validation</a>
+
+</nav>
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="container">
+
+
+    <!-- ================= XML ================= -->
+
+    <section class="algorithm-card" id="xml">
+
+        <h2>1. XML Parsing Algorithm</h2>
+
+        <pre>
+ALGORITHM ParseXMLDocument
+
+START
+
+1. Load the XML file from the specified file path.
+
+2. Check whether the XML file exists.
+   IF file does not exist THEN
+       Display "XML file not found"
+       STOP
+   END IF
+
+3. Parse the XML document using an XML parser.
+
+4. Check whether the XML document is valid.
+   IF XML is invalid THEN
+       Display "Invalid XML document"
+       STOP
+   END IF
+
+5. Get the root element of the XML document.
+
+6. Traverse the root element and its child nodes.
+
+7. FOR each child node in the root element DO
+
+       IF the node represents a required element THEN
+           Read the element name.
+           Read its text value or attribute value.
+       END IF
+
+       IF the node contains child elements THEN
+           Recursively traverse the child nodes.
+       END IF
+
+   END FOR
+
+8. Store the extracted information.
+
+9. Display the extracted data.
+
+10. Close the XML document.
+
+END
+        </pre>
+
+        <div class="flow">
+
+            XML File
+            <span class="arrow">→</span>
+            Load
+            <span class="arrow">→</span>
+            Parse
+            <span class="arrow">→</span>
+            Traverse
+            <span class="arrow">→</span>
+            Extract
+            <span class="arrow">→</span>
+            Display
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MVC ================= -->
+
+    <section class="algorithm-card" id="mvc">
+
+        <h2>2. MVC Workflow</h2>
+
+        <pre>
+ALGORITHM MVCWorkflow
+
+START
+
+1. User sends a request through a web browser.
+
+2. Web server receives the HTTP request.
+
+3. Send the request to the appropriate Controller.
+
+4. Controller analyzes the request.
+
+5. Controller validates the request data.
+
+6. Controller calls the appropriate Model method.
+
+7. Model receives the request.
+
+8. Model establishes a database connection.
+
+9. Model executes the required SQL query.
+
+10. Database processes the query.
+
+11. Database returns the required data.
+
+12. Model processes the data.
+
+13. Model sends the data to the Controller.
+
+14. Controller selects the appropriate View.
+
+15. Controller passes the data to the View.
+
+16. View generates the HTML response.
+
+17. Server sends the response to the browser.
+
+18. Browser displays the response.
+
+END
+        </pre>
+
+        <div class="flow">
+
+            User
+            <span class="arrow">→</span>
+            Controller
+            <span class="arrow">→</span>
+            Model
+            <span class="arrow">→</span>
+            Database
+            <span class="arrow">→</span>
+            Model
+            <span class="arrow">→</span>
+            Controller
+            <span class="arrow">→</span>
+            View
+            <span class="arrow">→</span>
+            User
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= JSP ================= -->
+
+    <section class="algorithm-card" id="jsp">
+
+        <h2>3. JSP Request Flow</h2>
+
+        <pre>
+ALGORITHM JSPRequestFlow
+
+START
+
+1. User enters a URL or submits a form.
+
+2. Browser creates an HTTP request.
+
+3. Send the request to the web/application server.
+
+4. Server identifies the requested JSP page.
+
+5. IF JSP page is accessed for the first time
+   OR JSP page has been modified THEN
+
+       Translate JSP into a Servlet.
+       Compile the generated Servlet.
+
+   END IF
+
+6. Execute the JSP Servlet.
+
+7. JSP processes the request.
+
+8. IF backend processing is required THEN
+       Call the appropriate Servlet,
+       JavaBean, or business component.
+   END IF
+
+9. Backend connects to the database if required.
+
+10. Execute the database operation.
+
+11. Retrieve and process the data.
+
+12. Return the data to the JSP.
+
+13. JSP combines HTML with dynamic data.
+
+14. Generate the final HTML response.
+
+15. Server sends the response to the browser.
+
+16. Browser renders the HTML.
+
+17. Display dynamic content.
+
+END
+        </pre>
+
+        <div class="flow">
+
+            Client
+            <span class="arrow">→</span>
+            Request
+            <span class="arrow">→</span>
+            Server
+            <span class="arrow">→</span>
+            JSP
+            <span class="arrow">→</span>
+            Servlet
+            <span class="arrow">→</span>
+            Database
+            <span class="arrow">→</span>
+            JSP
+            <span class="arrow">→</span>
+            Response
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= DATABASE ================= -->
+
+    <section class="algorithm-card" id="database">
+
+        <h2>4. Database Retrieval Algorithm</h2>
+
+        <pre>
+ALGORITHM RetrieveDataFromDatabase
+
+START
+
+1. Declare variables for:
+       Database URL
+       Username
+       Password
+       Connection
+       SQL Query
+       Result Set
+
+2. Load the required database driver.
+
+3. Establish a connection with the database.
+
+4. IF connection fails THEN
+       Display "Database connection failed"
+       STOP
+   END IF
+
+5. Create a SQL SELECT query.
+
+6. Create a Statement or PreparedStatement.
+
+7. Execute the SQL query.
+
+8. Store the returned records in a Result Set.
+
+9. Check whether the Result Set contains records.
+
+10. IF records are available THEN
+
+        WHILE another record exists DO
+
+            Read the required columns.
+            Store values in variables.
+            Display the retrieved values.
+
+        END WHILE
+
+    ELSE
+
+        Display "No records found"
+
+    END IF
+
+11. Close the Result Set.
+
+12. Close the Statement.
+
+13. Close the Database Connection.
+
+14. Display "Data retrieval completed."
+
+END
+        </pre>
+
+        <div class="flow">
+
+            Connect
+            <span class="arrow">→</span>
+            SQL Query
+            <span class="arrow">→</span>
+            Execute
+            <span class="arrow">→</span>
+            Result Set
+            <span class="arrow">→</span>
+            Process
+            <span class="arrow">→</span>
+            Display
+            <span class="arrow">→</span>
+            Close
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= PHP ================= -->
+
+    <section class="algorithm-card" id="php">
+
+        <h2>5. PHP Validation Algorithm</h2>
+
+        <pre>
+ALGORITHM PHPFormValidation
+
+START
+
+1. Receive the form data submitted by the user.
+
+2. Initialize an empty error list.
+
+3. Retrieve Name, Email, and Password.
+
+4. Remove unnecessary spaces.
+
+5. Check whether the Name field is empty.
+
+   IF Name is empty THEN
+       Add "Name is required" to the error list.
+   END IF
+
+6. Check whether the Email field is empty.
+
+   IF Email is empty THEN
+       Add "Email is required".
+
+   ELSE
+       Check whether the email format is valid.
+
+       IF email is invalid THEN
+           Add "Enter a valid email address".
+       END IF
+   END IF
+
+7. Check whether Password is empty.
+
+   IF Password is empty THEN
+       Add "Password is required".
+
+   ELSE
+       Check password length.
+
+       IF password is too short THEN
+           Add "Password is too short".
+       END IF
+   END IF
+
+8. Check whether the error list is empty.
+
+9. IF errors exist THEN
+
+       Display error messages.
+       Do not submit the form.
+
+   ELSE
+
+       Accept the submitted data.
+       Process or store the data.
+       Display "Form submitted successfully."
+
+   END IF
+
+END
+        </pre>
+
+        <div class="flow">
+
+            User Input
+            <span class="arrow">→</span>
+            Empty Check
+            <span class="arrow">→</span>
+            Email Check
+            <span class="arrow">→</span>
+            Password Check
+            <span class="arrow">→</span>
+            Validate
+            <span class="arrow">→</span>
+            Submit
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        Web Technology | XML | MVC | JSP | Database | PHP
+    </p>
+
+</footer>
+
+
+</body>
+</html>
