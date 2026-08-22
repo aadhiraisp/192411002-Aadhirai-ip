@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Web Service Technology - Five Questions</title>
+
+    <style>
+
+        /* ==============================
+           GENERAL PAGE STYLING
+        ============================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Times New Roman", serif;
+            background: linear-gradient(135deg, #dbeafe, #f3e8ff, #cffafe);
+            color: #222;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ==============================
+           HEADER ANIMATION
+        ============================== */
+
+        header {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a, #4c1d95);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            animation: headerSlide 1.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before,
+        header::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            animation: floating 5s infinite ease-in-out;
+        }
+
+        header::before {
+            left: 10%;
+            top: -80px;
+        }
+
+        header::after {
+            right: 10%;
+            bottom: -80px;
+            animation-delay: 1s;
+        }
+
+        header h1 {
+            font-size: 42px;
+            position: relative;
+            z-index: 2;
+            letter-spacing: 2px;
+            animation: titleZoom 1.5s ease;
+        }
+
+        header p {
+            font-size: 20px;
+            margin-top: 10px;
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 2s ease;
+        }
+
+        /* ==============================
+           NAVIGATION
+        ============================== */
+
+        nav {
+            background: #111827;
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px 12px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+        }
+
+        nav a:hover {
+            background: #38bdf8;
+            color: #111827;
+            transform: translateY(-4px) scale(1.05);
+        }
+
+        /* ==============================
+           MAIN CONTAINER
+        ============================== */
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        /* ==============================
+           QUESTION CARDS
+        ============================== */
+
+        .question {
+            background: rgba(255,255,255,0.95);
+            margin-bottom: 45px;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-left: 7px solid #2563eb;
+
+            opacity: 0;
+            transform: translateY(60px);
+            animation: cardAppear 1s ease forwards;
+
+            transition:
+                transform 0.5s ease,
+                box-shadow 0.5s ease,
+                border-color 0.5s ease;
+        }
+
+        .question:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .question:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .question:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+
+        .question:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+
+        .question:hover {
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+            border-left-color: #9333ea;
+        }
+
+        .question h2 {
+            color: #1e3a8a;
+            font-size: 28px;
+            margin-bottom: 20px;
+            transition: color 0.4s ease;
+        }
+
+        .question:hover h2 {
+            color: #7e22ce;
+        }
+
+        .question h3 {
+            color: #7c3aed;
+            margin: 20px 0 10px;
+        }
+
+        /* ==============================
+           CODE BOX
+        ============================== */
+
+        pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 22px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: "Courier New", monospace;
+            font-size: 14px;
+
+            transition:
+                transform 0.4s ease,
+                box-shadow 0.4s ease;
+        }
+
+        pre:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(15,23,42,0.5);
+        }
+
+        /* ==============================
+           FLOW DIAGRAM
+        ============================== */
+
+        .flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        .box {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(37,99,235,0.3);
+
+            transition: all 0.5s ease;
+            animation: boxFloat 3s infinite ease-in-out;
+        }
+
+        .box:nth-child(even) {
+            animation-delay: 0.5s;
+        }
+
+        .box:hover {
+            transform: rotate(-3deg) scale(1.12);
+            box-shadow: 0 12px 25px rgba(124,58,237,0.5);
+        }
+
+        .arrow {
+            font-size: 28px;
+            color: #7c3aed;
+            animation: arrowMove 1.5s infinite ease-in-out;
+        }
+
+        /* ==============================
+           TABLE
+        ============================== */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        th {
+            background: #1e3a8a;
+            color: white;
+            padding: 14px;
+        }
+
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+            transition: background 0.4s ease, transform 0.4s ease;
+        }
+
+        tr:hover td {
+            background: #dbeafe;
+            transform: scale(1.02);
+        }
+
+        /* ==============================
+           SOAP MESSAGE
+        ============================== */
+
+        .soap {
+            border: 2px solid #7c3aed;
+            border-radius: 15px;
+            padding: 20px;
+            background: #faf5ff;
+            margin: 20px 0;
+            transition: all 0.5s ease;
+        }
+
+        .soap:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(124,58,237,0.25);
+        }
+
+        .soap-part {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            transition: transform 0.4s ease;
+        }
+
+        .soap-part:hover {
+            transform: translateX(15px);
+        }
+
+        .envelope {
+            background: #dbeafe;
+        }
+
+        .header {
+            background: #fef3c7;
+        }
+
+        .body {
+            background: #dcfce7;
+        }
+
+        /* ==============================
+           HIGHLIGHT BOX
+        ============================== */
+
+        .highlight {
+            background: linear-gradient(90deg, #eff6ff, #faf5ff);
+            border-left: 5px solid #7c3aed;
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 8px;
+
+            transition: all 0.4s ease;
+        }
+
+        .highlight:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        /* ==============================
+           FOOTER
+        ============================== */
+
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+        }
+
+        footer p {
+            animation: pulse 2s infinite;
+        }
+
+        /* ==============================
+           ANIMATIONS
+        ============================== */
+
+        @keyframes headerSlide {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes titleZoom {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(30px);
+            }
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes boxFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes arrowMove {
+            0%, 100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(8px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        /* ==============================
+           RESPONSIVE DESIGN
+        ============================== */
+
+        @media (max-width: 700px) {
+
+            header h1 {
+                font-size: 30px;
+            }
+
+            header p {
+                font-size: 16px;
+            }
+
+            .question {
+                padding: 20px;
+            }
+
+            .question h2 {
+                font-size: 23px;
+            }
+
+            .flow {
+                flex-direction: column;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+
+            nav a {
+                margin: 3px;
+                font-size: 14px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<!-- ==============================
+     HEADER
+============================== -->
+
+<header>
+
+    <h1>WEB SERVICE TECHNOLOGY</h1>
+
+    <p>
+        SOAP • WSDL • XML • Database • Web Services
+    </p>
+
+</header>
+
+
+<!-- ==============================
+     NAVIGATION
+============================== -->
+
+<nav>
+
+    <a href="#q1">Question 1</a>
+    <a href="#q2">Question 2</a>
+    <a href="#q3">Question 3</a>
+    <a href="#q4">Question 4</a>
+    <a href="#q5">Question 5</a>
+
+</nav>
+
+
+<div class="container">
+
+
+<!-- =====================================================
+     QUESTION 1
+===================================================== -->
+
+<section class="question" id="q1">
+
+    <h2>1. SOAP-Based Hospital Management Web Service</h2>
+
+    <p>
+        A hospital management system can use a SOAP-based web service
+        to exchange patient information between departments such as
+        reception, laboratory, pharmacy, billing and medical records.
+    </p>
+
+    <h3>Main Operations</h3>
+
+    <table>
+
+        <tr>
+            <th>Operation</th>
+            <th>Purpose</th>
+        </tr>
+
+        <tr>
+            <td>addPatient()</td>
+            <td>Register a new patient</td>
+        </tr>
+
+        <tr>
+            <td>getPatient()</td>
+            <td>Retrieve patient information</td>
+        </tr>
+
+        <tr>
+            <td>scheduleAppointment()</td>
+            <td>Schedule an appointment</td>
+        </tr>
+
+        <tr>
+            <td>getMedicalRecords()</td>
+            <td>Retrieve medical records</td>
+        </tr>
+
+        <tr>
+            <td>updateMedicalRecord()</td>
+            <td>Update medical information</td>
+        </tr>
+
+        <tr>
+            <td>cancelAppointment()</td>
+            <td>Cancel an appointment</td>
+        </tr>
+
+    </table>
+
+
+    <h3>SOAP Message Structure</h3>
+
+    <div class="soap">
+
+        <div class="soap-part envelope">
+            <strong>SOAP Envelope</strong>
+            <br>
+            Root element of every SOAP message.
+        </div>
+
+        <div class="soap-part header">
+            <strong>SOAP Header</strong>
+            <br>
+            Contains security, authentication and transaction information.
+        </div>
+
+        <div class="soap-part body">
+            <strong>SOAP Body</strong>
+            <br>
+            Contains the actual request or response data.
+        </div>
+
+    </div>
+
+
+    <h3>SOAP Request Example</h3>
+
+<pre>
+&lt;soap:Envelope
+    xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:h="http://hospital.example.com/"&gt;
+
+    &lt;soap:Header&gt;
+        &lt;h:Security&gt;
+            &lt;h:Username&gt;hospitalClient&lt;/h:Username&gt;
+            &lt;h:Token&gt;ABC123&lt;/h:Token&gt;
+        &lt;/h:Security&gt;
+    &lt;/soap:Header&gt;
+
+    &lt;soap:Body&gt;
+
+        &lt;h:AddPatient&gt;
+
+            &lt;h:PatientID&gt;P101&lt;/h:PatientID&gt;
+            &lt;h:Name&gt;Arun Kumar&lt;/h:Name&gt;
+            &lt;h:Age&gt;45&lt;/h:Age&gt;
+            &lt;h:Gender&gt;Male&lt;/h:Gender&gt;
+            &lt;h:Department&gt;Cardiology&lt;/h:Department&gt;
+
+        &lt;/h:AddPatient&gt;
+
+    &lt;/soap:Body&gt;
+
+&lt;/soap:Envelope&gt;
+</pre>
+
+
+    <h3>Data Exchange</h3>
+
+    <div class="flow">
+
+        <div class="box">Hospital Client</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">SOAP Request</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">SOAP Server</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Database</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">SOAP Response</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Client</div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <strong>Why SOAP?</strong>
+
+        SOAP is suitable for hospital systems because it provides
+        structured XML communication, interoperability, security
+        through standards such as WS-Security, reliable messaging,
+        and standardized fault handling.
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUESTION 2
+===================================================== -->
+
+<section class="question" id="q2">
+
+    <h2>2. WSDL Structure for an Enterprise Web Service</h2>
+
+    <p>
+        WSDL stands for Web Services Description Language. It is an
+        XML-based language used to describe the interface, operations,
+        messages, communication protocol and endpoint of a web service.
+    </p>
+
+
+    <h3>Main WSDL Components</h3>
+
+    <table>
+
+        <tr>
+            <th>Component</th>
+            <th>Purpose</th>
+        </tr>
+
+        <tr>
+            <td>Types</td>
+            <td>Defines data types</td>
+        </tr>
+
+        <tr>
+            <td>Message</td>
+            <td>Defines input and output messages</td>
+        </tr>
+
+        <tr>
+            <td>PortType</td>
+            <td>Defines available operations</td>
+        </tr>
+
+        <tr>
+            <td>Binding</td>
+            <td>Defines communication protocol</td>
+        </tr>
+
+        <tr>
+            <td>Service</td>
+            <td>Defines actual service endpoint</td>
+        </tr>
+
+    </table>
+
+
+    <h3>WSDL Structure</h3>
+
+<pre>
+&lt;definitions&gt;
+
+    &lt;types&gt;
+        &lt;!-- Data types --&gt;
+    &lt;/types&gt;
+
+    &lt;message name="GetDataRequest"&gt;
+        &lt;!-- Input message --&gt;
+    &lt;/message&gt;
+
+    &lt;message name="GetDataResponse"&gt;
+        &lt;!-- Output message --&gt;
+    &lt;/message&gt;
+
+    &lt;portType name="EnterprisePortType"&gt;
+
+        &lt;operation name="getData"&gt;
+            &lt;input message="tns:GetDataRequest"/&gt;
+            &lt;output message="tns:GetDataResponse"/&gt;
+        &lt;/operation&gt;
+
+        &lt;operation name="updateData"&gt;
+            &lt;input message="tns:UpdateDataRequest"/&gt;
+            &lt;output message="tns:UpdateDataResponse"/&gt;
+        &lt;/operation&gt;
+
+    &lt;/portType&gt;
+
+    &lt;binding name="EnterpriseSoapBinding"
+             type="tns:EnterprisePortType"&gt;
+
+        &lt;soap:binding
+            style="document"
+            transport="http://schemas.xmlsoap.org/soap/http"/&gt;
+
+    &lt;/binding&gt;
+
+    &lt;service name="EnterpriseService"&gt;
+
+        &lt;port
+            name="EnterpriseSoapPort"
+            binding="tns:EnterpriseSoapBinding"&gt;
+
+            &lt;soap:address
+                location="https://example.com/EnterpriseService"/&gt;
+
+        &lt;/port&gt;
+
+    &lt;/service&gt;
+
+&lt;/definitions&gt;
+</pre>
+
+
+    <h3>WSDL Flow</h3>
+
+    <div class="flow">
+
+        <div class="box">Types</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Messages</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">PortType</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Binding</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Service</div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <strong>Importance:</strong>
+
+        WSDL acts as a contract between the service provider and
+        service consumer. It allows external systems to understand
+        available operations, required data, protocols and endpoints.
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUESTION 3
+===================================================== -->
+
+<section class="question" id="q3">
+
+    <h2>3. Debugging SOAP Communication Problems</h2>
+
+    <p>
+        SOAP communication problems may occur because of invalid XML,
+        incorrect namespaces, wrong endpoints, authentication errors,
+        incorrect SOAPAction values, database problems or network
+        timeouts.
+    </p>
+
+
+    <h3>Common Problems</h3>
+
+    <table>
+
+        <tr>
+            <th>Problem</th>
+            <th>Description</th>
+        </tr>
+
+        <tr>
+            <td>XML Formatting</td>
+            <td>Invalid or incorrectly structured XML</td>
+        </tr>
+
+        <tr>
+            <td>Namespace Error</td>
+            <td>Incorrect XML namespace</td>
+        </tr>
+
+        <tr>
+            <td>Endpoint Error</td>
+            <td>Incorrect service URL</td>
+        </tr>
+
+        <tr>
+            <td>SOAPAction Error</td>
+            <td>Operation does not match expected action</td>
+        </tr>
+
+        <tr>
+            <td>Authentication Error</td>
+            <td>Invalid credentials or security token</td>
+        </tr>
+
+        <tr>
+            <td>Database Error</td>
+            <td>Database unavailable or query failure</td>
+        </tr>
+
+        <tr>
+            <td>Timeout</td>
+            <td>Server or network response is too slow</td>
+        </tr>
+
+    </table>
+
+
+    <h3>Debugging Process</h3>
+
+    <div class="flow">
+
+        <div class="box">Check Endpoint</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Validate XML</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Check Namespace</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Check WSDL</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Check Server</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Check Database</div>
+
+    </div>
+
+
+    <h3>SOAP Fault Handling</h3>
+
+<pre>
+&lt;soap:Fault&gt;
+
+    &lt;faultcode&gt;soap:Server&lt;/faultcode&gt;
+
+    &lt;faultstring&gt;
+        Unable to retrieve patient records
+    &lt;/faultstring&gt;
+
+    &lt;detail&gt;
+        Database connection failed
+    &lt;/detail&gt;
+
+&lt;/soap:Fault&gt;
+</pre>
+
+
+    <h3>Validation Algorithm</h3>
+
+<pre>
+START
+
+1. Check the SOAP endpoint.
+
+2. Validate XML syntax.
+
+3. Check SOAP Envelope.
+
+4. Check SOAP Header.
+
+5. Check SOAP Body.
+
+6. Verify XML namespaces.
+
+7. Compare request with WSDL.
+
+8. Verify SOAPAction.
+
+9. Check authentication.
+
+10. Check server logs.
+
+11. Check database connectivity.
+
+12. Check response.
+
+13. IF SOAP Fault exists THEN
+        Read fault code.
+        Read fault message.
+        Log the error.
+        Handle the error.
+    ELSE
+        Process the successful response.
+    END IF
+
+END
+</pre>
+
+
+    <div class="highlight">
+
+        <strong>Result:</strong>
+
+        Correct endpoint, valid XML, correct namespaces, proper
+        authentication, WSDL validation, logging and SOAP Fault
+        handling ensure reliable SOAP communication.
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUESTION 4
+===================================================== -->
+
+<section class="question" id="q4">
+
+    <h2>4. XML Parsing and Database Data Processing</h2>
+
+    <p>
+        XML parsing is used to read structured XML data. The parser
+        loads the document, identifies the root element, traverses
+        child nodes and extracts the required information.
+    </p>
+
+
+    <h3>XML Parsing Algorithm</h3>
+
+<pre>
+START
+
+1. Load the XML document.
+
+2. Check whether the XML file exists.
+
+3. Parse the XML using an XML parser.
+
+4. Check whether the XML is valid.
+
+5. Get the root element.
+
+6. Traverse the child nodes.
+
+7. FOR each node DO
+
+       Read the element name.
+
+       Read its value or attribute.
+
+       IF child elements exist THEN
+           Traverse the child elements recursively.
+       END IF
+
+   END FOR
+
+8. Store the extracted information.
+
+9. Display the extracted data.
+
+10. Close the XML document.
+
+END
+</pre>
+
+
+    <h3>Example XML Data</h3>
+
+<pre>
+&lt;users&gt;
+
+    &lt;user&gt;
+        &lt;id&gt;101&lt;/id&gt;
+        &lt;name&gt;Arun&lt;/name&gt;
+        &lt;email&gt;arun@gmail.com&lt;/email&gt;
+    &lt;/user&gt;
+
+    &lt;user&gt;
+        &lt;id&gt;102&lt;/id&gt;
+        &lt;name&gt;Priya&lt;/name&gt;
+        &lt;email&gt;priya@gmail.com&lt;/email&gt;
+    &lt;/user&gt;
+
+&lt;/users&gt;
+</pre>
+
+
+    <h3>Parsing Flow</h3>
+
+    <div class="flow">
+
+        <div class="box">XML File</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Load</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Parse</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Root Node</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Child Nodes</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Extract Data</div>
+
+    </div>
+
+
+    <h3>Database Retrieval Algorithm</h3>
+
+<pre>
+START
+
+1. Load database driver.
+
+2. Establish database connection.
+
+3. Check connection status.
+
+4. Create SQL SELECT query.
+
+5. Create Statement or PreparedStatement.
+
+6. Execute the SQL query.
+
+7. Store the result in ResultSet.
+
+8. IF records exist THEN
+
+       WHILE records are available DO
+           Read required columns.
+           Store values.
+           Display values.
+       END WHILE
+
+   ELSE
+
+       Display "No records found".
+
+   END IF
+
+9. Close ResultSet.
+
+10. Close Statement.
+
+11. Close Database Connection.
+
+END
+</pre>
+
+
+    <div class="highlight">
+
+        XML parsing allows hierarchical data to be processed correctly,
+        while database retrieval allows applications to obtain and
+        display persistent information stored in relational databases.
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUESTION 5
+===================================================== -->
+
+<section class="question" id="q5">
+
+    <h2>5. PHP Form Validation</h2>
+
+    <p>
+        PHP validation ensures that information entered into a web
+        form is complete, correctly formatted and suitable for
+        processing before it is stored or submitted.
+    </p>
+
+
+    <h3>Validation Algorithm</h3>
+
+<pre>
+START
+
+1. Receive the submitted form data.
+
+2. Initialize an empty error list.
+
+3. Read Name, Email and Password.
+
+4. Remove unnecessary spaces.
+
+5. Check Name.
+
+   IF Name is empty THEN
+       Add "Name is required".
+   END IF
+
+6. Check Email.
+
+   IF Email is empty THEN
+       Add "Email is required".
+
+   ELSE IF email format is invalid THEN
+       Add "Enter a valid email address".
+   END IF
+
+7. Check Password.
+
+   IF Password is empty THEN
+       Add "Password is required".
+
+   ELSE IF password length is too short THEN
+       Add "Password is too short".
+   END IF
+
+8. Check the error list.
+
+9. IF errors exist THEN
+
+       Display error messages.
+       Do not process the form.
+
+   ELSE
+
+       Accept the data.
+       Process or store the data.
+       Display success message.
+
+   END IF
+
+END
+</pre>
+
+
+    <h3>Validation Flow</h3>
+
+    <div class="flow">
+
+        <div class="box">User Input</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Empty Check</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Email Check</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Password Check</div>
+
+        <div class="arrow">→</div>
+
+        <div class="box">Check Errors</div>
+
+    </div>
+
+
+    <h3>PHP Validation Example</h3>
+
+<pre>
+&lt;?php
+
+$name = trim($_POST["name"]);
+$email = trim($_POST["email"]);
+$password = $_POST["password"];
+
+$errors = array();
+
+if (empty($name)) {
+    $errors[] = "Name is required";
+}
+
+if (empty($email)) {
+    $errors[] = "Email is required";
+}
+else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $errors[] = "Invalid email format";
+}
+
+if (empty($password)) {
+    $errors[] = "Password is required";
+}
+else if (strlen($password) &lt; 8) {
+    $errors[] = "Password must contain at least 8 characters";
+}
+
+if (!empty($errors)) {
+
+    foreach ($errors as $error) {
+        echo $error . "&lt;br&gt;";
+    }
+
+}
+else {
+
+    echo "Form submitted successfully.";
+
+}
+
+?&gt;
+</pre>
+
+
+    <div class="highlight">
+
+        <strong>Result:</strong>
+
+        PHP validation prevents incomplete or incorrectly formatted
+        data from being processed and ensures that only valid input
+        is accepted.
+
+    </div>
+
+</section>
+
+</div>
+
+
+<!-- ==============================
+     FOOTER
+============================== -->
+
+<footer>
+
+    <p>
+        Web Service Technology | SOAP | WSDL | XML | Database | PHP
+    </p>
+
+    <p>
+        Designed with CSS Animation, Transition and Transform
+    </p>
+
+</footer>
+
+</body>
+
+</html>
