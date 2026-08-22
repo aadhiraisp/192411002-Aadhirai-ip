@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Web Development Concepts</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Arial, sans-serif;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        background: linear-gradient(135deg, #0f172a, #172554, #312e81);
+        color: #fff;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* Background animation */
+    body::before,
+    body::after {
+        content: "";
+        position: fixed;
+        width: 350px;
+        height: 350px;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.35;
+        z-index: -1;
+        animation: float 8s infinite alternate ease-in-out;
+    }
+
+    body::before {
+        background: #00e5ff;
+        top: 10%;
+        left: -100px;
+    }
+
+    body::after {
+        background: #ff00cc;
+        bottom: 5%;
+        right: -100px;
+        animation-delay: 2s;
+    }
+
+    @keyframes float {
+        from {
+            transform: translate(0, 0) scale(1);
+        }
+        to {
+            transform: translate(100px, -50px) scale(1.2);
+        }
+    }
+
+    /* Navigation */
+    nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(15px);
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+        padding: 15px 7%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    nav .logo {
+        font-size: 22px;
+        font-weight: bold;
+        background: linear-gradient(90deg,#00e5ff,#ff00cc);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    nav a {
+        color: #ddd;
+        text-decoration: none;
+        margin-left: 25px;
+        transition: 0.3s;
+    }
+
+    nav a:hover {
+        color: #00e5ff;
+    }
+
+    /* Hero */
+    .hero {
+        min-height: 90vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .hero-content {
+        max-width: 900px;
+        animation: slideDown 1.2s ease;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-60px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero h1 {
+        font-size: clamp(40px, 7vw, 75px);
+        margin-bottom: 20px;
+        background: linear-gradient(90deg,#00e5ff,#7c3aed,#ff00cc);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    .hero p {
+        font-size: 20px;
+        color: #cbd5e1;
+        line-height: 1.7;
+    }
+
+    .hero button {
+        margin-top: 30px;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 30px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        background: linear-gradient(90deg,#06b6d4,#7c3aed,#ec4899);
+        box-shadow: 0 0 25px rgba(0,229,255,0.4);
+        transition: 0.4s;
+    }
+
+    .hero button:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 0 40px rgba(236,72,153,0.6);
+    }
+
+    /* Sections */
+    section {
+        padding: 80px 7%;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .section-title h2 {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .section-title p {
+        color: #cbd5e1;
+    }
+
+    /* Cards */
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+    }
+
+    .card {
+        position: relative;
+        padding: 28px;
+        min-height: 260px;
+        border-radius: 22px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        backdrop-filter: blur(12px);
+        transition: 0.45s;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .card::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 5px;
+        left: 0;
+        top: 0;
+        background: linear-gradient(90deg,#00e5ff,#7c3aed,#ff00cc);
+    }
+
+    .card:hover {
+        transform: translateY(-12px) scale(1.02);
+        background: rgba(255,255,255,0.13);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+
+    .icon {
+        font-size: 45px;
+        margin-bottom: 15px;
+    }
+
+    .card h3 {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+
+    .card p {
+        color: #dbeafe;
+        line-height: 1.7;
+    }
+
+    .purpose {
+        margin-top: 15px;
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(0,0,0,0.2);
+        color: #67e8f9;
+        font-size: 14px;
+    }
+
+    /* Expand button */
+    .more {
+        margin-top: 18px;
+        border: none;
+        padding: 9px 15px;
+        border-radius: 20px;
+        background: #2563eb;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .more:hover {
+        background: #ec4899;
+    }
+
+    .extra {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease;
+        color: #cbd5e1;
+        line-height: 1.6;
+    }
+
+    .card.active .extra {
+        max-height: 200px;
+        margin-top: 15px;
+    }
+
+    /* Interconnection */
+    .workflow {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 40px;
+    }
+
+    .flow-box {
+        min-width: 150px;
+        padding: 20px;
+        text-align: center;
+        border-radius: 18px;
+        background: linear-gradient(135deg,rgba(6,182,212,.2),rgba(124,58,237,.25));
+        border: 1px solid rgba(255,255,255,.2);
+        transition: .4s;
+        animation: pulse 3s infinite;
+    }
+
+    .flow-box:hover {
+        transform: scale(1.1);
+    }
+
+    .arrow {
+        font-size: 35px;
+        color: #67e8f9;
+        animation: arrowMove 1.5s infinite alternate;
+    }
+
+    @keyframes arrowMove {
+        from {
+            transform: translateX(-5px);
+        }
+        to {
+            transform: translateX(5px);
+        }
+    }
+
+    @keyframes pulse {
+        0%,100% {
+            box-shadow: 0 0 0 rgba(0,229,255,0);
+        }
+        50% {
+            box-shadow: 0 0 25px rgba(0,229,255,.25);
+        }
+    }
+
+    /* Explanation panel */
+    .explanation {
+        margin-top: 60px;
+        padding: 35px;
+        border-radius: 25px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+    }
+
+    .explanation h3 {
+        font-size: 28px;
+        margin-bottom: 20px;
+        color: #67e8f9;
+    }
+
+    .explanation p,
+    .explanation li {
+        color: #dbeafe;
+        line-height: 1.8;
+    }
+
+    .explanation ul {
+        padding-left: 25px;
+        margin-top: 15px;
+    }
+
+    /* XML Code */
+    .code-box {
+        margin-top: 25px;
+        background: #020617;
+        border-radius: 15px;
+        padding: 25px;
+        overflow-x: auto;
+        border-left: 5px solid #00e5ff;
+        box-shadow: 0 15px 40px rgba(0,0,0,.4);
+    }
+
+    pre {
+        color: #67e8f9;
+        line-height: 1.7;
+    }
+
+    /* MVC */
+    .mvc {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        margin-top: 30px;
+    }
+
+    .mvc-box {
+        padding: 30px;
+        text-align: center;
+        border-radius: 20px;
+        transition: .4s;
+    }
+
+    .mvc-box:hover {
+        transform: translateY(-10px);
+    }
+
+    .model {
+        background: linear-gradient(135deg,#064e3b,#065f46);
+    }
+
+    .view {
+        background: linear-gradient(135deg,#1e3a8a,#3730a3);
+    }
+
+    .controller {
+        background: linear-gradient(135deg,#831843,#9d174d);
+    }
+
+    .mvc-box h3 {
+        font-size: 26px;
+        margin-bottom: 12px;
+    }
+
+    .mvc-box p {
+        line-height: 1.6;
+        color: #e2e8f0;
+    }
+
+    /* Database */
+    .database {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-top: 40px;
+    }
+
+    .db-item {
+        padding: 22px 30px;
+        border-radius: 15px;
+        background: rgba(255,255,255,.1);
+        border: 1px solid rgba(255,255,255,.2);
+        text-align: center;
+        transition: .4s;
+    }
+
+    .db-item:hover {
+        transform: scale(1.08);
+        box-shadow: 0 0 25px rgba(124,58,237,.5);
+    }
+
+    /* Summary */
+    .summary {
+        max-width: 1000px;
+        margin: auto;
+        padding: 40px;
+        border-radius: 25px;
+        background: linear-gradient(
+            135deg,
+            rgba(6,182,212,.15),
+            rgba(124,58,237,.2),
+            rgba(236,72,153,.15)
+        );
+        border: 1px solid rgba(255,255,255,.2);
+    }
+
+    .summary li {
+        margin: 15px 0;
+        color: #dbeafe;
+        line-height: 1.7;
+    }
+
+    /* Footer */
+    footer {
+        text-align: center;
+        padding: 30px;
+        background: rgba(0,0,0,.25);
+        color: #94a3b8;
+    }
+
+    /* Responsive */
+    @media(max-width: 800px) {
+        .mvc {
+            grid-template-columns: 1fr;
+        }
+
+        nav {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        nav a {
+            margin: 0 8px;
+        }
+
+        section {
+            padding: 60px 5%;
+        }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: 1s;
+    }
+
+    .reveal.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+    <div class="logo">WEB TECH HUB</div>
+
+    <div>
+        <a href="#concepts">Concepts</a>
+        <a href="#connection">Connection</a>
+        <a href="#mvc">MVC</a>
+        <a href="#summary">Summary</a>
+    </div>
+</nav>
+
+
+<!-- HERO -->
+<header class="hero">
+
+    <div class="hero-content">
+
+        <h1>Web Development Concepts</h1>
+
+        <p>
+            Explore XML, JSP, MVC, XSLT, XML Schema, JSTL, PHP,
+            Database Connectivity and Parsers through an interactive
+            visual learning experience.
+        </p>
+
+        <button onclick="document.getElementById('concepts').scrollIntoView()">
+            🚀 Start Learning
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- QUESTION 1 -->
+<section id="concepts">
+
+    <div class="section-title reveal">
+
+        <h2>1. Fundamental Web Development Concepts</h2>
+
+        <p>
+            Important technologies and concepts used to build
+            dynamic and data-driven web applications.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+
+        <!-- XML -->
+        <div class="card reveal">
+
+            <div class="icon">📄</div>
+
+            <h3>XML</h3>
+
+            <p>
+                XML stands for Extensible Markup Language.
+                It is used to store and transport structured data
+                using user-defined tags.
+            </p>
+
+            <div class="purpose">
+                Purpose: Data storage and data exchange
+            </div>
+
+            <button class="more" onclick="toggleCard(this)">
+                Learn More
+            </button>
+
+            <div class="extra">
+                XML represents hierarchical information.
+                It separates data from presentation and can be
+                processed by different applications and platforms.
+            </div>
+
+        </div>
+
+
+        <!-- JSP -->
+        <div class="card reveal">
+
+            <div class="icon">☕</div>
+
+            <h3>JSP</h3>
+
+            <p>
+                JSP stands for JavaServer Pages. It is a
+                server-side technology used to generate dynamic
+                web pages using Java.
+            </p>
+
+            <div class="purpose">
+                Purpose: Dynamic server-side web content
+            </div>
+
+            <button class="more" onclick="toggleCard(this)">
+                Learn More
+            </button>
+
+            <div class="extra">
+                A JSP page is processed on the server.
+                Java code and JSP tags can access business logic,
+                databases and other application components.
+            </div>
+
+        </div>
+
+
+        <!-- MVC -->
+        <div class="card reveal">
+
+            <div class="icon">🏗️</div>
+
+            <h3>MVC Architecture</h3>
+
+            <p>
+                MVC stands for Model-View-Controller.
+                It separates an application into three major
+                components.
+            </p>
+
+            <div class="purpose">
+                Purpose: Organized and maintainable application design
+            </div>
+
+            <button class="more" onclick="toggleCard(this)">
+                Learn More
+            </button>
+
+            <div class="extra">
+                Model manages data, View manages presentation,
+                and Controller handles requests and coordinates
+                the Model and View.
+            </div>
+
+        </div>
+
+
+        <!-- XSLT -->
+        <div class="card reveal">
+
+            <div class="icon">🔄</div>
+
+            <h3>XSLT</h3>
+
+            <p>
+                XSLT stands for Extensible Stylesheet Language
+                Transformations. It transforms XML into another
+                format such as HTML or XML.
+            </p>
+
+            <div class="purpose">
+                Purpose: XML transformation and presentation
+            </div>
+
+            <button class="more" onclick="toggleCard(this)">
+                Learn More
+            </button>
+
+            <div class="extra">
+                XSLT uses templates and XPath expressions to
+                select XML nodes and transform structured XML
+                data into a required output format.
+            </div>
+
+        </div>
+
+
+        <!-- XML Schema -->
+        <div class="card reveal">
+
+            <div class="icon">✅</div>
+
+            <h3>XML Schema</h3>
+
+            <p>
+                XML Schema defines the structure, elements,
+                attributes and data types that are allowed
+                inside an XML document.
+            </p>
+
+            <div class="purpose">
+                Purpose: XML validation
+            </div>
+
+            <button class="more" onclick="toggleCard(this)">
+                Learn More
+            </button>
+
+            <div class="extra">
+                It ensures that XML documents follow predefined
+                rules. For example, a product element may require
+                a product ID, name and price.
+            </div>
+
+        </div>
+
+
+        <!-- JSTL -->
+        <div class="card reveal">
+
+            <div class="icon">🧩</div>
+
+            <h3>JSTL</h3>
+
+            <p>
+                JSTL stands for JavaServer Pages Standard Tag Library.
+                It provides predefined tags for common JSP operations.
+            </p>
+
+            <div class="purpose">
+                Purpose: Simplify JSP development
+            </div>
+
+            <button class="more" onclick="toggleCard(this)">
+                Learn More
+            </button>
+
+            <div class="extra">
+                JSTL provides tags for conditions, loops, formatting
+                and database-related operations, reducing the need
+                for Java code directly inside JSP pages.
+            </div>
+
+        </div>
+
+
+        <!-- PHP -->
+        <div class="card reveal">
+
+            <div class="icon">🐘</div>
+
+            <h3>PHP</h3>
+
+            <p>
+                PHP is a server-side scripting language widely used
+                for creating dynamic and interactive web applications.
+            </p>
+
+            <div class="purpose">
+                Purpose: Server-side application processing
+            </div>
+
+            <button class="more" onclick="toggleCard(this)">
+                Learn More
+            </button>
+
+            <div class="extra">
+                PHP can receive user requests, process forms,
+                communicate with databases, manage sessions and
+                generate HTML responses.
+            </div>
+
+        </div>
+
+
+        <!-- Database -->
+        <div class="card reveal">
+
+            <div class="icon">🗄️</div>
+
+            <h3>Database Connectivity</h3>
+
+            <p>
+                Database connectivity allows a web application
+                to communicate with a database for storing,
+                retrieving, updating and deleting information.
+            </p>
+
+            <div class="purpose">
+                Purpose: Persistent data management
+            </div>
+
+            <button class="more" onclick="toggleCard(this)">
+                Learn More
+            </button>
+
+            <div class="extra">
+                Technologies such as JDBC, PDO and database APIs
+                allow server-side applications to execute queries
+                and exchange data with databases.
+            </div>
+
+        </div>
+
+
+        <!-- Parser -->
+        <div class="card reveal">
+
+            <div class="icon">🔍</div>
+
+            <h3>Parser</h3>
+
+            <p>
+                A parser reads structured data and converts it
+                into a form that a program can understand and process.
+            </p>
+
+            <div class="purpose">
+                Purpose: Data interpretation and processing
+            </div>
+
+            <button class="more" onclick="toggleCard(this)">
+                Learn More
+            </button>
+
+            <div class="extra">
+                XML parsers such as DOM and SAX can read XML documents,
+                identify elements and attributes, and allow applications
+                to access the required information.
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- QUESTION 2 -->
+<section id="connection">
+
+    <div class="section-title reveal">
+
+        <h2>2. How These Technologies Are Connected</h2>
+
+        <p>
+            A web application combines these technologies to
+            collect, process, validate, store and present data.
+        </p>
+
+    </div>
+
+
+    <!-- Workflow -->
+    <div class="workflow reveal">
+
+        <div class="flow-box">
+            🌐
+            <br>
+            User Request
+        </div>
+
+        <div class="arrow">➜</div>
+
+        <div class="flow-box">
+            🎛️
+            <br>
+            Controller
+        </div>
+
+        <div class="arrow">➜</div>
+
+        <div class="flow-box">
+            ⚙️
+            <br>
+            Server Logic
+        </div>
+
+        <div class="arrow">➜</div>
+
+        <div class="flow-box">
+            🔍
+            <br>
+            Parser
+        </div>
+
+        <div class="arrow">➜</div>
+
+        <div class="flow-box">
+            🗄️
+            <br>
+            Database
+        </div>
+
+        <div class="arrow">➜</div>
+
+        <div class="flow-box">
+            🖥️
+            <br>
+            JSP / PHP
+        </div>
+
+        <div class="arrow">➜</div>
+
+        <div class="flow-box">
+            👤
+            <br>
+            User Response
+        </div>
+
+    </div>
+
+
+    <!-- XML -->
+    <div class="explanation reveal">
+
+        <h3>📄 XML Structure and Validation</h3>
+
+        <p>
+            XML represents information using a hierarchical structure.
+            The document normally contains a root element, child elements
+            and attributes. This makes XML suitable for representing
+            structured information such as users, products and orders.
+        </p>
+
+        <div class="code-box">
+
+<pre>
+&lt;products&gt;
+
+    &lt;product id="101"&gt;
+        &lt;name&gt;Laptop&lt;/name&gt;
+        &lt;price&gt;55000&lt;/price&gt;
+        &lt;category&gt;Computer&lt;/category&gt;
+    &lt;/product&gt;
+
+    &lt;product id="102"&gt;
+        &lt;name&gt;Smartphone&lt;/name&gt;
+        &lt;price&gt;25000&lt;/price&gt;
+        &lt;category&gt;Mobile&lt;/category&gt;
+    &lt;/product&gt;
+
+&lt;/products&gt;
+</pre>
+
+        </div>
+
+        <p style="margin-top:20px;">
+            An XML Schema can define which elements are allowed,
+            their data types and their relationships. Therefore,
+            XML Schema helps verify whether an XML document follows
+            the required structure.
+        </p>
+
+    </div>
+
+
+    <!-- Parser -->
+    <div class="explanation reveal">
+
+        <h3>🔍 XML Parser and Data Processing</h3>
+
+        <p>
+            Once an XML document is received, an XML parser reads its
+            contents and provides access to its elements and attributes.
+            The application can then traverse the XML hierarchy and
+            extract required information.
+        </p>
+
+        <ul>
+            <li>Load the XML document.</li>
+            <li>Read the root element.</li>
+            <li>Traverse child elements.</li>
+            <li>Extract values and attributes.</li>
+            <li>Process the extracted information.</li>
+            <li>Send the processed data to the application layer.</li>
+        </ul>
+
+    </div>
+
+
+    <!-- XSLT -->
+    <div class="explanation reveal">
+
+        <h3>🔄 XSLT and XML Presentation</h3>
+
+        <p>
+            XML mainly stores data rather than controlling how that
+            data should look on a web page. XSLT can transform XML
+            data into HTML for presentation.
+        </p>
+
+        <div class="workflow">
+
+            <div class="flow-box">
+                📄 XML
+            </div>
+
+            <div class="arrow">➜</div>
+
+            <div class="flow-box">
+                🔄 XSLT
+            </div>
+
+            <div class="arrow">➜</div>
+
+            <div class="flow-box">
+                🌐 HTML
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- JSP PHP -->
+    <div class="explanation reveal">
+
+        <h3>☕ JSP and 🐘 PHP Server-Side Processing</h3>
+
+        <p>
+            JSP and PHP operate on the server rather than directly
+            inside the user's browser.
+        </p>
+
+        <ul>
+            <li>
+                <strong>JSP:</strong>
+                Uses Java-based server-side processing to generate
+                dynamic responses.
+            </li>
+
+            <li>
+                <strong>JSTL:</strong>
+                Provides reusable JSP tags for conditions, loops,
+                formatting and other common operations.
+            </li>
+
+            <li>
+                <strong>PHP:</strong>
+                Processes requests, forms, sessions and database
+                operations and generates dynamic responses.
+            </li>
+        </ul>
+
+    </div>
+
+
+    <!-- MVC -->
+    <div class="explanation reveal" id="mvc">
+
+        <h3>🏗️ MVC Architecture</h3>
+
+        <p>
+            MVC organizes a web application into three separate
+            components. This separation makes the application easier
+            to develop, test, maintain and modify.
+        </p>
+
+
+        <div class="mvc">
+
+            <div class="mvc-box model">
+
+                <h3>Model</h3>
+
+                <p>
+                    Handles application data and business logic.
+                    It communicates with databases and processes
+                    application information.
+                </p>
+
+            </div>
+
+
+            <div class="mvc-box view">
+
+                <h3>View</h3>
+
+                <p>
+                    Represents the user interface. JSP, HTML,
+                    CSS and other presentation technologies can
+                    be used to display information.
+                </p>
+
+            </div>
+
+
+            <div class="mvc-box controller">
+
+                <h3>Controller</h3>
+
+                <p>
+                    Receives user requests, invokes the required
+                    processing and selects the appropriate response.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="workflow">
+
+            <div class="flow-box">
+                👤 User
+            </div>
+
+            <div class="arrow">➜</div>
+
+            <div class="flow-box">
+                🎛️ Controller
+            </div>
+
+            <div class="arrow">➜</div>
+
+            <div class="flow-box">
+                ⚙️ Model
+            </div>
+
+            <div class="arrow">➜</div>
+
+            <div class="flow-box">
+                🗄️ Database
+            </div>
+
+            <div class="arrow">↩</div>
+
+            <div class="flow-box">
+                🖥️ View
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Database -->
+    <div class="explanation reveal">
+
+        <h3>🗄️ Database Connectivity</h3>
+
+        <p>
+            Database connectivity connects the server-side application
+            to persistent storage. For example, a shopping application
+            can store product details, customer information and orders
+            inside a database.
+        </p>
+
+
+        <div class="database">
+
+            <div class="db-item">
+                🌐 Web Request
+            </div>
+
+            <div class="arrow">➜</div>
+
+            <div class="db-item">
+                ⚙️ JSP / PHP
+            </div>
+
+            <div class="arrow">➜</div>
+
+            <div class="db-item">
+                🔌 Database Connection
+            </div>
+
+            <div class="arrow">➜</div>
+
+            <div class="db-item">
+                🗄️ MySQL / Database
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Complete architecture -->
+    <div class="explanation reveal">
+
+        <h3>🔗 Complete Web Application Flow</h3>
+
+        <p>
+            All these concepts can work together as part of a
+            complete web application architecture.
+        </p>
+
+        <div class="code-box">
+
+<pre>
+1. User sends a request
+          ↓
+2. Controller receives the request
+          ↓
+3. Server-side application processes it
+   (JSP / PHP)
+          ↓
+4. Application accesses XML or database data
+          ↓
+5. Parser reads structured XML data
+          ↓
+6. XML Schema validates the structure
+          ↓
+7. Model performs business logic
+          ↓
+8. Database connectivity retrieves/stores information
+          ↓
+9. XSLT can transform XML into presentable HTML
+          ↓
+10. JSP/JSTL or PHP generates the response
+          ↓
+11. View displays the final result
+          ↓
+12. User receives the web page
+</pre>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SUMMARY -->
+<section id="summary">
+
+    <div class="section-title reveal">
+
+        <h2>🎯 Final Summary</h2>
+
+        <p>
+            How the technologies work together
+        </p>
+
+    </div>
+
+
+    <div class="summary reveal">
+
+        <ul>
+
+            <li>
+                <strong>XML</strong> stores and exchanges structured data.
+            </li>
+
+            <li>
+                <strong>XML Schema</strong> defines and validates the
+                structure and data types of XML documents.
+            </li>
+
+            <li>
+                <strong>Parser</strong> reads XML and allows applications
+                to access and process its hierarchical data.
+            </li>
+
+            <li>
+                <strong>XSLT</strong> transforms XML into formats such
+                as HTML for presentation.
+            </li>
+
+            <li>
+                <strong>JSP and PHP</strong> perform server-side processing
+                and generate dynamic web responses.
+            </li>
+
+            <li>
+                <strong>JSTL</strong> simplifies JSP pages by providing
+                standard tags for common programming tasks.
+            </li>
+
+            <li>
+                <strong>MVC</strong> separates data, presentation and
+                request handling into Model, View and Controller.
+            </li>
+
+            <li>
+                <strong>Database Connectivity</strong> allows the
+                application to store, retrieve and update persistent data.
+            </li>
+
+            <li>
+                Together, these technologies form a structured approach
+                for building dynamic, maintainable and data-driven
+                web applications.
+            </li>
+
+        </ul>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <p>
+        🌐 Web Development Concepts | Interactive Learning Interface
+    </p>
+
+</footer>
+
+
+<script>
+
+    /* Expand / collapse cards */
+
+    function toggleCard(button) {
+
+        const card = button.parentElement;
+
+        card.classList.toggle("active");
+
+        if (card.classList.contains("active")) {
+            button.innerText = "Show Less";
+        } else {
+            button.innerText = "Learn More";
+        }
+
+    }
+
+
+    /* Scroll reveal animation */
+
+    const revealElements =
+        document.querySelectorAll(".reveal");
+
+    const observer =
+        new IntersectionObserver(
+            (entries) => {
+
+                entries.forEach(entry => {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add("show");
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.12
+            }
+        );
+
+
+    revealElements.forEach(element => {
+
+        observer.observe(element);
+
+    });
+
+
+    /* Smooth button animation */
+
+    document.querySelectorAll("button").forEach(button => {
+
+        button.addEventListener("click", function() {
+
+            this.style.transform = "scale(0.95)";
+
+            setTimeout(() => {
+
+                this.style.transform = "";
+
+            }, 150);
+
+        });
+
+    });
+
+</script>
+
+</body>
+</html>
